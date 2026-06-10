@@ -1711,6 +1711,331 @@ html.light .dropdown__menu {
 .cal__ev { display: block; }
 .cal__grid .cal__cell:nth-last-child(-n+7) { border-bottom: none; }
 
+/* ── Hora no título da lista ── */
+.list-row__hora {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+  color: var(--color-text-secondary); letter-spacing: 0.02em;
+}
+.list-row__hora-sep { color: var(--color-text-quaternary); margin: 0 7px; }
+
+/* ── Descrição visível na lista ── */
+.list-row__desc {
+  font-size: 12px; color: var(--color-text-tertiary); line-height: 1.45;
+  margin: 2px 0 3px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.list--compact .list-row__desc { display: none; }
+.list--compact .list-row { padding-top: 9px; padding-bottom: 9px; }
+.list--compact .list-row__sub { display: none; }
+
+/* ── Prioridade Crítica ── */
+.tag-prio--critica {
+  color: #FFFFFF;
+  background: var(--color-critical);
+  border-color: var(--color-critical);
+  font-weight: 600;
+}
+.kanban__card--critica { border-left-color: var(--color-critical); border-left-width: 3px; }
+
+/* ── Chips de dia da semana ── */
+.day-chips { display: flex; gap: 4px; flex-wrap: wrap; }
+.day-chip {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em;
+  padding: 6px 0; flex: 1; min-width: 42px; text-align: center;
+  background: var(--color-bg-surface-2);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-subtle);
+  cursor: pointer;
+}
+.day-chip:hover { border-color: var(--color-border-strong); color: var(--color-text-primary); }
+.day-chip--active {
+  background: var(--color-neutral-strong); color: var(--color-bg-base);
+  border-color: var(--color-neutral-strong); font-weight: 600;
+}
+
+/* ── Filtros do calendário ── */
+.cal-filters {
+  display: flex; gap: 5px; flex-wrap: wrap; align-items: center;
+  margin-top: 14px;
+}
+.cal-filter {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em;
+  padding: 6px 12px;
+  background: var(--color-bg-surface-1); color: var(--color-text-tertiary);
+  border: 1px solid var(--color-border-subtle); cursor: pointer;
+}
+.cal-filter:hover { color: var(--color-text-primary); border-color: var(--color-border-strong); }
+.cal-filter--active {
+  background: var(--color-neutral-strong); color: var(--color-bg-base);
+  border-color: var(--color-neutral-strong); font-weight: 600;
+}
+.cal-filters__hint {
+  font-family: var(--font-mono); font-size: 10px; color: var(--color-text-quaternary);
+  margin-left: auto;
+}
+
+/* ── Navegação rápida de datas ── */
+.cal-nav {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  flex-wrap: wrap; margin-top: 10px;
+}
+.cal-nav__group { display: flex; align-items: center; gap: 6px; }
+.cal-nav__label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-quaternary); }
+.cal-nav__date { width: 170px; padding: 7px 10px; font-size: 12.5px; }
+.cal__nav-btn--strong { background: var(--color-neutral-strong); color: var(--color-bg-base); border-color: var(--color-neutral-strong); font-weight: 600; }
+.cal__nav-btn--strong:hover { color: var(--color-bg-base); opacity: 0.9; }
+
+/* ── Célula selecionada + eventos ── */
+.cal__cell { cursor: pointer; }
+.cal__cell--selected { box-shadow: inset 0 0 0 1px var(--color-neutral-strong); }
+.cal__ev--rotina { border-left-style: double; border-left-width: 3px; }
+.cal__ev-hora { font-family: var(--font-mono); font-size: 9.5px; color: var(--color-text-tertiary); margin-right: 5px; }
+
+/* ── Painel do dia ── */
+.day-panel {
+  border: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-surface-1);
+  margin-top: 14px;
+}
+.day-panel__head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding: 13px 18px; border-bottom: 1px solid var(--color-border-subtle);
+}
+.day-panel__title {
+  font-family: var(--font-display); font-size: 13.5px; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+.day-panel__meta { font-family: var(--font-mono); font-size: 11px; color: var(--color-text-quaternary); }
+.day-panel__empty {
+  padding: 26px 18px; text-align: center;
+  font-family: var(--font-mono); font-size: 11px; color: var(--color-text-quaternary);
+}
+.day-panel__list { display: flex; flex-direction: column; }
+.day-panel__row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 11px 18px; text-align: left; width: 100%;
+  background: transparent; border: none;
+  border-bottom: 1px solid var(--color-border-subtle);
+  cursor: pointer;
+}
+.day-panel__row:last-child { border-bottom: none; }
+.day-panel__row:hover { background: var(--color-bg-surface-2); }
+.day-panel__hora {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+  color: var(--color-text-primary); flex: 0 0 52px;
+}
+.day-panel__hora--none { color: var(--color-text-quaternary); }
+.day-panel__item-title { font-size: 13px; color: var(--color-text-primary); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.day-panel__item-title--done { color: var(--color-text-quaternary); text-decoration: line-through; }
+.day-panel__desc { color: var(--color-text-tertiary); font-size: 12px; }
+.day-panel__badges { display: flex; gap: 5px; flex-shrink: 0; }
+.day-panel__badge {
+  font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 3px 7px; border: 1px solid var(--color-border-default); color: var(--color-text-tertiary);
+}
+.day-panel__badge--alta { color: var(--color-critical); border-color: rgba(220, 34, 34, 0.4); background: var(--color-critical-soft); }
+
+/* ── Refinamento geral de UX ── */
+:focus-visible { outline: 1px solid var(--color-neutral-strong); outline-offset: 2px; }
+.list-row { transition: background 130ms ease, border-color 130ms ease; }
+.kanban__card { transition: border-color 130ms ease, transform 130ms ease, box-shadow 130ms ease; }
+.kanban__card:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28); }
+.note { transition: border-color 130ms ease; }
+.note:hover { border-color: var(--color-border-strong); }
+.cal-filter, .day-chip, .form-chip, .cal__nav-btn, .btn, .toolbar__select { transition: background 120ms ease, color 120ms ease, border-color 120ms ease; }
+.cal__cell { transition: background 120ms ease; }
+.cal__cell:hover { background: var(--color-bg-surface-2); }
+@media (max-width: 900px) {
+  .cal-filters__hint { display: none; }
+  .cal__cell { min-height: 64px; }
+  .day-panel__desc { display: none; }
+}
+
+/* ════ REVISÃO UX v0.5 ════ */
+
+/* ── Navegação de data no cabeçalho ── */
+.date-nav { display: flex; align-items: center; gap: 5px; }
+.date-nav__btn {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--color-bg-surface-2); color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-subtle); cursor: pointer;
+  font-family: var(--font-mono); font-size: 13px;
+}
+.date-nav__btn:hover { color: var(--color-text-primary); border-color: var(--color-border-strong); }
+.date-nav__today {
+  height: 32px; padding: 0 14px;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  background: var(--color-bg-surface-2); color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-subtle); cursor: pointer;
+}
+.date-nav__today:hover { color: var(--color-text-primary); border-color: var(--color-border-strong); }
+.date-nav__today--active {
+  background: var(--color-neutral-strong); color: var(--color-bg-base);
+  border-color: var(--color-neutral-strong); font-weight: 600;
+}
+.date-nav__input {
+  height: 32px; padding: 0 10px;
+  background: var(--color-bg-surface-2); color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-subtle);
+  font-family: var(--font-mono); font-size: 12px;
+  color-scheme: dark;
+}
+html.light .date-nav__input { color-scheme: light; }
+
+/* ── Descrições: quebras de linha + Ver mais ── */
+.list-row__desc {
+  white-space: pre-line;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+}
+.list-row__desc--expanded { -webkit-line-clamp: unset; display: block; }
+.list-row__desc-wrap { margin: 2px 0 3px; }
+.list-row__desc-toggle {
+  background: transparent; border: none; padding: 0; margin-top: 2px;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em;
+  color: var(--color-text-tertiary); cursor: pointer; text-transform: uppercase;
+}
+.list-row__desc-toggle:hover { color: var(--color-text-primary); }
+.list--compact .list-row__desc-wrap { display: none; }
+
+/* ── Conclusão por categoria: respiro ── */
+.cat-breakdown__grid { gap: 22px 28px; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+.cat-tile { gap: 8px; }
+.cat-breakdown__toggle {
+  background: transparent; border: 1px solid var(--color-border-subtle);
+  color: var(--color-text-tertiary); cursor: pointer;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 5px 11px;
+}
+.cat-breakdown__toggle:hover { color: var(--color-text-primary); border-color: var(--color-border-strong); }
+
+/* ── Modal do formulário: hierarquia e respiro ── */
+.modal--form { width: 700px; }
+.modal--form .modal__body { padding: 26px 30px 30px; }
+.modal--form .form-group { margin-bottom: 18px; }
+.form-section__title {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--color-text-quaternary);
+  padding-bottom: 8px; margin-bottom: 16px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.form-section__title--gap { margin-top: 26px; }
+.modal--form .form-chips { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.modal--form .form-chip { padding: 8px 10px; }
+.modal--form .day-chips { gap: 5px; }
+
+/* ── Calendário v2: modos + barra de filtros ── */
+.cal-modes { display: flex; gap: 0; border: 1px solid var(--color-border-subtle); }
+.cal-mode {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em;
+  padding: 8px 18px; background: var(--color-bg-surface-1);
+  color: var(--color-text-tertiary); border: none; cursor: pointer;
+  border-right: 1px solid var(--color-border-subtle);
+}
+.cal-mode:last-child { border-right: none; }
+.cal-mode:hover { color: var(--color-text-primary); }
+.cal-mode--active { background: var(--color-neutral-strong); color: var(--color-bg-base); font-weight: 600; }
+
+.cal-filterbar {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-top: 16px; padding: 12px 14px;
+  border: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-surface-1);
+}
+.cal-filterbar__clear {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase;
+  background: transparent; color: var(--color-critical);
+  border: 1px solid rgba(220, 34, 34, 0.4); padding: 7px 12px; cursor: pointer;
+}
+.cal-filterbar__clear:hover { background: var(--color-critical-soft); }
+
+/* ── Agenda ── */
+.agenda { margin-top: 14px; display: flex; flex-direction: column; gap: 14px; }
+.agenda__day { border: 1px solid var(--color-border-subtle); background: var(--color-bg-surface-1); }
+.agenda__day-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding: 11px 18px; border-bottom: 1px solid var(--color-border-subtle);
+}
+.agenda__day-head--today { box-shadow: inset 2px 0 0 var(--color-neutral-strong); }
+.agenda__day-name {
+  font-family: var(--font-display); font-size: 12.5px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.agenda__day-count { font-family: var(--font-mono); font-size: 10.5px; color: var(--color-text-quaternary); }
+
+/* ── Semana ── */
+.week {
+  display: grid; grid-template-columns: repeat(7, minmax(0, 1fr));
+  border: 1px solid var(--color-border-subtle); background: var(--color-bg-surface-1);
+  margin-top: 14px;
+}
+.week__col { border-right: 1px solid var(--color-border-subtle); min-height: 300px; min-width: 0; }
+.week__col:last-child { border-right: none; }
+.week__col--today { background: var(--color-bg-surface-2); box-shadow: inset 0 2px 0 var(--color-neutral-strong); }
+.week__col-head {
+  display: flex; align-items: baseline; gap: 7px;
+  padding: 11px 12px; border-bottom: 1px solid var(--color-border-subtle);
+}
+.week__col-dow { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-quaternary); }
+.week__col-num { font-family: var(--font-display); font-size: 15px; font-weight: 700; }
+.week__col--today .week__col-dow { color: var(--color-text-primary); }
+.week__col-list { padding: 8px; display: flex; flex-direction: column; gap: 4px; }
+.week__empty { text-align: center; color: var(--color-text-quaternary); font-family: var(--font-mono); font-size: 11px; padding: 14px 0; }
+
+/* ── Timeline ── */
+.timeline { margin-top: 18px; position: relative; padding-left: 18px; }
+.timeline::before {
+  content: ''; position: absolute; left: 3px; top: 8px; bottom: 8px;
+  width: 1px; background: var(--color-border-default);
+}
+.timeline__group { position: relative; margin-bottom: 26px; }
+.timeline__marker { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.timeline__dot {
+  position: absolute; left: -18px;
+  width: 7px; height: 7px; background: var(--color-neutral-mid);
+  outline: 3px solid var(--color-bg-base);
+}
+.timeline__dot--today { background: var(--color-critical); }
+.timeline__date {
+  font-family: var(--font-display); font-size: 12.5px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.timeline__items { display: flex; flex-direction: column; gap: 5px; }
+.timeline__item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 9px 14px; text-align: left;
+  background: var(--color-bg-surface-1); border: 1px solid var(--color-border-subtle);
+  cursor: pointer; transition: border-color 120ms ease, background 120ms ease;
+}
+.timeline__item:hover { border-color: var(--color-border-strong); background: var(--color-bg-surface-2); }
+.timeline__item-title { font-size: 13px; color: var(--color-text-primary); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.timeline__item--done .timeline__item-title { color: var(--color-text-quaternary); text-decoration: line-through; }
+
+/* ── Respiro geral ── */
+.hero { margin-top: 22px; }
+.page__header { gap: 16px; flex-wrap: wrap; }
+@media (max-width: 1000px) {
+  .week { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+  .date-nav { order: 3; width: 100%; }
+}
+
+/* ── Seletor de data compacto na linha das abas ── */
+.tabs { align-items: center; }
+.tabs__date {
+  margin-left: auto; display: flex; align-items: center; gap: 4px;
+  padding-left: 14px; flex-shrink: 0;
+}
+.tabs__date .date-nav__btn, .tabs__date .date-nav__today { height: 28px; }
+.tabs__date .date-nav__btn { width: 28px; font-size: 12px; }
+.tabs__date .date-nav__today { padding: 0 11px; font-size: 10px; }
+.tabs__date .date-nav__input { height: 28px; font-size: 11px; padding: 0 8px; }
+
+/* ── Fix: dropdowns da barra de filtros do calendário acima da navegação ── */
+.cal-filterbar { position: relative; z-index: 30; }
+.cal-nav { position: relative; z-index: 1; }
+
 </style>
 
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -1816,7 +2141,7 @@ const MOCK_ITEMS = [
     titulo: "Conferir base de pedidos do dia",
     categoria: "Operações Diárias",
     prioridade: "Alta", status: "Pendente",
-    frequencia: "Diária", ultimaConclusao: dayOffset(-1),
+    frequencia: "Diária", dias: "Seg, Ter, Qua, Qui, Sex", hora: "08:30", ultimaConclusao: dayOffset(-1),
     tempoEst: 0.5,
   },
   {
@@ -1852,7 +2177,7 @@ const MOCK_ITEMS = [
     titulo: "Fechar KPIs da semana",
     categoria: "Relatórios / KPIs",
     prioridade: "Alta", status: "Pendente",
-    frequencia: "Semanal", ultimaConclusao: dayOffset(-7),
+    frequencia: "Semanal", dias: "Seg", hora: "09:00", ultimaConclusao: dayOffset(-7),
     tempoEst: 2.0,
   },
   {
@@ -1975,12 +2300,14 @@ const STATUS_BUCKET = {
   "Recusado":     "feito",
 };
 
-const isAtivo = (item) => {
-  const b = STATUS_BUCKET[item.status];
-  return b === "aberto" || b === "andamento";
-};
-
-const isFeito = (item) => STATUS_BUCKET[item.status] === "feito" && item.status !== "Cancelado" && item.status !== "Recusado";
+// ── Rotinas recorrentes por dia da semana ──
+// Uma rotina com `dias` ("Seg, Ter, Qua") reaparece automaticamente em cada
+// dia configurado. Concluir só vale para o dia: `ultimaConclusao` guarda a
+// última data concluída; no dia seguinte a rotina volta como pendente sozinha.
+const DIAS_SEMANA = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+const splitDias = (s) => String(s || '').split(',').map(x => x.trim()).filter(Boolean);
+const temDias = (item) => item.origem === 'Rotina' && splitDias(item.dias).length > 0;
+const rotinaNoDia = (item, date) => temDias(item) && splitDias(item.dias).includes(DIAS_SEMANA[date.getDay()]);
 
 const diasAteHoje = (date) => {
   if (!date) return null;
@@ -1989,12 +2316,28 @@ const diasAteHoje = (date) => {
   return Math.round((d - t) / (1000 * 60 * 60 * 24));
 };
 
+const rotinaFeitaHoje = (item) =>
+  !!item.ultimaConclusao && diasAteHoje(item.ultimaConclusao) === 0;
+
+const isAtivo = (item) => {
+  if (temDias(item)) return !rotinaFeitaHoje(item);
+  const b = STATUS_BUCKET[item.status];
+  return b === "aberto" || b === "andamento";
+};
+
+const isFeito = (item) => {
+  if (temDias(item)) return rotinaFeitaHoje(item);
+  return STATUS_BUCKET[item.status] === "feito" && item.status !== "Cancelado" && item.status !== "Recusado";
+};
+
 const isAtrasado = (item) => {
+  if (temDias(item)) return false; // rotina recorrente nunca "atrasa": reaparece no próximo dia
   if (!isAtivo(item) || !item.prazo) return false;
   return diasAteHoje(item.prazo) < 0;
 };
 
 const isHoje = (item) => {
+  if (temDias(item)) return rotinaNoDia(item, new Date()) && isAtivo(item);
   if (!isAtivo(item) || !item.prazo) return false;
   return diasAteHoje(item.prazo) === 0;
 };
@@ -2053,6 +2396,7 @@ window.PLANNER_DATA = {
   isAtivo, isFeito, isAtrasado, isHoje, isProximos48h, isEstaSemana, isConcluidoRecente,
   diasAteHoje, formatDate, formatRelative,
   splitCats, hasCat,
+  DIAS_SEMANA, splitDias, temDias, rotinaNoDia, rotinaFeitaHoje,
 };
 
 </script>
@@ -2249,6 +2593,7 @@ function PageHeader({ today, lastUpdate, onRefresh, syncStatus, onOpenSettings }
         <h1 className="page__header-title">Dashboard Operacional</h1>
         <div className="page__header-sub">Logística · {today}</div>
       </div>
+
       <div className="page__header-meta">
         <button className={`sync-indicator sync-indicator--${syncStatus}`}
                 onClick={onOpenSettings}
@@ -2281,8 +2626,9 @@ function KPI({ label, value, sub, icon: IconC, variant }) {
   );
 }
 
-function Conclusion({ pct, feitos, ativos, total, categorias }) {
+function Conclusion({ pct, feitos, ativos, total, categorias, rotinasHoje }) {
   const [drawn, setDrawn] = useState(0);
+  const [showAll, setShowAll] = useState(false);
   useEffect(() => {
     const t = setTimeout(() => setDrawn(pct), 100);
     return () => clearTimeout(t);
@@ -2306,6 +2652,7 @@ function Conclusion({ pct, feitos, ativos, total, categorias }) {
           <div className="conclusion__breakdown">
             <span><b>{feitos}</b> Concluídos</span>
             <span><b>{ativos}</b> Em aberto</span>
+            {rotinasHoje !== undefined && <span><b>{rotinasHoje}</b> Rotinas hoje</span>}
           </div>
         </div>
       </div>
@@ -2316,9 +2663,11 @@ function Conclusion({ pct, feitos, ativos, total, categorias }) {
             <Layers size={11}/>
             Conclusão por categoria
           </div>
-          <div className="cat-breakdown__meta">
-            Principais categorias operacionais
-          </div>
+          {categorias.length > 5 && (
+            <button className="cat-breakdown__toggle" onClick={() => setShowAll(v => !v)}>
+              {showAll ? 'Ver menos' : `Ver todas (${categorias.length})`}
+            </button>
+          )}
         </div>
         {categorias.length === 0 ? (
           <div style={{ padding: '20px 0', textAlign: 'center', color: 'var(--color-text-tertiary)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>
@@ -2326,7 +2675,7 @@ function Conclusion({ pct, feitos, ativos, total, categorias }) {
           </div>
         ) : (
           <div className="cat-breakdown__grid">
-            {categorias.slice(0, 5).map(c => (
+            {(showAll ? categorias : categorias.slice(0, 5)).map(c => (
               <div key={c.nome} className="cat-tile">
                 <div className="cat-tile__top">
                   <div className="cat-tile__name" title={c.nome}>{c.nome}</div>
@@ -2349,9 +2698,12 @@ function Conclusion({ pct, feitos, ativos, total, categorias }) {
 // ────────────────────────────────────────────────────────────────────────────
 // TABS (estilo Mercado Livre)
 // ────────────────────────────────────────────────────────────────────────────
-function Tabs({ active, onChange, counts }) {
+function Tabs({ active, onChange, counts, selDate, onDateShift, onDateToday, onDateSet }) {
+  const isTodaySel = D.diasAteHoje(selDate) === 0;
+  const dateLabel = isTodaySel ? 'Hoje'
+    : `${D.DIAS_SEMANA[selDate.getDay()]} ${String(selDate.getDate()).padStart(2, '0')}/${String(selDate.getMonth() + 1).padStart(2, '0')}`;
   const tabs = [
-    { key: 'Hoje', label: 'Hoje' },
+    { key: 'Hoje', label: dateLabel },
     { key: 'Todos', label: 'Todos' },
     { key: 'Projeto', label: 'Projetos' },
     { key: 'Rotina', label: 'Rotina' },
@@ -2369,6 +2721,17 @@ function Tabs({ active, onChange, counts }) {
           <span className="tab__count">{counts[t.key] || 0}</span>
         </button>
       ))}
+      <div className="tabs__date" title="A primeira aba mostra os itens da data selecionada">
+        <button className="date-nav__btn" title="Dia anterior"
+                onClick={() => { onDateShift(-1); onChange('Hoje'); }}>←</button>
+        <button className={`date-nav__today ${isTodaySel ? 'date-nav__today--active' : ''}`}
+                onClick={() => { onDateToday(); onChange('Hoje'); }}>Hoje</button>
+        <button className="date-nav__btn" title="Próximo dia"
+                onClick={() => { onDateShift(1); onChange('Hoje'); }}>→</button>
+        <input type="date" className="date-nav__input" title="Ir para qualquer data"
+               value={selDate.toISOString().slice(0, 10)}
+               onChange={(e) => { if (e.target.value) { onDateSet(new Date(e.target.value + 'T12:00:00')); onChange('Hoje'); } }}/>
+      </div>
     </div>
   );
 }
@@ -2403,7 +2766,7 @@ function ToolbarDropdown({ icon: IconC, label, value, open, onToggle, children }
   );
 }
 
-function Toolbar({ count, sortBy, onSortSelect, prio, onPrio, cat, onCat }) {
+function Toolbar({ count, sortBy, onSortSelect, prio, onPrio, cat, onCat, density, onToggleDensity }) {
   const [openMenu, setOpenMenu] = useState(null); // 'sort' | 'prio' | 'cat' | null
 
   useEffect(() => {
@@ -2440,7 +2803,7 @@ function Toolbar({ count, sortBy, onSortSelect, prio, onPrio, cat, onCat }) {
 
       <ToolbarDropdown icon={FilterIcon} label="Prioridade" value={prio}
                        open={openMenu === 'prio'} onToggle={() => toggle('prio')}>
-        {['Todas', 'Alta', 'Média', 'Baixa'].map(p => (
+        {['Todas', 'Crítica', 'Alta', 'Média', 'Baixa'].map(p => (
           <button key={p}
                   className={`dropdown__item ${prio === p ? 'dropdown__item--active' : ''}`}
                   onClick={() => { onPrio(p); setOpenMenu(null); }}>
@@ -2462,6 +2825,11 @@ function Toolbar({ count, sortBy, onSortSelect, prio, onPrio, cat, onCat }) {
         ))}
       </ToolbarDropdown>
 
+      <button className="toolbar__select" onClick={onToggleDensity}
+              title={density === 'compacta' ? 'Mudar para lista detalhada' : 'Mudar para lista compacta'}>
+        <Layers size={13}/>
+        <span>{density === 'compacta' ? 'Compacta' : 'Detalhada'}</span>
+      </button>
       <span className="toolbar__count">{count} {count === 1 ? 'Item' : 'Itens'}</span>
     </div>
   );
@@ -2479,6 +2847,22 @@ function statusKey(status) {
     'Bloqueado': 'bloqueado',
     'Cancelado': 'pendente', 'Recusado': 'pendente',
   }[status] || 'pendente';
+}
+
+function RowDesc({ text }) {
+  const [expanded, setExpanded] = useState(false);
+  const long = text.length > 140 || text.split('\n').length > 2;
+  return (
+    <div className="list-row__desc-wrap">
+      <div className={`list-row__desc ${expanded ? 'list-row__desc--expanded' : ''}`}>{text}</div>
+      {long && (
+        <button className="list-row__desc-toggle"
+                onClick={(e) => { e.stopPropagation(); setExpanded(v => !v); }}>
+          {expanded ? 'Ver menos' : 'Ver mais'}
+        </button>
+      )}
+    </div>
+  );
 }
 
 function ListRow({ item, menuOpen, onMenuToggle, onEdit, onToggleComplete, onDuplicate, onDelete }) {
@@ -2523,7 +2907,11 @@ function ListRow({ item, menuOpen, onMenuToggle, onEdit, onToggleComplete, onDup
       <div className={`list-row__origem list-row__origem--${origemClass}`}>{origemLetter}</div>
 
       <div className="list-row__main">
-        <div className="list-row__title">{item.titulo}</div>
+        <div className="list-row__title">
+          {item.hora && <span className="list-row__hora">{item.hora}<span className="list-row__hora-sep">|</span></span>}
+          {item.titulo}
+        </div>
+        {item.descricao && <RowDesc text={item.descricao}/>}
         <div className="list-row__sub">
           <span>{item.origem}</span>
           {item.solicitante && (
@@ -2532,7 +2920,12 @@ function ListRow({ item, menuOpen, onMenuToggle, onEdit, onToggleComplete, onDup
               <span>de {item.solicitante}</span>
             </>
           )}
-          {item.frequencia && (
+          {D.temDias(item) ? (
+            <>
+              <span className="list-row__sub-dot"/>
+              <span>{item.dias}</span>
+            </>
+          ) : item.frequencia && (
             <>
               <span className="list-row__sub-dot"/>
               <span>{item.frequencia}</span>
@@ -2544,6 +2937,7 @@ function ListRow({ item, menuOpen, onMenuToggle, onEdit, onToggleComplete, onDup
       <div className="tag-cat" title={item.categoria}>{item.categoria}</div>
 
       <div>
+        {item.prioridade === 'Crítica' && <span className="tag-prio tag-prio--critica">Crítica</span>}
         {item.prioridade === 'Alta' && <span className="tag-prio tag-prio--alta">Alta</span>}
         {item.prioridade === 'Média' && <span className="tag-prio tag-prio--media">Média</span>}
         {item.prioridade === 'Baixa' && <span className="tag-prio">Baixa</span>}
@@ -2734,8 +3128,10 @@ function ItemModal({ open, item, onClose, onSave }) {
   const [prioridade, setPrioridade] = useState('Média');
   const [status, setStatus] = useState('Pendente');
   const [prazo, setPrazo] = useState('');
+  const [hora, setHora] = useState('');
   const [solicitante, setSolicitante] = useState('');
   const [frequencia, setFrequencia] = useState('Diária');
+  const [dias, setDias] = useState(['Seg', 'Ter', 'Qua', 'Qui', 'Sex']);
   const [error, setError] = useState('');
 
   // Reset state quando abre / muda item
@@ -2748,9 +3144,12 @@ function ItemModal({ open, item, onClose, onSave }) {
     setCategorias(cats.length > 0 ? cats : [D.CATEGORIAS[0]]);
     setPrioridade(item?.prioridade || 'Média');
     setStatus(item?.status || (item?.origem === 'Pedido' ? 'Recebido' : 'Pendente'));
-    setPrazo(item?.prazo ? item.prazo.slice(0, 10) : '');
+    setPrazo(item?.prazo ? String(item.prazo).slice(0, 10) : '');
+    setHora(item?.hora || '');
     setSolicitante(item?.solicitante || '');
     setFrequencia(item?.frequencia || 'Diária');
+    const d = D.splitDias(item?.dias);
+    setDias(d.length > 0 ? d : ['Seg', 'Ter', 'Qua', 'Qui', 'Sex']);
     setError('');
   }, [open, item]);
 
@@ -2782,6 +3181,10 @@ function ItemModal({ open, item, onClose, onSave }) {
       setError('Selecione ao menos uma categoria');
       return;
     }
+    if (origem === 'Rotina' && dias.length === 0) {
+      setError('Selecione ao menos um dia da semana para a rotina');
+      return;
+    }
     const data = {
       origem,
       titulo: titulo.trim(),
@@ -2792,12 +3195,14 @@ function ItemModal({ open, item, onClose, onSave }) {
       criadoEm: item?.criadoEm || todayISO,
     };
     if (prazo) data.prazo = prazo;
+    if (hora) data.hora = hora;
+    if (origem === 'Rotina') data.dias = dias.join(', ');
     if (origem === 'Pedido') {
       if (solicitante.trim()) data.solicitante = solicitante.trim();
       data.recebidoEm = item?.recebidoEm || todayISO;
     }
-    if (origem === 'Rotina') {
-      data.frequencia = frequencia;
+    if (origem === 'Rotina' && item?.frequencia) {
+      data.frequencia = frequencia; // preserva valor legado ao editar
     }
     if (origem === 'Projeto' && item?.progresso !== undefined) {
       data.progresso = item.progresso;
@@ -2813,7 +3218,7 @@ function ItemModal({ open, item, onClose, onSave }) {
 
   return (
     <div className="modal-backdrop" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <div className="modal">
+      <div className="modal modal--form">
         <header className="modal__header">
           <div className="modal__title">{isEdit ? 'Editar item' : 'Novo item'}</div>
           <button type="button" className="modal__close" onClick={onClose} title="Fechar">
@@ -2824,6 +3229,7 @@ function ItemModal({ open, item, onClose, onSave }) {
         <form onSubmit={handleSubmit}>
           <div className="modal__body">
             {/* Origem */}
+            <div className="form-section__title">Identificação</div>
             <div className="form-group">
               <label className="form-group__label">Origem</label>
               <div className="form-segmented">
@@ -2858,6 +3264,8 @@ function ItemModal({ open, item, onClose, onSave }) {
                         rows={2}/>
             </div>
 
+            <div className="form-section__title form-section__title--gap">Classificação</div>
+
             {/* Categorias (multi-seleção) */}
             <div className="form-group">
               <label className="form-group__label">
@@ -2885,7 +3293,7 @@ function ItemModal({ open, item, onClose, onSave }) {
               <div className="form-group">
                 <label className="form-group__label">Prioridade</label>
                 <div className="form-segmented">
-                  {['Alta', 'Média', 'Baixa'].map(p => (
+                  {['Crítica', 'Alta', 'Média', 'Baixa'].map(p => (
                     <button key={p} type="button"
                             className={`form-segmented__item ${prioridade === p ? 'form-segmented__item--active' : ''}`}
                             onClick={() => setPrioridade(p)}>
@@ -2896,7 +3304,9 @@ function ItemModal({ open, item, onClose, onSave }) {
               </div>
             </div>
 
-            {/* Status + (Prazo OU Frequência) */}
+            <div className="form-section__title form-section__title--gap">Agendamento</div>
+
+            {/* Status + Hora (opcional) */}
             <div className="form-row">
               <div className="form-group">
                 <label className="form-group__label">Status</label>
@@ -2905,25 +3315,67 @@ function ItemModal({ open, item, onClose, onSave }) {
                   {statusOpts.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
               </div>
-              {origem === 'Rotina' ? (
-                <div className="form-group">
-                  <label className="form-group__label">Frequência</label>
-                  <select className="form-select" value={frequencia}
-                          onChange={(e) => setFrequencia(e.target.value)}>
-                    <option>Diária</option>
-                    <option>Semanal</option>
-                    <option>Quinzenal</option>
-                    <option>Mensal</option>
-                  </select>
-                </div>
-              ) : (
-                <div className="form-group">
-                  <label className="form-group__label">Prazo de entrega</label>
-                  <input type="date" className="form-input" value={prazo}
-                         onChange={(e) => setPrazo(e.target.value)}/>
-                </div>
-              )}
+              <div className="form-group">
+                <label className="form-group__label">
+                  Hora <span style={{ color: 'var(--color-text-quaternary)', fontWeight: 400 }}>· Opcional</span>
+                </label>
+                <input type="time" className="form-input" value={hora}
+                       onChange={(e) => setHora(e.target.value)}/>
+              </div>
             </div>
+
+            {/* Rotina: dias da semana em que se repete */}
+            {origem === 'Rotina' && (
+              <div className="form-group">
+                <label className="form-group__label">
+                  Dias da semana <span style={{ color: 'var(--color-text-quaternary)', fontWeight: 400 }}>· A rotina reaparece automaticamente nesses dias</span>
+                </label>
+                <div className="day-chips">
+                  {['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map(d => {
+                    const active = dias.includes(d);
+                    return (
+                      <button key={d} type="button"
+                              className={`day-chip ${active ? 'day-chip--active' : ''}`}
+                              onClick={() => setDias(prev =>
+                                active ? prev.filter(x => x !== d) : [...prev, d]
+                              )}>
+                        {d}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Prazo com atalho de dia da semana */}
+            {origem !== 'Rotina' && (
+              <div className="form-group">
+                <label className="form-group__label">
+                  Prazo de entrega <span style={{ color: 'var(--color-text-quaternary)', fontWeight: 400 }}>· Ou escolha o dia abaixo</span>
+                </label>
+                <input type="date" className="form-input" value={prazo}
+                       onChange={(e) => setPrazo(e.target.value)}/>
+                <div className="day-chips" style={{ marginTop: 6 }}>
+                  {['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map((d, i) => {
+                    const targetDow = (i + 1) % 7; // Seg=1 ... Dom=0
+                    const selDow = prazo ? new Date(prazo + 'T12:00:00').getDay() : null;
+                    return (
+                      <button key={d} type="button"
+                              className={`day-chip ${selDow === targetDow ? 'day-chip--active' : ''}`}
+                              title={`Próxima ${d === 'Sáb' || d === 'Dom' ? '' : ''}${d}`}
+                              onClick={() => {
+                                const t = new Date(); t.setHours(12, 0, 0, 0);
+                                const diff = (targetDow - t.getDay() + 7) % 7 || 7;
+                                t.setDate(t.getDate() + (D.DIAS_SEMANA[t.getDay()] === d ? 0 : diff));
+                                setPrazo(t.toISOString().slice(0, 10));
+                              }}>
+                        {d}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Campos específicos */}
             {origem === 'Pedido' && (
@@ -2932,18 +3384,6 @@ function ItemModal({ open, item, onClose, onSave }) {
                 <input type="text" className="form-input" value={solicitante}
                        onChange={(e) => setSolicitante(e.target.value)}
                        placeholder="Ex: Gestor, Cliente interno, Outra área"/>
-              </div>
-            )}
-
-            {/* Para Rotina, mostrar também prazo opcional (próxima execução) */}
-            {origem === 'Rotina' && (
-              <div className="form-group">
-                <label className="form-group__label">Próxima execução (opcional)</label>
-                <input type="date" className="form-input" value={prazo}
-                       onChange={(e) => setPrazo(e.target.value)}/>
-                <div className="form-group__hint">
-                  Quando esta tarefa de rotina deve ser executada novamente.
-                </div>
               </div>
             )}
           </div>
@@ -2959,6 +3399,36 @@ function ItemModal({ open, item, onClose, onSave }) {
     </div>
   );
 }
+
+// ────────────────────────────────────────────────────────────────────────────
+// OCORRÊNCIAS — tarefas com prazo no dia + rotinas recorrentes do dia da semana
+// ────────────────────────────────────────────────────────────────────────────
+const sameDay = (a, b) =>
+  a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+
+const parseDia = (v) => {
+  if (v instanceof Date) return v;
+  const s = String(v);
+  return new Date(s.length === 10 ? s + 'T12:00:00' : s);
+};
+
+// Ocorrência concluída naquele dia específico?
+const ocorrenciaFeita = (it, d) => {
+  if (D.temDias(it)) return !!it.ultimaConclusao && sameDay(parseDia(it.ultimaConclusao), d);
+  return D.isFeito(it);
+};
+
+// Todas as ocorrências de uma data, ordenadas por hora (sem hora ao fim)
+const occurrencesForDay = (items, d) => {
+  const fixos = items.filter(it => it.prazo && sameDay(parseDia(it.prazo), d) && !D.temDias(it));
+  const rotinas = items.filter(it => D.rotinaNoDia(it, d));
+  return [...rotinas, ...fixos].sort((a, b) => {
+    if (a.hora && b.hora) return a.hora.localeCompare(b.hora);
+    if (a.hora) return -1;
+    if (b.hora) return 1;
+    return 0;
+  });
+};
 
 // ────────────────────────────────────────────────────────────────────────────
 // KANBAN — colunas por status com arrastar e soltar
@@ -3014,7 +3484,7 @@ function KanbanView({ items, onEdit, onSetStatus }) {
                   <div className="kanban__empty">Solte aqui</div>
                 ) : cards.map(it => (
                   <div key={it.id}
-                       className={`kanban__card ${it.prioridade === 'Alta' ? 'kanban__card--alta' : it.prioridade === 'Média' ? 'kanban__card--media' : ''} ${draggingId === it.id ? 'kanban__card--dragging' : ''}`}
+                       className={`kanban__card ${it.prioridade === 'Crítica' ? 'kanban__card--critica' : it.prioridade === 'Alta' ? 'kanban__card--alta' : it.prioridade === 'Média' ? 'kanban__card--media' : ''} ${draggingId === it.id ? 'kanban__card--dragging' : ''}`}
                        draggable
                        onDragStart={(e) => {
                          e.dataTransfer.setData('text/plain', it.id);
@@ -3144,82 +3614,373 @@ function NotesView() {
 // ────────────────────────────────────────────────────────────────────────────
 // CALENDÁRIO — itens distribuídos por prazo
 // ────────────────────────────────────────────────────────────────────────────
+// ═══ CALENDÁRIO v2 — modos Agenda / Semana / Mês / Timeline + filtros reais ═══
+
+const CAL_TIPOS    = ['Todas', 'Projetos', 'Rotinas', 'Pedidos'];
+const CAL_STATUS   = ['Todos', 'Pendente', 'Em andamento', 'Concluído', 'Atrasado'];
+const CAL_PRIOS    = ['Todas', 'Crítica', 'Alta', 'Média', 'Baixa'];
+const CAL_PERIODOS = ['Todos', 'Hoje', 'Amanhã', 'Esta semana', 'Próxima semana', 'Este mês'];
+const CAL_FILTROS_DEFAULT = { tipo: 'Todas', status: 'Todos', prio: 'Todas', cats: [], periodo: 'Todos' };
+
+function inicioSemana(d) {
+  const s = new Date(d); s.setHours(12, 0, 0, 0);
+  s.setDate(s.getDate() - ((s.getDay() + 6) % 7)); // segunda
+  return s;
+}
+
+function periodoRange(periodo) {
+  const hoje = new Date(); hoje.setHours(12, 0, 0, 0);
+  const mk = (a, b) => [a, b];
+  switch (periodo) {
+    case 'Hoje':           return mk(hoje, hoje);
+    case 'Amanhã':         { const d = new Date(hoje); d.setDate(d.getDate() + 1); return mk(d, d); }
+    case 'Esta semana':    { const i = inicioSemana(hoje); const f = new Date(i); f.setDate(i.getDate() + 6); return mk(i, f); }
+    case 'Próxima semana': { const i = inicioSemana(hoje); i.setDate(i.getDate() + 7); const f = new Date(i); f.setDate(i.getDate() + 6); return mk(i, f); }
+    case 'Este mês':       { const i = new Date(hoje.getFullYear(), hoje.getMonth(), 1, 12); const f = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0, 12); return mk(i, f); }
+    default:               return null;
+  }
+}
+
+function CalFilters({ filters, onChange }) {
+  const [openMenu, setOpenMenu] = useState(null);
+
+  useEffect(() => {
+    if (!openMenu) return;
+    const onClick = (e) => { if (!e.target.closest('.dropdown')) setOpenMenu(null); };
+    const onKey = (e) => { if (e.key === 'Escape') setOpenMenu(null); };
+    const t = setTimeout(() => {
+      document.addEventListener('click', onClick);
+      document.addEventListener('keydown', onKey);
+    }, 0);
+    return () => {
+      clearTimeout(t);
+      document.removeEventListener('click', onClick);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [openMenu]);
+
+  const toggle = (m) => setOpenMenu(prev => prev === m ? null : m);
+  const set = (patch) => onChange({ ...filters, ...patch });
+  const hasActive = filters.tipo !== 'Todas' || filters.status !== 'Todos' ||
+                    filters.prio !== 'Todas' || filters.cats.length > 0 || filters.periodo !== 'Todos';
+
+  const single = (menuKey, icon, label, value, options, patchKey, closeOnPick = true) => (
+    <ToolbarDropdown icon={icon} label={label} value={value}
+                     open={openMenu === menuKey} onToggle={() => toggle(menuKey)}>
+      {options.map(o => (
+        <button key={o}
+                className={`dropdown__item ${value === o ? 'dropdown__item--active' : ''}`}
+                onClick={() => { set({ [patchKey]: o }); if (closeOnPick) setOpenMenu(null); }}>
+          {o}
+          {value === o && <span className="dropdown__check">■</span>}
+        </button>
+      ))}
+    </ToolbarDropdown>
+  );
+
+  return (
+    <div className="cal-filterbar fade-up">
+      {single('tipo',    Box,        'Tipo',       filters.tipo,    CAL_TIPOS,    'tipo')}
+      {single('status',  Loader,     'Status',     filters.status,  CAL_STATUS,   'status')}
+      {single('prio',    FilterIcon, 'Prioridade', filters.prio,    CAL_PRIOS,    'prio')}
+      <ToolbarDropdown icon={Layers} label="Categoria"
+                       value={filters.cats.length === 0 ? 'Todas' : `${filters.cats.length} selecionadas`}
+                       open={openMenu === 'cats'} onToggle={() => toggle('cats')}>
+        <button className={`dropdown__item ${filters.cats.length === 0 ? 'dropdown__item--active' : ''}`}
+                onClick={() => set({ cats: [] })}>
+          Todas
+          {filters.cats.length === 0 && <span className="dropdown__check">■</span>}
+        </button>
+        {D.CATEGORIAS.map(c => {
+          const on = filters.cats.includes(c);
+          return (
+            <button key={c}
+                    className={`dropdown__item ${on ? 'dropdown__item--active' : ''}`}
+                    onClick={() => set({ cats: on ? filters.cats.filter(x => x !== c) : [...filters.cats, c] })}>
+              <span className="dropdown__check" style={{ marginLeft: 0, marginRight: 2 }}>{on ? '■' : '□'}</span>
+              {c}
+            </button>
+          );
+        })}
+      </ToolbarDropdown>
+      {single('periodo', Cal,        'Período',    filters.periodo, CAL_PERIODOS, 'periodo')}
+
+      {hasActive && (
+        <button className="cal-filterbar__clear" onClick={() => onChange({ ...CAL_FILTROS_DEFAULT })}>
+          <X size={12}/> Limpar filtros
+        </button>
+      )}
+      <span className="cal-filters__hint">A busca da barra superior também se aplica</span>
+    </div>
+  );
+}
+
 function CalendarView({ items, onEdit }) {
   const now = new Date();
+  const [mode, setMode] = useState('mes'); // agenda | semana | mes | timeline
   const [ym, setYm] = useState({ y: now.getFullYear(), m: now.getMonth() });
+  const [selected, setSelected] = useState(() => { const d = new Date(); d.setHours(12,0,0,0); return d; });
+  const [filters, setFilters] = useState({ ...CAL_FILTROS_DEFAULT });
 
-  const monthLabel = new Date(ym.y, ym.m, 1)
-    .toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+  const today = new Date(); today.setHours(12, 0, 0, 0);
 
-  const shift = (delta) => setYm(({ y, m }) => {
-    const d = new Date(y, m + delta, 1);
-    return { y: d.getFullYear(), m: d.getMonth() };
-  });
+  // ── filtro de ocorrência ──
+  const range = periodoRange(filters.periodo);
+  const dentroDoPeriodo = (d) => !range || (d >= new Date(range[0]).setHours(0,0,0,0) && d <= new Date(range[1]).setHours(23,59,59,999));
 
-  // Grade: começa na segunda-feira
-  const cells = useMemo(() => {
+  const passaFiltros = (it, d) => {
+    if (!dentroDoPeriodo(d)) return false;
+    if (filters.tipo !== 'Todas') {
+      const origem = { 'Projetos': 'Projeto', 'Rotinas': 'Rotina', 'Pedidos': 'Pedido' }[filters.tipo];
+      if (it.origem !== origem) return false;
+    }
+    if (filters.prio !== 'Todas' && it.prioridade !== filters.prio) return false;
+    if (filters.cats.length > 0 && !filters.cats.some(c => D.hasCat(it, c))) return false;
+    if (filters.status !== 'Todos') {
+      const feita = ocorrenciaFeita(it, d);
+      switch (filters.status) {
+        case 'Pendente':     if (feita || it.status === 'Em Andamento') return false; break;
+        case 'Em andamento': if (it.status !== 'Em Andamento' || feita) return false; break;
+        case 'Concluído':    if (!feita) return false; break;
+        case 'Atrasado':     if (D.temDias(it) || !D.isAtrasado(it)) return false; break;
+      }
+    }
+    return true;
+  };
+
+  const byDay = (d) => occurrencesForDay(items, d).filter(it => passaFiltros(it, d));
+
+  // ── navegação ──
+  const goTo = (date) => {
+    const d = new Date(date); d.setHours(12, 0, 0, 0);
+    setSelected(d);
+    setYm({ y: d.getFullYear(), m: d.getMonth() });
+  };
+  const shiftDay = (delta) => { const d = new Date(selected); d.setDate(d.getDate() + delta); goTo(d); };
+  const shiftMonth = (delta) => setYm(({ y, m }) => { const d = new Date(y, m + delta, 1); return { y: d.getFullYear(), m: d.getMonth() }; });
+
+  // ── dados por modo ──
+  const monthLabel = new Date(ym.y, ym.m, 1).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+
+  const monthCells = useMemo(() => {
     const first = new Date(ym.y, ym.m, 1);
     const start = new Date(first);
-    const dow = (first.getDay() + 6) % 7; // 0 = segunda
-    start.setDate(first.getDate() - dow);
+    start.setDate(first.getDate() - ((first.getDay() + 6) % 7));
     return Array.from({ length: 42 }, (_, i) => {
-      const d = new Date(start);
-      d.setDate(start.getDate() + i);
+      const d = new Date(start); d.setDate(start.getDate() + i); d.setHours(12, 0, 0, 0);
       return d;
     });
   }, [ym]);
 
-  const sameDay = (a, b) =>
-    a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+  const weekDays = useMemo(() => {
+    const start = inicioSemana(selected);
+    return Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(start); d.setDate(start.getDate() + i);
+      return d;
+    });
+  }, [selected]);
 
-  const byDay = (d) =>
-    items.filter(it => it.prazo && sameDay(new Date(it.prazo), d))
-         .sort((a, b) => (D.isFeito(a) ? 1 : 0) - (D.isFeito(b) ? 1 : 0));
+  const agendaDays = useMemo(() => {
+    // Período define o intervalo; sem período: 14 dias a partir do selecionado
+    let ini, fim;
+    if (range) { ini = new Date(range[0]); fim = new Date(range[1]); }
+    else { ini = new Date(selected); fim = new Date(selected); fim.setDate(fim.getDate() + 13); }
+    const days = [];
+    for (let d = new Date(ini); d <= fim; d.setDate(d.getDate() + 1)) {
+      const day = new Date(d); day.setHours(12, 0, 0, 0);
+      days.push({ date: day, evs: byDay(day) });
+    }
+    return days.filter(x => x.evs.length > 0);
+  }, [items, selected, filters]);
 
-  const today = new Date();
+  const fmtDia = (d) => d.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
+  const selEvents = byDay(selected);
+
+  const renderRow = (it, d) => (
+    <button key={it.id + d.toISOString().slice(0, 10)} className="day-panel__row" onClick={() => onEdit(it)}>
+      <span className={`day-panel__hora ${!it.hora ? 'day-panel__hora--none' : ''}`}>{it.hora || '—:—'}</span>
+      <span className={`day-panel__item-title ${ocorrenciaFeita(it, d) ? 'day-panel__item-title--done' : ''}`}>
+        {it.titulo}
+        {it.descricao && <span className="day-panel__desc"> — {String(it.descricao).split('\n')[0]}</span>}
+      </span>
+      <span className="day-panel__badges">
+        {D.temDias(it) && <span className="day-panel__badge">Rotina</span>}
+        {(it.prioridade === 'Crítica' || it.prioridade === 'Alta') && (
+          <span className="day-panel__badge day-panel__badge--alta">{it.prioridade}</span>
+        )}
+      </span>
+    </button>
+  );
 
   return (
     <>
       <div className="view-head">
         <div className="view-head__title">Calendário</div>
-        <div className="view-head__meta">Itens distribuídos por prazo de entrega</div>
-      </div>
-      <div className="cal fade-up">
-        <div className="cal__bar">
-          <div className="cal__month">{monthLabel}</div>
-          <div className="cal__nav">
-            <button className="cal__nav-btn" onClick={() => shift(-1)}>← Anterior</button>
-            <button className="cal__nav-btn" onClick={() => setYm({ y: today.getFullYear(), m: today.getMonth() })}>Hoje</button>
-            <button className="cal__nav-btn" onClick={() => shift(1)}>Próximo →</button>
-          </div>
-        </div>
-        <div className="cal__dows">
-          {['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map(d => (
-            <div key={d} className="cal__dow">{d}</div>
+        <div className="cal-modes">
+          {[['agenda', 'Agenda'], ['semana', 'Semana'], ['mes', 'Mês'], ['timeline', 'Timeline']].map(([k, l]) => (
+            <button key={k} className={`cal-mode ${mode === k ? 'cal-mode--active' : ''}`}
+                    onClick={() => setMode(k)}>{l}</button>
           ))}
         </div>
-        <div className="cal__grid">
-          {cells.map((d, i) => {
+      </div>
+
+      <CalFilters filters={filters} onChange={setFilters}/>
+
+      {/* Navegação rápida */}
+      <div className="cal-nav fade-up">
+        <div className="cal-nav__group">
+          {mode === 'semana' ? (
+            <>
+              <button className="cal__nav-btn" onClick={() => shiftDay(-7)}>← Semana</button>
+              <button className="cal__nav-btn cal__nav-btn--strong" onClick={() => goTo(new Date())}>Hoje</button>
+              <button className="cal__nav-btn" onClick={() => shiftDay(7)}>Semana →</button>
+            </>
+          ) : (
+            <>
+              <button className="cal__nav-btn" onClick={() => shiftDay(-1)}>← Dia anterior</button>
+              <button className="cal__nav-btn cal__nav-btn--strong" onClick={() => goTo(new Date())}>Hoje</button>
+              <button className="cal__nav-btn" onClick={() => shiftDay(1)}>Próximo dia →</button>
+            </>
+          )}
+        </div>
+        <div className="cal-nav__group">
+          <label className="cal-nav__label">Ir para:</label>
+          <input type="date" className="form-input cal-nav__date"
+                 value={selected.toISOString().slice(0, 10)}
+                 onChange={(e) => { if (e.target.value) goTo(new Date(e.target.value + 'T12:00:00')); }}/>
+        </div>
+      </div>
+
+      {/* ══ MODO AGENDA ══ */}
+      {mode === 'agenda' && (
+        <div className="agenda fade-up">
+          {agendaDays.length === 0 ? (
+            <div className="day-panel__empty">Nenhum item no período selecionado.</div>
+          ) : agendaDays.map(({ date, evs }) => (
+            <div key={date.toISOString()} className="agenda__day">
+              <div className={`agenda__day-head ${sameDay(date, today) ? 'agenda__day-head--today' : ''}`}>
+                <span className="agenda__day-name">{sameDay(date, today) ? 'Hoje' : fmtDia(date)}</span>
+                <span className="agenda__day-count">{evs.length} {evs.length === 1 ? 'Item' : 'Itens'}</span>
+              </div>
+              <div className="day-panel__list">{evs.map(it => renderRow(it, date))}</div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* ══ MODO SEMANA ══ */}
+      {mode === 'semana' && (
+        <div className="week fade-up">
+          {weekDays.map(d => {
             const evs = byDay(d);
-            const out = d.getMonth() !== ym.m;
             const isToday = sameDay(d, today);
             return (
-              <div key={i} className={`cal__cell ${out ? 'cal__cell--out' : ''} ${isToday ? 'cal__cell--today' : ''}`}>
-                <div className="cal__day">{d.getDate()}</div>
-                {evs.slice(0, 3).map(it => (
-                  <button key={it.id}
-                          className={`cal__ev ${D.isFeito(it) ? 'cal__ev--done' : D.isAtrasado(it) ? 'cal__ev--late' : ''}`}
-                          title={it.titulo}
-                          onClick={() => onEdit(it)}>
-                    {it.titulo}
-                  </button>
-                ))}
-                {evs.length > 3 && <div className="cal__more">+{evs.length - 3} Itens</div>}
+              <div key={d.toISOString()} className={`week__col ${isToday ? 'week__col--today' : ''}`}>
+                <div className="week__col-head">
+                  <span className="week__col-dow">{D.DIAS_SEMANA[d.getDay()]}</span>
+                  <span className="week__col-num">{d.getDate()}</span>
+                </div>
+                <div className="week__col-list">
+                  {evs.length === 0 ? (
+                    <div className="week__empty">—</div>
+                  ) : evs.map(it => (
+                    <button key={it.id + d.toISOString().slice(0,10)}
+                            className={`cal__ev ${ocorrenciaFeita(it, d) ? 'cal__ev--done' : (!D.temDias(it) && D.isAtrasado(it)) ? 'cal__ev--late' : ''} ${D.temDias(it) ? 'cal__ev--rotina' : ''}`}
+                            title={`${it.hora ? it.hora + ' · ' : ''}${it.titulo}${it.descricao ? ' — ' + it.descricao : ''}`}
+                            onClick={() => onEdit(it)}>
+                      {it.hora && <span className="cal__ev-hora">{it.hora}</span>}{it.titulo}
+                    </button>
+                  ))}
+                </div>
               </div>
             );
           })}
         </div>
-      </div>
+      )}
+
+      {/* ══ MODO MÊS ══ */}
+      {mode === 'mes' && (<>
+        <div className="cal fade-up">
+          <div className="cal__bar">
+            <div className="cal__month">{monthLabel}</div>
+            <div className="cal__nav">
+              <button className="cal__nav-btn" onClick={() => shiftMonth(-1)}>← Mês</button>
+              <button className="cal__nav-btn" onClick={() => shiftMonth(1)}>Mês →</button>
+            </div>
+          </div>
+          <div className="cal__dows">
+            {['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map(d => (
+              <div key={d} className="cal__dow">{d}</div>
+            ))}
+          </div>
+          <div className="cal__grid">
+            {monthCells.map((d, i) => {
+              const evs = byDay(d);
+              const out = d.getMonth() !== ym.m;
+              const isToday = sameDay(d, today);
+              const isSel = sameDay(d, selected);
+              return (
+                <div key={i}
+                     className={`cal__cell ${out ? 'cal__cell--out' : ''} ${isToday ? 'cal__cell--today' : ''} ${isSel ? 'cal__cell--selected' : ''}`}
+                     onClick={() => setSelected(d)}>
+                  <div className="cal__day">{d.getDate()}</div>
+                  {evs.slice(0, 3).map(it => (
+                    <button key={it.id + i}
+                            className={`cal__ev ${ocorrenciaFeita(it, d) ? 'cal__ev--done' : (!D.temDias(it) && D.isAtrasado(it)) ? 'cal__ev--late' : ''} ${D.temDias(it) ? 'cal__ev--rotina' : ''}`}
+                            title={`${it.hora ? it.hora + ' · ' : ''}${it.titulo}${it.descricao ? ' — ' + it.descricao : ''}`}
+                            onClick={(e) => { e.stopPropagation(); onEdit(it); }}>
+                      {it.hora && <span className="cal__ev-hora">{it.hora}</span>}{it.titulo}
+                    </button>
+                  ))}
+                  {evs.length > 3 && <div className="cal__more">+{evs.length - 3} Itens</div>}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="day-panel fade-up">
+          <div className="day-panel__head">
+            <div className="day-panel__title">{sameDay(selected, today) ? 'Hoje' : fmtDia(selected)}</div>
+            <div className="day-panel__meta">{selEvents.length} {selEvents.length === 1 ? 'Item' : 'Itens'}</div>
+          </div>
+          {selEvents.length === 0 ? (
+            <div className="day-panel__empty">Nada agendado para este dia.</div>
+          ) : (
+            <div className="day-panel__list">{selEvents.map(it => renderRow(it, selected))}</div>
+          )}
+        </div>
+      </>)}
+
+      {/* ══ MODO TIMELINE ══ */}
+      {mode === 'timeline' && (
+        <div className="timeline fade-up">
+          {agendaDays.length === 0 ? (
+            <div className="day-panel__empty">Nenhum item no período selecionado.</div>
+          ) : agendaDays.map(({ date, evs }) => (
+            <div key={date.toISOString()} className="timeline__group">
+              <div className="timeline__marker">
+                <span className={`timeline__dot ${sameDay(date, today) ? 'timeline__dot--today' : ''}`}/>
+                <span className="timeline__date">{sameDay(date, today) ? 'Hoje' : fmtDia(date)}</span>
+              </div>
+              <div className="timeline__items">
+                {evs.map(it => (
+                  <button key={it.id + date.toISOString().slice(0,10)}
+                          className={`timeline__item ${ocorrenciaFeita(it, date) ? 'timeline__item--done' : ''}`}
+                          onClick={() => onEdit(it)}>
+                    <span className={`day-panel__hora ${!it.hora ? 'day-panel__hora--none' : ''}`}>{it.hora || '—:—'}</span>
+                    <span className="timeline__item-title">{it.titulo}</span>
+                    {D.temDias(it) && <span className="day-panel__badge">Rotina</span>}
+                    {(it.prioridade === 'Crítica' || it.prioridade === 'Alta') && (
+                      <span className="day-panel__badge day-panel__badge--alta">{it.prioridade}</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </>
   );
 }
@@ -3263,7 +4024,7 @@ function ReportsView({ items, allCats, metrics }) {
   };
 
   const porStatus     = countBy(it => it.status);
-  const porPrioridade = ['Alta', 'Média', 'Baixa']
+  const porPrioridade = ['Crítica', 'Alta', 'Média', 'Baixa']
     .map(p => ({ nome: p, total: items.filter(it => it.prioridade === p).length }))
     .filter(r => r.total > 0);
   const porOrigem     = countBy(it => it.origem);
@@ -3281,7 +4042,7 @@ function ReportsView({ items, allCats, metrics }) {
         <ReportBars title="Distribuição por status" icon={Stats} rows={porStatus}
                     criticalKeys={['Bloqueado']} strongKeys={['Concluído']}/>
         <ReportBars title="Distribuição por prioridade" icon={Warning} rows={porPrioridade}
-                    criticalKeys={['Alta']}/>
+                    criticalKeys={['Crítica', 'Alta']}/>
         <ReportBars title="Distribuição por origem" icon={Layers} rows={porOrigem}/>
         <ReportBars title="Distribuição por categoria" icon={Box} rows={porCategoria}/>
       </div>
@@ -3581,8 +4342,18 @@ function App() {
   const [query, setQuery] = useState('');
   const [activeTab, setActiveTab] = useState('Hoje');
   const [view, setView] = useState('dashboard'); // dashboard | kanban | notas | calendario | relatorios | equipe
+  const [selDate, setSelDate] = useState(() => { const d = new Date(); d.setHours(12, 0, 0, 0); return d; });
+  const shiftSelDate = (delta) => setSelDate(prev => { const d = new Date(prev); d.setDate(d.getDate() + delta); return d; });
   const [filterPrio, setFilterPrio] = useState('Todas');
   const [filterCat, setFilterCat] = useState('Todas');
+  const [density, setDensity] = useState(() => {
+    try { return localStorage.getItem('villares_planner_density') || 'detalhada'; } catch { return 'detalhada'; }
+  });
+  const toggleDensity = () => setDensity(prev => {
+    const next = prev === 'detalhada' ? 'compacta' : 'detalhada';
+    try { localStorage.setItem('villares_planner_density', next); } catch {}
+    return next;
+  });
   const [lastUpdate, setLastUpdate] = useState('agora');
 
   // ── API config (Google Sheets) ──
@@ -3734,10 +4505,16 @@ function App() {
 
   const handleToggleComplete = async (item) => {
     const isFeito = D.isFeito(item);
-    const newStatus = isFeito
-      ? (item.origem === 'Pedido' ? 'Recebido' : 'Pendente')
-      : 'Concluído';
-    const updated = { ...item, status: newStatus };
+    let updated;
+    if (D.temDias(item)) {
+      // Rotina recorrente: concluir vale só para hoje; amanhã ela volta sozinha
+      updated = { ...item, ultimaConclusao: isFeito ? '' : new Date().toISOString().slice(0, 10) };
+    } else {
+      const newStatus = isFeito
+        ? (item.origem === 'Pedido' ? 'Recebido' : 'Pendente')
+        : 'Concluído';
+      updated = { ...item, status: newStatus };
+    }
     setItems(prev => prev.map(it => it.id === item.id ? updated : it));
     if (canSync()) {
       setSyncStatus('syncing');
@@ -3815,7 +4592,7 @@ function App() {
     if (query.trim()) {
       const q = query.toLowerCase();
       arr = arr.filter(it => {
-        const blob = `${it.titulo} ${it.descricao || ''} ${it.categoria} ${it.origem}`.toLowerCase();
+        const blob = `${it.titulo} ${it.descricao || ''} ${it.categoria} ${it.origem} ${it.prazo || ''} ${it.hora || ''} ${it.dias || ''} ${it.status || ''}`.toLowerCase();
         return blob.includes(q);
       });
     }
@@ -3826,9 +4603,15 @@ function App() {
 
   const viewFiltered = queryFiltered;
 
+  const isTodaySel = D.diasAteHoje(selDate) === 0;
+
   const tabFiltered = useMemo(() => {
     switch (activeTab) {
-      case 'Hoje':      return viewFiltered.filter(it => D.isAtivo(it) && (D.isHoje(it) || D.isAtrasado(it)));
+      case 'Hoje':
+        // Hoje real: ativos do dia + atrasados. Outra data: tudo agendado nela.
+        return isTodaySel
+          ? viewFiltered.filter(it => D.isAtivo(it) && (D.isHoje(it) || D.isAtrasado(it)))
+          : occurrencesForDay(viewFiltered, selDate);
       case 'Todos':     return viewFiltered.filter(D.isAtivo);
       case 'Projeto':   return viewFiltered.filter(it => it.origem === 'Projeto' && D.isAtivo(it));
       case 'Rotina':    return viewFiltered.filter(it => it.origem === 'Rotina'  && D.isAtivo(it));
@@ -3837,17 +4620,19 @@ function App() {
       case 'Concluidos': return viewFiltered.filter(D.isFeito);
       default: return viewFiltered;
     }
-  }, [viewFiltered, activeTab]);
+  }, [viewFiltered, activeTab, selDate]);
 
   const tabCounts = useMemo(() => ({
-    Hoje:       viewFiltered.filter(it => D.isAtivo(it) && (D.isHoje(it) || D.isAtrasado(it))).length,
+    Hoje:       isTodaySel
+                  ? viewFiltered.filter(it => D.isAtivo(it) && (D.isHoje(it) || D.isAtrasado(it))).length
+                  : occurrencesForDay(viewFiltered, selDate).length,
     Todos:      viewFiltered.filter(D.isAtivo).length,
     Projeto:    viewFiltered.filter(it => it.origem === 'Projeto' && D.isAtivo(it)).length,
     Rotina:     viewFiltered.filter(it => it.origem === 'Rotina'  && D.isAtivo(it)).length,
     Pedido:     viewFiltered.filter(it => it.origem === 'Pedido'  && D.isAtivo(it)).length,
     Atrasados:  viewFiltered.filter(D.isAtrasado).length,
     Concluidos: viewFiltered.filter(D.isFeito).length,
-  }), [viewFiltered]);
+  }), [viewFiltered, selDate]);
 
   // ── ordenação: por urgência (default) ou por coluna selecionada ──
   const rank = (it) => {
@@ -3857,7 +4642,7 @@ function App() {
     if (D.isEstaSemana(it)) return 3;
     return 4;
   };
-  const prioRank = { Alta: 0, 'Média': 1, Baixa: 2 };
+  const prioRank = { 'Crítica': 0, Alta: 1, 'Média': 2, Baixa: 3 };
   const statusRank = { 'Bloqueado': 0, 'Pausado': 1, 'Em Andamento': 2, 'Pendente': 3, 'Recebido': 4, 'Concluído': 5, 'Recusado': 6, 'Cancelado': 7 };
 
   const sorted = useMemo(() => {
@@ -3939,23 +4724,6 @@ function App() {
     }).filter(r => r.total > 0).sort((a, b) => b.total - a.total)
   , [items]);
 
-  // Ordem fixa das 5 categorias destacadas no painel "Conclusão por categoria"
-  const ORDEM_DESTAQUE = [
-    'Operações Diárias',
-    'Relatórios / KPIs',
-    'Análise de Dados',
-    'Transportadoras',
-    'Pessoal / Desenvolvimento',
-  ];
-  const categoriasDestaque = useMemo(() =>
-    ORDEM_DESTAQUE.map(cat => {
-      const cs = items.filter(it => D.hasCat(it, cat));
-      const feitos = cs.filter(D.isFeito).length;
-      const total = cs.length;
-      return { nome: cat, feitos, total, pct: total === 0 ? 0 : (feitos / total) * 100 };
-    })
-  , [items]);
-
   return (
     <div className="app">
       <div className="ambience"/>
@@ -4029,21 +4797,27 @@ function App() {
               feitos={metrics.feitos.length}
               ativos={metrics.ativos.length}
               total={metrics.total}
-              categorias={categoriasDestaque}
+              categorias={allCats}
+              rotinasHoje={items.filter(it => D.temDias(it) && D.rotinaNoDia(it, new Date())).length}
             />
           </section>
           </>)}
 
           {view === 'dashboard' && (<>
           {/* Tabs estilo ML */}
-          <Tabs active={activeTab} onChange={setActiveTab} counts={tabCounts}/>
+          <Tabs active={activeTab} onChange={setActiveTab} counts={tabCounts}
+                selDate={selDate}
+                onDateShift={shiftSelDate}
+                onDateToday={() => { const d = new Date(); d.setHours(12, 0, 0, 0); setSelDate(d); }}
+                onDateSet={setSelDate}/>
 
           {/* Toolbar */}
           <Toolbar count={sorted.length}
                    sortBy={sortBy}
                    onSortSelect={(key) => { setSortBy(key); setSortDir('asc'); }}
                    prio={filterPrio} onPrio={setFilterPrio}
-                   cat={filterCat} onCat={setFilterCat}/>
+                   cat={filterCat} onCat={setFilterCat}
+                   density={density} onToggleDensity={toggleDensity}/>
 
           {/* List header + list */}
           <ListHeader sortBy={sortBy} sortDir={sortDir} onSort={handleSort}/>
@@ -4054,7 +4828,7 @@ function App() {
                 : 'Nenhum item nesta visualização'}
             </div>
           ) : (
-            <div className="list">
+            <div className={`list ${density === 'compacta' ? 'list--compact' : ''}`}>
               {sorted.map(item => (
                 <ListRow key={item.id} item={item}
                          menuOpen={openMenuId === item.id}
@@ -4086,7 +4860,7 @@ function App() {
           {view === 'equipe' && <TeamView items={items}/>}
 
           <footer className="footer">
-            <span>Villares · Planner v0.3</span>
+            <span>Villares · Planner v0.6</span>
             <span>
               {items.length} {items.length === 1 ? 'Item total' : 'Itens totais'} · {Math.round(metrics.pct)}% de taxa de conclusão{view === 'dashboard' ? ` · Aba ativa: ${activeTab}` : ''}
             </span>
