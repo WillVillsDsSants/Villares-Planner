@@ -1,0 +1,4120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Villares | Planner - Dashboard</title>
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23070707'/%3E%3Cpath d='M12 21 19 43 26 21' fill='none' stroke='%23E5E5E7' stroke-width='4.2'/%3E%3Crect x='30.8' y='23' width='2' height='18' fill='%23DC2222'/%3E%3Cpath d='M38.8 43V21h10.7v10.5H38.8' fill='none' stroke='%23E5E5E7' stroke-width='3.8'/%3E%3C/svg%3E" />
+  <link rel="icon" type="image/png" sizes="180x180" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAACdklEQVR42u3dMW7jMBRF0dgIwEW4MdRm/0txK7jxPtK5iJKIlinxkzynHAwyGOfmP2uQYE4ppQ/4zdlLgDgQB+JAHIgDcSAOxIE4EAeIA3EgDsSBOBAH4kAciANxgDgQB+JAHIgDcSAOxIE4EAeIA3EgDsSBOBAH4kAciANxIA4QB+JAHIgDcSAOxIE4EAfigKdPL8EG83xf/T3TdA31kcXRWEBmBXEgjrAnt4MzPvQb0r0/f8+Pf9hbNpejzKftRxllQ1l+cIck+uWo+xlySCLGEe2rViXtPa2UasiCtBRHzC9QZyP000pMt8tl+Ytfj4dXpnIc83x/8wu6yqZM03X1z93894qzkuf9Xj6b4j0H4gj5zOI5pdU44lxym2JW6DGObetgU9qOI8I9tylmhX7jeHUjbEoPcdS96jbFrNB7HPlLYVP6iaPWbbcpZoUx4sjZC5vSWxzHX3ibYlbYUbhvE/z/e8OCbMog83fc5TjyztsUs8J4cfx1kD2n9BzHMdfeppgVxME4cWTe/OXbi8w3HDbF5UAciGN1WTzEVlHhn89zfgo5+EPsrj9I7XIgjhLLYlPGimOPk+sh1qwgDs8pI8dRdgVsillBHIij1BbYFJcDcSCOUotgU1wOxIE4Su2CTXE5EAfiKLUONsXlQByIo9RG1N2UQb7LxP/x5r9zMys0HUf+UnhOcTkQB+JAHIgDcSAOEAevOKWUvAq4HIgDcSAOxIE4EAfiQByIA8SBOBAH4kAciANxIA7EgThAHIgDcSAOxIE4EAfiQByIA3GAOBAH4kAciANxIA7EgTgQB4gDcSAOxIE4EAfiQByIA3GAOFjxDYYTmZpUhOnsAAAAAElFTkSuQmCC" />
+  <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAACdklEQVR42u3dMW7jMBRF0dgIwEW4MdRm/0txK7jxPtK5iJKIlinxkzynHAwyGOfmP2uQYE4ppQ/4zdlLgDgQB+JAHIgDcSAOxIE4EAeIA3EgDsSBOBAH4kAciANxgDgQB+JAHIgDcSAOxIE4EAeIA3EgDsSBOBAH4kAciANxIA4QB+JAHIgDcSAOxIE4EAfigKdPL8EG83xf/T3TdA31kcXRWEBmBXEgjrAnt4MzPvQb0r0/f8+Pf9hbNpejzKftRxllQ1l+cIck+uWo+xlySCLGEe2rViXtPa2UasiCtBRHzC9QZyP000pMt8tl+Ytfj4dXpnIc83x/8wu6yqZM03X1z93894qzkuf9Xj6b4j0H4gj5zOI5pdU44lxym2JW6DGObetgU9qOI8I9tylmhX7jeHUjbEoPcdS96jbFrNB7HPlLYVP6iaPWbbcpZoUx4sjZC5vSWxzHX3ibYlbYUbhvE/z/e8OCbMog83fc5TjyztsUs8J4cfx1kD2n9BzHMdfeppgVxME4cWTe/OXbi8w3HDbF5UAciGN1WTzEVlHhn89zfgo5+EPsrj9I7XIgjhLLYlPGimOPk+sh1qwgDs8pI8dRdgVsillBHIij1BbYFJcDcSCOUotgU1wOxIE4Su2CTXE5EAfiKLUONsXlQByIo9RG1N2UQb7LxP/x5r9zMys0HUf+UnhOcTkQB+JAHIgDcSAOEAevOKWUvAq4HIgDcSAOxIE4EAfiQByIA8SBOBAH4kAciANxIA7EgThAHIgDcSAOxIE4EAfiQByIA3GAOBAH4kAciANxIA7EgTgQB4gDcSAOxIE4EAfiQByIA3GAOFjxDYYTmZpUhOnsAAAAAElFTkSuQmCC" />
+
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('ops_theme');
+        document.documentElement.classList.add(saved || 'dark');
+      } catch (e) { document.documentElement.classList.add('dark'); }
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+/* ============================================================================
+   OPS PLANNER
+   Design system: Villares Financial (dark editorial premium)
+   Disposição: Mercado Livre (listas horizontais densas, tabs, sidebar fixa)
+   ========================================================================= */
+
+:root {
+  --color-bg-base:       #070707;
+  --color-bg-surface-1:  #0e0e0e;
+  --color-bg-surface-2:  #141414;
+  --color-bg-surface-3:  #1c1c1c;
+  --color-bg-sidebar:    #050505;
+
+  --color-text-primary:   rgba(255, 255, 255, 0.96);
+  --color-text-secondary: rgba(255, 255, 255, 0.74);
+  --color-text-tertiary:  rgba(255, 255, 255, 0.55);
+  --color-text-quaternary: rgba(255, 255, 255, 0.28);
+
+  --color-border-subtle:  rgba(255, 255, 255, 0.06);
+  --color-border-default: rgba(255, 255, 255, 0.10);
+  --color-border-strong:  rgba(255, 255, 255, 0.22);
+
+  /* Cor viva única: vermelho saturado */
+  --color-critical:      #DC2222;
+  --color-critical-soft: rgba(220, 34, 34, 0.12);
+
+  /* Tons neutros tomam o lugar de positive/warning/info */
+  --color-neutral-strong: #E5E5E7;    /* "feito" / destaque positivo discreto */
+  --color-neutral-mid:    #8a8a92;    /* "em andamento" / médio */
+  --color-neutral-soft:   #4a4a52;    /* "pausado" / muted */
+
+  --font-display: 'Syne', sans-serif;
+  --font-sans:    'DM Sans', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+}
+
+html.light {
+  --color-bg-base:       #efeff1;
+  --color-bg-surface-1:  #ffffff;
+  --color-bg-surface-2:  #f7f7f8;
+  --color-bg-surface-3:  #e5e5ea;
+  --color-text-primary:   #0e0e10;
+  --color-text-secondary: #3f3f48;
+  --color-text-tertiary:  #5e5e68;
+  --color-text-quaternary: #93939c;
+  --color-border-subtle:  #e5e5ea;
+  --color-border-default: #d6d6d8;
+  --color-border-strong:  #c7c7cc;
+
+  --color-critical-soft:  rgba(220, 34, 34, 0.10);
+  --color-neutral-strong: #18181b;
+  --color-neutral-mid:    #737380;
+  --color-neutral-soft:   #c7c7cc;
+}
+
+/* Cantos retos forçados — característica Villares */
+*, *::before, *::after { border-radius: 0 !important; }
+
+* {
+  box-sizing: border-box;
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+html, body {
+  margin: 0; padding: 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  background: var(--color-bg-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ambience radial gradient (Villares hallmark) */
+.ambience {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 0%, rgba(56, 189, 248, 0.04), transparent 50%),
+    radial-gradient(ellipse 50% 35% at 80% 100%, rgba(34, 197, 94, 0.025), transparent 50%);
+}
+html.light .ambience { display: none; }
+
+/* ============================================================================
+   APP SHELL — sidebar fixa + main
+   ========================================================================= */
+.app {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+/* SIDEBAR — dark sempre */
+.sidebar {
+  width: 64px;
+  background: var(--color-bg-sidebar);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  flex-shrink: 0;
+  z-index: 40;
+}
+.sidebar__logo {
+  width: 32px; height: 32px;
+  background: white;
+  color: #050505;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 24px;
+  flex-shrink: 0;
+}
+.sidebar__nav {
+  display: flex; flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+.sidebar__item {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255, 255, 255, 0.50);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+.sidebar__item:hover {
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.05);
+}
+.sidebar__item--active {
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.08);
+}
+.sidebar__item--active::before {
+  content: '';
+  position: absolute;
+  left: -14px; top: 50%;
+  transform: translateY(-50%);
+  width: 3px; height: 16px;
+  background: var(--color-neutral-strong);
+}
+.sidebar__footer {
+  display: flex; flex-direction: column;
+  gap: 4px;
+  margin-top: auto;
+}
+
+/* MAIN */
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex; flex-direction: column;
+}
+
+/* ============================================================================
+   TOPBAR (preta sólida estilo Villares header)
+   ========================================================================= */
+.topbar {
+  background: var(--color-bg-sidebar);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0 24px;
+  height: 56px;
+  display: flex; align-items: center;
+  gap: 16px;
+  position: sticky; top: 0;
+  z-index: 30;
+}
+.topbar__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: white;
+}
+.topbar__title-accent {
+  color: var(--color-neutral-strong);
+}
+.topbar__breadcrumb {
+  margin-left: 24px;
+  display: flex; align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.04em;
+}
+.topbar__search {
+  position: relative;
+  margin-left: auto;
+  width: 320px;
+}
+.topbar__search input {
+  width: 100%;
+  height: 34px;
+  padding: 0 12px 0 36px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  color: white;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  outline: none;
+}
+.topbar__search input:focus {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.10);
+}
+.topbar__search input::placeholder { color: rgba(255, 255, 255, 0.35); }
+.topbar__search-icon {
+  position: absolute;
+  left: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.4);
+}
+.topbar__actions {
+  display: flex; align-items: center;
+  gap: 8px;
+}
+.topbar__btn {
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+}
+.topbar__btn:hover {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+}
+.topbar__btn--bell { position: relative; }
+.topbar__btn--bell::after {
+  content: '';
+  position: absolute;
+  top: 7px; right: 8px;
+  width: 6px; height: 6px;
+  background: var(--color-critical);
+}
+
+.topbar__cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 34px;
+  padding: 0 14px;
+  background: white;
+  color: var(--color-bg-sidebar);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+}
+.topbar__cta:hover { background: #e5e5ea; }
+
+/* ============================================================================
+   PAGE BODY + HEADER
+   ========================================================================= */
+.page {
+  padding: 28px 24px;
+  flex: 1;
+}
+
+.page__header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.page__header-title {
+  font-family: var(--font-sans);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+.page__header-sub {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--color-text-tertiary);
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+
+.page__header-meta {
+  display: flex; align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.04em;
+}
+.live-dot {
+  width: 6px; height: 6px; background: var(--color-neutral-strong);
+  display: inline-block;
+}
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.pulse-soft { animation: pulse-soft 2s ease-in-out infinite; }
+
+/* ============================================================================
+   SECTION TITLE (Villares style — uppercase tracking widest)
+   ========================================================================= */
+.section { margin-bottom: 32px; }
+.section__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+  display: flex; align-items: center; gap: 10px;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.section__title svg { color: var(--color-text-tertiary); }
+.section__title-meta {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.04em;
+}
+
+/* ============================================================================
+   HERO — 4 KPI tiles em fileira + faixa Conclusão Geral (donut + breakdown)
+   ========================================================================= */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1px;
+  background: var(--color-border-subtle);
+  border: 1px solid var(--color-border-subtle);
+  margin-bottom: 1px;
+}
+
+.hero-bottom {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 1px;
+  background: var(--color-border-subtle);
+  border: 1px solid var(--color-border-subtle);
+  border-top: none;
+  margin-bottom: 28px;
+}
+.hero-bottom > * {
+  background: var(--color-bg-surface-1);
+}
+
+.kpi {
+  background: var(--color-bg-surface-1);
+  padding: 18px 22px;
+  position: relative;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+  min-height: 130px;
+}
+.kpi::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--color-border-default);
+}
+.kpi--positive::before { background: var(--color-neutral-strong); }
+.kpi--negative::before { background: var(--color-critical); }
+.kpi--warning::before  { background: var(--color-neutral-mid); }
+.kpi--info::before     { background: var(--color-neutral-strong); }
+
+.kpi__label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.kpi__value {
+  font-family: var(--font-sans);
+  font-size: 38px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  color: var(--color-text-primary);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.kpi__sub {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.04em;
+}
+
+/* Donut Conclusão Geral (esquerda da hero-bottom) */
+.conclusion {
+  padding: 24px 28px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px;
+  align-items: center;
+}
+.conclusion__chart {
+  position: relative;
+  flex-shrink: 0;
+}
+.conclusion__center {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.conclusion__num {
+  font-family: var(--font-sans);
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+}
+.conclusion__pct {
+  font-size: 13px;
+  color: var(--color-text-tertiary);
+  margin-left: 2px;
+}
+.conclusion__info { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.conclusion__label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+.conclusion__caption {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+}
+.conclusion__breakdown {
+  display: flex; gap: 18px;
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.02em;
+}
+.conclusion__breakdown b {
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+/* Painel: % por categoria (direita da hero-bottom) */
+.cat-breakdown {
+  padding: 18px 22px;
+  display: flex; flex-direction: column;
+  min-width: 0;
+}
+.cat-breakdown__header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.cat-breakdown__title {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  display: flex; align-items: center; gap: 8px;
+}
+.cat-breakdown__meta {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.04em;
+}
+.cat-breakdown__grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+.cat-tile {
+  display: flex; flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.cat-tile__top {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 8px;
+}
+.cat-tile__name {
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cat-tile__pct {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+.cat-tile__bar {
+  height: 4px;
+  width: 100%;
+  background: var(--color-bg-surface-3);
+}
+.cat-tile__bar-fill {
+  height: 100%;
+  background: var(--color-text-primary);
+  transition: width 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cat-tile__bar-fill--critical { background: var(--color-critical); }
+.cat-tile__ratio {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.02em;
+}
+
+/* ============================================================================
+   TABS (estilo Mercado Livre — underline com chip-count)
+   ========================================================================= */
+.tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+  margin-bottom: 0;
+  overflow-x: auto;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 18px;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+  letter-spacing: -0.005em;
+}
+.tab:hover { color: var(--color-text-secondary); }
+.tab--active {
+  color: var(--color-text-primary);
+}
+.tab--active::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 2px;
+  background: var(--color-neutral-strong);
+}
+.tab__count {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 7px;
+  background: var(--color-bg-surface-2);
+  color: var(--color-text-secondary);
+  letter-spacing: 0.04em;
+}
+.tab--active .tab__count {
+  background: transparent;
+  color: var(--color-neutral-strong);
+}
+
+/* ============================================================================
+   TOOLBAR — busca, filters, sort, view (ML-style action row)
+   ========================================================================= */
+.toolbar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+  flex-wrap: wrap;
+}
+.toolbar__field {
+  position: relative;
+  flex: 1 1 280px;
+  max-width: 360px;
+}
+.toolbar__field-icon {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-tertiary);
+}
+.toolbar__field input {
+  width: 100%; height: 34px;
+  padding: 0 12px 0 36px;
+  background: var(--color-bg-surface-1);
+  border: 1px solid var(--color-border-default);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  outline: none;
+}
+.toolbar__field input:focus {
+  border-color: var(--color-border-strong);
+  background: var(--color-bg-surface-2);
+}
+
+.toolbar__select {
+  height: 34px;
+  padding: 0 12px;
+  background: var(--color-bg-surface-1);
+  border: 1px solid var(--color-border-default);
+  color: var(--color-text-secondary);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  display: inline-flex; align-items: center; gap: 8px;
+  cursor: pointer;
+}
+.toolbar__select:hover {
+  color: var(--color-text-primary);
+  border-color: var(--color-border-strong);
+}
+.toolbar__select-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+.toolbar__count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.04em;
+}
+
+/* ============================================================================
+   LIST (ML-style horizontal density)
+   Cada item é uma ROW com grid de colunas bem definidas
+   ========================================================================= */
+.list {
+  display: flex; flex-direction: column;
+  background: var(--color-bg-surface-1);
+  border: 1px solid var(--color-border-subtle);
+  border-top: none;
+}
+.list-row {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1.7fr) 140px 100px 110px 110px 120px 40px;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  cursor: default;
+  position: relative;
+}
+.list-row.list-row--menu-open { z-index: 100; }
+.list-row:last-child { border-bottom: none; }
+.list-row:hover { background: var(--color-bg-surface-2); }
+
+.list-row__origem {
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: white;
+}
+.list-row__origem--projeto {
+  background: var(--color-text-primary);
+  color: var(--color-bg-base);
+}
+.list-row__origem--rotina {
+  background: var(--color-bg-surface-3);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-default);
+}
+.list-row__origem--pedido {
+  background: var(--color-bg-surface-3);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-strong);
+}
+
+.list-row__main { min-width: 0; }
+.list-row__title {
+  font-family: var(--font-sans);
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  letter-spacing: -0.005em;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.list-row__sub {
+  margin-top: 6px;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--color-text-tertiary);
+  letter-spacing: 0;
+  display: flex; align-items: center; gap: 8px;
+  line-height: 1.3;
+}
+.list-row__sub-dot { width: 3px; height: 3px; background: var(--color-text-quaternary); }
+
+/* Coluna: categoria tag */
+.tag-cat {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: -0.005em;
+  padding: 5px 10px;
+  background: var(--color-bg-surface-2);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-subtle);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+/* Coluna: prioridade */
+.tag-prio {
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0;
+  padding: 5px 11px;
+  text-align: center;
+  border: 1px solid var(--color-border-default);
+  color: var(--color-text-secondary);
+}
+.tag-prio--alta {
+  color: var(--color-critical);
+  background: var(--color-critical-soft);
+  border-color: rgba(220, 34, 34, 0.32);
+}
+.tag-prio--media {
+  color: var(--color-text-secondary);
+  background: transparent;
+  border-color: var(--color-border-default);
+}
+
+/* Colunas: data (criado em / prazo) — maior peso visual */
+.date-cell {
+  display: flex; flex-direction: column;
+  gap: 3px;
+  font-family: var(--font-sans);
+  letter-spacing: -0.005em;
+}
+.date-cell__primary {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+.date-cell__primary--late { color: var(--color-critical); font-weight: 600; }
+.date-cell__primary--today { color: var(--color-text-primary); font-weight: 600; }
+.date-cell__sub {
+  font-size: 11.5px;
+  font-weight: 400;
+  color: var(--color-text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+.date-cell__sub--late { color: var(--color-critical); }
+.date-cell__none {
+  font-size: 13px;
+  color: var(--color-text-quaternary);
+}
+
+/* Coluna: status badge */
+.status {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 5px 11px;
+  letter-spacing: -0.005em;
+}
+.status__dot { width: 6px; height: 6px; flex-shrink: 0; }
+.status--pendente   { color: var(--color-text-secondary); background: var(--color-bg-surface-2); }
+.status--pendente .status__dot { background: var(--color-text-tertiary); }
+.status--andamento  { color: var(--color-neutral-strong); background: transparent; }
+.status--andamento .status__dot { background: var(--color-neutral-strong); }
+.status--pausado    { color: var(--color-neutral-mid); background: transparent; }
+.status--pausado .status__dot { background: var(--color-neutral-mid); }
+.status--concluido  { color: var(--color-neutral-strong); background: transparent; }
+.status--concluido .status__dot { background: var(--color-neutral-strong); }
+.status--bloqueado  { color: var(--color-critical); background: var(--color-critical-soft); }
+.status--bloqueado .status__dot { background: var(--color-critical); }
+
+/* Botão ação (⋯) */
+.list-row__action {
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+}
+.list-row:hover .list-row__action {
+  border-color: var(--color-border-default);
+  color: var(--color-text-secondary);
+}
+
+.list-row__action:hover {
+  color: var(--color-text-primary);
+  background: var(--color-bg-surface-3);
+}
+
+/* Empty state */
+.list-empty {
+  background: var(--color-bg-surface-1);
+  border: 1px solid var(--color-border-subtle);
+  border-top: none;
+  padding: 56px 24px;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--color-text-tertiary);
+}
+
+/* List header row (clickable filter columns) */
+.list-header {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1.7fr) 140px 100px 110px 110px 120px 40px;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 22px;
+  background: var(--color-bg-surface-2);
+  border: 1px solid var(--color-border-subtle);
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+}
+.list-header__cell {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  padding: 0;
+  user-select: none;
+  text-align: left;
+  transition: color 150ms;
+}
+.list-header__cell:hover { color: var(--color-text-primary); }
+.list-header__cell--active { color: var(--color-text-primary); }
+.list-header__cell-icon {
+  width: 12px; height: 12px;
+  color: var(--color-text-quaternary);
+  transition: color 150ms, transform 200ms;
+}
+.list-header__cell--active .list-header__cell-icon {
+  color: var(--color-text-primary);
+}
+.list-header__cell--desc .list-header__cell-icon {
+  transform: rotate(180deg);
+}
+
+/* ============================================================================
+   ASIDE GRID (após a lista) — Próximos vencimentos + Por categoria
+   ========================================================================= */
+.aside-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--color-border-subtle);
+  border: 1px solid var(--color-border-subtle);
+  margin-top: 28px;
+}
+.aside-panel {
+  background: var(--color-bg-surface-1);
+  padding: 20px 22px;
+}
+.aside-panel__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.aside-panel__title-meta {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-text-tertiary);
+}
+
+/* Próximos vencimentos */
+.upcoming { display: flex; flex-direction: column; }
+.upcoming-row {
+  display: grid;
+  grid-template-columns: 70px 1fr 70px;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.upcoming-row:last-child { border-bottom: none; padding-bottom: 0; }
+.upcoming-row:first-child { padding-top: 0; }
+.upcoming-row__date {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.02em;
+}
+.upcoming-row__date--late { color: var(--color-critical); }
+.upcoming-row__date--today { color: var(--color-neutral-mid); }
+.upcoming-row__title {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.005em;
+}
+.upcoming-row__cat {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-text-tertiary);
+  margin-top: 2px;
+  letter-spacing: 0.02em;
+}
+.upcoming-row__origem {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  padding: 3px 8px;
+  text-align: center;
+}
+.upcoming-row__origem--projeto { background: transparent; color: var(--color-neutral-strong); }
+.upcoming-row__origem--rotina  { background: var(--color-bg-surface-2); color: var(--color-text-secondary); border: 1px solid var(--color-border-subtle); }
+.upcoming-row__origem--pedido  { background: transparent; color: var(--color-neutral-mid); }
+
+/* Categorias com barras */
+.cat-list { display: flex; flex-direction: column; gap: 14px; }
+.cat-row__head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 6px;
+}
+.cat-row__name {
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  letter-spacing: -0.005em;
+}
+.cat-row__ratio {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-text-tertiary);
+  margin-left: 6px;
+  letter-spacing: 0.02em;
+}
+.cat-row__pct {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+.bar {
+  height: 5px;
+  width: 100%;
+  background: var(--color-bg-surface-3);
+  overflow: hidden;
+}
+.bar__fill {
+  height: 100%;
+  background: var(--color-text-primary);
+  transition: width 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.bar__fill--positive { background: var(--color-neutral-strong); }
+.bar__fill--warning  { background: var(--color-neutral-mid); }
+.bar__fill--negative { background: var(--color-critical); }
+
+/* ============================================================================
+   FOOTER
+   ========================================================================= */
+.footer {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border-subtle);
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+
+/* ============================================================================
+   SYNC INDICATOR (no page header)
+   ========================================================================= */
+.sync-indicator {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--color-border-default);
+  background: var(--color-bg-surface-1);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+.sync-indicator:hover {
+  color: var(--color-text-primary);
+  border-color: var(--color-border-strong);
+}
+.sync-indicator__dot {
+  width: 7px; height: 7px;
+  background: var(--color-text-quaternary);
+  flex-shrink: 0;
+}
+.sync-indicator--synced .sync-indicator__dot { background: var(--color-neutral-strong); }
+.sync-indicator--syncing .sync-indicator__dot {
+  background: var(--color-neutral-mid);
+  animation: pulse-soft 1s ease-in-out infinite;
+}
+.sync-indicator--error { color: var(--color-critical); border-color: rgba(220, 34, 34, 0.32); }
+.sync-indicator--error .sync-indicator__dot { background: var(--color-critical); }
+.sync-indicator--offline .sync-indicator__dot { background: var(--color-text-quaternary); }
+
+/* Banner de erro/info no topo do conteúdo */
+.banner {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  border: 1px solid var(--color-border-default);
+  background: var(--color-bg-surface-2);
+}
+.banner__icon { color: var(--color-text-tertiary); flex-shrink: 0; margin-top: 1px; }
+.banner__body { flex: 1; font-size: 13.5px; }
+.banner__title {
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 2px;
+}
+.banner__text {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+.banner__action {
+  background: transparent;
+  border: 1px solid var(--color-border-default);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 6px 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.banner__action:hover {
+  background: var(--color-bg-surface-3);
+  border-color: var(--color-border-strong);
+}
+.banner__close {
+  background: transparent; border: none;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 4px;
+}
+.banner__close:hover { color: var(--color-text-primary); }
+.banner--error { border-color: rgba(220, 34, 34, 0.32); background: var(--color-critical-soft); }
+.banner--error .banner__icon, .banner--error .banner__title { color: var(--color-critical); }
+
+/* Settings modal — code/help blocks */
+.help-block {
+  background: var(--color-bg-surface-2);
+  border-left: 2px solid var(--color-border-strong);
+  padding: 10px 14px;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  color: var(--color-text-secondary);
+  letter-spacing: -0.005em;
+  line-height: 1.6;
+}
+.help-block code {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  padding: 1px 5px;
+  background: var(--color-bg-surface-3);
+  color: var(--color-text-primary);
+}
+.help-block a {
+  color: var(--color-text-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.test-result {
+  margin-top: 8px;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+}
+.test-result--ok { color: var(--color-neutral-strong); }
+.test-result--err { color: var(--color-critical); }
+
+/* ============================================================================
+   ANIMATIONS
+   ========================================================================= */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 320ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ============================================================================
+   BUTTON (genérico)
+   ========================================================================= */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 36px;
+  padding: 0 16px;
+  background: var(--color-bg-surface-2);
+  border: 1px solid var(--color-border-default);
+  color: var(--color-text-secondary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: -0.005em;
+}
+.btn:hover {
+  color: var(--color-text-primary);
+  border-color: var(--color-border-strong);
+  background: var(--color-bg-surface-3);
+}
+.btn--primary {
+  background: var(--color-text-primary);
+  color: var(--color-bg-base);
+  border-color: var(--color-text-primary);
+}
+.btn--primary:hover {
+  background: var(--color-text-primary);
+  color: var(--color-bg-base);
+  opacity: 0.88;
+}
+.btn--danger {
+  color: var(--color-critical);
+  border-color: rgba(220, 34, 34, 0.32);
+}
+.btn--danger:hover {
+  color: var(--color-critical);
+  background: var(--color-critical-soft);
+  border-color: var(--color-critical);
+}
+
+/* ============================================================================
+   DROPDOWN (menu de ações da row)
+   ========================================================================= */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropdown__menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  min-width: 190px;
+  background: var(--color-bg-surface-1);
+  border: 1px solid var(--color-border-default);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+  z-index: 60;
+  padding: 4px 0;
+  animation: scaleIn 140ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: top right;
+}
+html.light .dropdown__menu {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+.dropdown__item {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%;
+  padding: 9px 14px;
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  letter-spacing: -0.005em;
+}
+.dropdown__item:hover {
+  background: var(--color-bg-surface-2);
+  color: var(--color-text-primary);
+}
+.dropdown__item svg { color: var(--color-text-tertiary); flex-shrink: 0; }
+.dropdown__item:hover svg { color: var(--color-text-primary); }
+.dropdown__item--danger { color: var(--color-critical); }
+.dropdown__item--danger svg { color: var(--color-critical); }
+.dropdown__item--danger:hover {
+  background: var(--color-critical-soft);
+  color: var(--color-critical);
+}
+.dropdown__item--danger:hover svg { color: var(--color-critical); }
+.dropdown__divider {
+  height: 1px;
+  background: var(--color-border-subtle);
+  margin: 4px 0;
+}
+
+/* ============================================================================
+   MODAL
+   ========================================================================= */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100;
+  padding: 24px;
+  animation: fadeIn 180ms ease-out;
+}
+.modal {
+  background: var(--color-bg-surface-1);
+  border: 1px solid var(--color-border-default);
+  width: 600px;
+  max-width: 100%;
+  max-height: 90vh;
+  display: flex; flex-direction: column;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  animation: scaleIn 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.modal__header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal__title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+}
+.modal__close {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+}
+.modal__close:hover {
+  color: var(--color-text-primary);
+  background: var(--color-bg-surface-2);
+  border-color: var(--color-border-default);
+}
+.modal__body {
+  padding: 22px 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+.modal__footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--color-border-subtle);
+  display: flex; gap: 10px; justify-content: flex-end;
+}
+
+/* ============================================================================
+   FORM
+   ========================================================================= */
+.form-group { margin-bottom: 18px; }
+.form-group:last-child { margin-bottom: 0; }
+.form-group__label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  margin-bottom: 7px;
+  letter-spacing: -0.005em;
+}
+.form-group__label-req {
+  color: var(--color-critical);
+  margin-left: 3px;
+}
+.form-group__hint {
+  font-size: 11.5px;
+  color: var(--color-text-tertiary);
+  margin-top: 5px;
+}
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--color-bg-surface-2);
+  border: 1px solid var(--color-border-default);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  letter-spacing: -0.005em;
+  outline: none;
+}
+.form-input::placeholder { color: var(--color-text-quaternary); }
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--color-border-strong);
+  background: var(--color-bg-surface-3);
+}
+.form-textarea {
+  resize: vertical;
+  min-height: 72px;
+  font-family: var(--font-sans);
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.form-segmented {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--color-border-default);
+}
+.form-segmented__item {
+  flex: 1;
+  padding: 9px 12px;
+  background: var(--color-bg-surface-2);
+  border: none;
+  border-right: 1px solid var(--color-border-default);
+  color: var(--color-text-secondary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  letter-spacing: -0.005em;
+}
+.form-segmented__item:last-child { border-right: none; }
+.form-segmented__item:hover {
+  color: var(--color-text-primary);
+  background: var(--color-bg-surface-3);
+}
+.form-segmented__item--active {
+  background: var(--color-text-primary);
+  color: var(--color-bg-base);
+}
+.form-segmented__item--active:hover {
+  background: var(--color-text-primary);
+  color: var(--color-bg-base);
+  opacity: 0.88;
+}
+
+/* ============================================================================
+   ANIMATIONS DUPLICATE GUARD
+   ========================================================================= */
+
+/* ============================================================================
+   RESPONSIVE
+   ========================================================================= */
+@media (max-width: 1280px) {
+  .hero { grid-template-columns: 1fr 1fr; }
+  .hero-bottom { grid-template-columns: 1fr; }
+  .cat-breakdown__grid { grid-template-columns: repeat(5, 1fr); }
+}
+@media (max-width: 960px) {
+  .hero { grid-template-columns: 1fr 1fr; }
+  .cat-breakdown__grid { grid-template-columns: repeat(3, 1fr); }
+  .list-row {
+    grid-template-columns: 36px minmax(0, 1.5fr) 110px 110px 110px 40px;
+  }
+  .list-row > :nth-child(3),
+  .list-row > :nth-child(4) { display: none; }
+  .list-header {
+    grid-template-columns: 36px minmax(0, 1.5fr) 110px 110px 110px 40px;
+  }
+  .list-header > :nth-child(3),
+  .list-header > :nth-child(4) { display: none; }
+  .aside-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .topbar__search { width: auto; flex: 1; }
+  .topbar__breadcrumb { display: none; }
+  .hero { grid-template-columns: 1fr; }
+  .cat-breakdown__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .page { padding: 18px 14px; }
+  .page__header-title { font-size: 22px; }
+  .sidebar { display: none; }
+  .list-row {
+    grid-template-columns: 36px 1fr 110px;
+    gap: 10px;
+    padding: 12px 14px;
+  }
+  .list-row > :nth-child(3),
+  .list-row > :nth-child(4),
+  .list-row > :nth-child(5),
+  .list-row > :nth-child(6),
+  .list-row > :nth-child(8) { display: none; }
+  .list-header { display: none; }
+}
+
+
+/* ── Form: chips de categoria (multi-seleção) ── */
+.form-chips {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+}
+.form-chip {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  padding: 6px 9px;
+  background: var(--color-bg-surface-2);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-subtle);
+  cursor: pointer;
+  text-align: left;
+  display: flex; align-items: center; gap: 7px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.form-chip:hover { border-color: var(--color-border-strong); color: var(--color-text-primary); }
+.form-chip--active {
+  background: var(--color-neutral-strong);
+  color: var(--color-bg-base);
+  border-color: var(--color-neutral-strong);
+  font-weight: 600;
+}
+.form-chip__mark { font-family: var(--font-mono); font-size: 10px; opacity: 0.85; }
+
+/* ── Título de seção das views ── */
+.view-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin: 26px 0 4px;
+}
+.view-head__title {
+  font-family: var(--font-display);
+  font-size: 21px; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+}
+.view-head__meta {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--color-text-tertiary); letter-spacing: 0.04em;
+}
+
+/* ── Calendário ── */
+.cal { border: 1px solid var(--color-border-subtle); background: var(--color-bg-surface-1); margin-top: 14px; }
+.cal__bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; border-bottom: 1px solid var(--color-border-subtle);
+}
+.cal__month {
+  font-family: var(--font-display); font-size: 15px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.cal__nav { display: flex; gap: 6px; }
+.cal__nav-btn {
+  font-family: var(--font-mono); font-size: 11px;
+  background: var(--color-bg-surface-2); color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-subtle);
+  padding: 6px 12px; cursor: pointer;
+}
+.cal__nav-btn:hover { border-color: var(--color-border-strong); color: var(--color-text-primary); }
+.cal__dows {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.cal__dow {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--color-text-quaternary);
+  padding: 8px 10px; text-align: left;
+}
+.cal__grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+.cal__cell {
+  min-height: 96px; padding: 8px;
+  border-right: 1px solid var(--color-border-subtle);
+  border-bottom: 1px solid var(--color-border-subtle);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.cal__cell:nth-child(7n) { border-right: none; }
+.cal__cell--out { opacity: 0.35; }
+.cal__cell--today { background: var(--color-bg-surface-2); box-shadow: inset 0 2px 0 var(--color-neutral-strong); }
+.cal__day { font-family: var(--font-mono); font-size: 11px; color: var(--color-text-tertiary); }
+.cal__cell--today .cal__day { color: var(--color-text-primary); font-weight: 500; }
+.cal__ev {
+  font-size: 11px; line-height: 1.25; padding: 3px 6px;
+  background: var(--color-bg-surface-3); color: var(--color-text-secondary);
+  border-left: 2px solid var(--color-neutral-mid);
+  cursor: pointer;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  text-align: left; width: 100%; border-top: none; border-right: none; border-bottom: none;
+  font-family: var(--font-sans);
+}
+.cal__ev:hover { color: var(--color-text-primary); background: var(--color-bg-surface-2); }
+.cal__ev--late { border-left-color: var(--color-critical); color: var(--color-critical); background: var(--color-critical-soft); }
+.cal__ev--done { border-left-color: var(--color-neutral-soft); color: var(--color-text-quaternary); text-decoration: line-through; }
+.cal__more { font-family: var(--font-mono); font-size: 10px; color: var(--color-text-quaternary); padding-left: 6px; }
+
+/* ── Relatórios ── */
+.report-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 14px; margin-top: 14px;
+}
+.report-panel { border: 1px solid var(--color-border-subtle); background: var(--color-bg-surface-1); padding: 18px; }
+.report-panel--wide { grid-column: 1 / -1; }
+.report-panel__title {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--color-text-tertiary);
+  margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.report-row { display: flex; align-items: center; gap: 12px; padding: 7px 0; }
+.report-row__label { flex: 0 0 170px; font-size: 12.5px; color: var(--color-text-secondary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.report-row__bar { flex: 1; height: 6px; background: var(--color-bg-surface-3); }
+.report-row__fill { height: 100%; background: var(--color-neutral-mid); }
+.report-row__fill--strong { background: var(--color-neutral-strong); }
+.report-row__fill--critical { background: var(--color-critical); }
+.report-row__num { font-family: var(--font-mono); font-size: 11.5px; color: var(--color-text-secondary); flex: 0 0 64px; text-align: right; }
+
+/* ── Equipe ── */
+.team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-top: 14px; }
+.team-card { border: 1px solid var(--color-border-subtle); background: var(--color-bg-surface-1); padding: 18px; }
+.team-card__name { font-family: var(--font-display); font-size: 15px; font-weight: 700; letter-spacing: 0.02em; }
+.team-card__role { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-quaternary); margin: 3px 0 14px; }
+.team-card__stats { display: flex; gap: 18px; margin-bottom: 12px; }
+.team-card__stat-num { font-family: var(--font-mono); font-size: 18px; color: var(--color-text-primary); }
+.team-card__stat-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-quaternary); }
+.empty-view {
+  border: 1px dashed var(--color-border-default);
+  padding: 56px 24px; text-align: center; margin-top: 14px;
+  color: var(--color-text-tertiary); font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+/* ── Fix: form dentro do modal precisa participar do flex para o body rolar ── */
+.modal > form {
+  display: flex; flex-direction: column;
+  flex: 1; min-height: 0; overflow: hidden;
+}
+.modal__body { min-height: 0; }
+
+/* ── Dropdown ancorado à esquerda (toolbar) ── */
+.dropdown__menu--left { left: 0; right: auto; transform-origin: top left; }
+.dropdown__item--active { color: var(--color-text-primary); background: var(--color-bg-surface-2); }
+.dropdown__check { font-family: var(--font-mono); font-size: 10px; margin-left: auto; }
+
+/* ── Kanban ── */
+.kanban {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(228px, 1fr));
+  gap: 12px; margin-top: 14px;
+  overflow-x: auto; align-items: start;
+  padding-bottom: 8px;
+}
+.kanban__col {
+  background: var(--color-bg-surface-1);
+  border: 1px solid var(--color-border-subtle);
+  min-height: 220px;
+  display: flex; flex-direction: column;
+}
+.kanban__col--over { border-color: var(--color-border-strong); background: var(--color-bg-surface-2); }
+.kanban__col-head {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.kanban__col-title {
+  font-family: var(--font-mono); font-size: 10.5px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  display: flex; align-items: center; gap: 8px;
+}
+.kanban__col-dot { width: 7px; height: 7px; background: var(--color-neutral-mid); }
+.kanban__col--done .kanban__col-dot { background: var(--color-neutral-strong); }
+.kanban__col--blocked .kanban__col-dot { background: var(--color-critical); }
+.kanban__col-count { font-family: var(--font-mono); font-size: 11px; color: var(--color-text-quaternary); }
+.kanban__cards { padding: 10px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.kanban__card {
+  background: var(--color-bg-surface-2);
+  border: 1px solid var(--color-border-subtle);
+  border-left: 2px solid var(--color-neutral-soft);
+  padding: 11px 12px;
+  cursor: grab;
+}
+.kanban__card:hover { border-color: var(--color-border-strong); }
+.kanban__card:active { cursor: grabbing; }
+.kanban__card--dragging { opacity: 0.35; }
+.kanban__card--alta { border-left-color: var(--color-critical); }
+.kanban__card--media { border-left-color: var(--color-neutral-mid); }
+.kanban__card-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); line-height: 1.35; margin-bottom: 7px; }
+.kanban__card-meta {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.04em;
+  color: var(--color-text-quaternary);
+}
+.kanban__card-meta .late { color: var(--color-critical); }
+.kanban__empty {
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--color-text-quaternary);
+  text-align: center; padding: 22px 8px; border: 1px dashed var(--color-border-subtle);
+}
+
+/* ── Notas ── */
+.notes-toolbar { display: flex; justify-content: flex-end; margin-top: 14px; }
+.notes-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px; margin-top: 14px; align-items: start;
+}
+.note {
+  background: var(--color-bg-surface-1);
+  border: 1px solid var(--color-border-subtle);
+  display: flex; flex-direction: column;
+}
+.note--pinned { border-color: var(--color-border-strong); box-shadow: inset 0 2px 0 var(--color-neutral-strong); }
+.note__bar {
+  display: flex; align-items: center; gap: 4px;
+  padding: 8px 10px; border-bottom: 1px solid var(--color-border-subtle);
+}
+.note__date { font-family: var(--font-mono); font-size: 10px; color: var(--color-text-quaternary); letter-spacing: 0.05em; margin-right: auto; }
+.note__btn {
+  width: 26px; height: 26px; display: flex; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid transparent;
+  color: var(--color-text-quaternary); cursor: pointer;
+}
+.note__btn:hover { color: var(--color-text-primary); border-color: var(--color-border-default); background: var(--color-bg-surface-2); }
+.note__btn--on { color: var(--color-text-primary); }
+.note__btn--danger:hover { color: var(--color-critical); border-color: var(--color-critical); background: var(--color-critical-soft); }
+.note__title {
+  background: transparent; border: none; outline: none;
+  font-family: var(--font-display); font-size: 14.5px; font-weight: 700;
+  color: var(--color-text-primary);
+  padding: 12px 14px 0; width: 100%;
+}
+.note__title::placeholder { color: var(--color-text-quaternary); }
+.note__text {
+  background: transparent; border: none; outline: none; resize: vertical;
+  font-family: var(--font-sans); font-size: 13px; line-height: 1.55;
+  color: var(--color-text-secondary);
+  padding: 8px 14px 14px; width: 100%; min-height: 110px;
+}
+.note__text::placeholder { color: var(--color-text-quaternary); }
+
+/* ── Calendário: robustez de grade ── */
+.cal { overflow: hidden; }
+.cal__dows, .cal__grid { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.cal__cell { min-width: 0; overflow: hidden; }
+.cal__ev { display: block; }
+.cal__grid .cal__cell:nth-last-child(-n+7) { border-bottom: none; }
+
+</style>
+
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.24.0/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script>
+// ============================================================================
+// DATA · Modelos, mock e helpers
+// Estrutura pensada para sincronizar com Google Sheets no futuro.
+// Cada item, independente da origem (Projeto/Rotina/Pedido), implementa Item.
+// ============================================================================
+
+const CATEGORIAS = [
+  "Operações Diárias",
+  "Relatórios / KPIs",
+  "Análise de Dados",
+  "Reuniões",
+  "Projetos",
+  "Transportadoras",
+  "Estoque / Armazém",
+  "Melhoria de Processo",
+  "Administrativo",
+  "Pessoal / Desenvolvimento",
+];
+
+// Helper: criar Date relativa a hoje
+const today = new Date();
+const dayOffset = (n) => {
+  const d = new Date(today);
+  d.setDate(d.getDate() + n);
+  d.setHours(12, 0, 0, 0);
+  return d;
+};
+
+// ============================================================================
+// MOCK DATA — simula o que viria da planilha Google Sheets
+// ============================================================================
+
+const MOCK_ITEMS = [
+  // ── PROJETOS ─────────────────────────────────────────────────────────────
+  {
+    id: "P-001", origem: "Projeto",
+    criadoEm: dayOffset(-45),
+    titulo: "Dashboard de OTD por transportadora",
+    descricao: "Power BI conectado ao TMS, visão diária e semanal por região",
+    categoria: "Projetos",
+    prioridade: "Alta", status: "Em Andamento",
+    prazo: dayOffset(14), progresso: 0.45,
+  },
+  {
+    id: "P-002", origem: "Projeto",
+    criadoEm: dayOffset(-10),
+    titulo: "Padronizar processo de devolução",
+    descricao: "Mapear AS-IS, propor TO-BE, treinar equipe",
+    categoria: "Melhoria de Processo",
+    prioridade: "Média", status: "Pendente",
+    prazo: dayOffset(30), progresso: 0,
+  },
+  {
+    id: "P-003", origem: "Projeto",
+    criadoEm: dayOffset(-30),
+    titulo: "Auditoria de SLA 2º semestre",
+    descricao: "Análise de cumprimento de SLA das principais transportadoras",
+    categoria: "Análise de Dados",
+    prioridade: "Alta", status: "Em Andamento",
+    prazo: dayOffset(7), progresso: 0.30,
+  },
+  {
+    id: "P-004", origem: "Projeto",
+    criadoEm: dayOffset(-60),
+    titulo: "Curso de Power Query avançado",
+    descricao: "Trilha de desenvolvimento aprovada com gestor",
+    categoria: "Pessoal / Desenvolvimento",
+    prioridade: "Baixa", status: "Em Andamento",
+    prazo: dayOffset(40), progresso: 0.55,
+  },
+  {
+    id: "P-005", origem: "Projeto",
+    criadoEm: dayOffset(-25),
+    titulo: "Revisar tabela de fretes regional Sul",
+    descricao: "Negociação com 3 parceiros + análise de cost-to-serve",
+    categoria: "Transportadoras",
+    prioridade: "Alta", status: "Pausado",
+    prazo: dayOffset(-2), progresso: 0.40,
+  },
+  {
+    id: "P-006", origem: "Projeto",
+    criadoEm: dayOffset(-50),
+    titulo: "Migrar relatórios para Looker Studio",
+    descricao: "Trazer todos os relatórios atuais para nova plataforma",
+    categoria: "Relatórios / KPIs",
+    prioridade: "Média", status: "Em Andamento",
+    prazo: dayOffset(21), progresso: 0.65,
+  },
+
+  // ── ROTINA ───────────────────────────────────────────────────────────────
+  {
+    id: "R-001", origem: "Rotina",
+    criadoEm: dayOffset(-1),
+    titulo: "Conferir base de pedidos do dia",
+    categoria: "Operações Diárias",
+    prioridade: "Alta", status: "Pendente",
+    frequencia: "Diária", ultimaConclusao: dayOffset(-1),
+    tempoEst: 0.5,
+  },
+  {
+    id: "R-002", origem: "Rotina",
+    criadoEm: dayOffset(-3),
+    titulo: "Acompanhar ocorrências de entrega",
+    categoria: "Operações Diárias",
+    prioridade: "Alta", status: "Concluído",
+    frequencia: "Diária", ultimaConclusao: dayOffset(0),
+    tempoEst: 1.0,
+  },
+  {
+    id: "R-003", origem: "Rotina",
+    criadoEm: dayOffset(-7),
+    titulo: "Enviar status report para gestor",
+    categoria: "Relatórios / KPIs",
+    prioridade: "Média", status: "Pendente",
+    frequencia: "Diária", ultimaConclusao: dayOffset(-1),
+    tempoEst: 0.5,
+  },
+  {
+    id: "R-004", origem: "Rotina",
+    criadoEm: dayOffset(-14),
+    titulo: "Reunião diária de operações (daily)",
+    categoria: "Reuniões",
+    prioridade: "Média", status: "Concluído",
+    frequencia: "Diária", ultimaConclusao: dayOffset(0),
+    tempoEst: 0.5,
+  },
+  {
+    id: "R-005", origem: "Rotina",
+    criadoEm: dayOffset(-7),
+    titulo: "Fechar KPIs da semana",
+    categoria: "Relatórios / KPIs",
+    prioridade: "Alta", status: "Pendente",
+    frequencia: "Semanal", ultimaConclusao: dayOffset(-7),
+    tempoEst: 2.0,
+  },
+  {
+    id: "R-006", origem: "Rotina",
+    criadoEm: dayOffset(-1),
+    titulo: "Alinhar com transportadoras (call)",
+    categoria: "Transportadoras",
+    prioridade: "Média", status: "Pendente",
+    frequencia: "Semanal", ultimaConclusao: dayOffset(-4),
+    tempoEst: 1.0,
+  },
+  {
+    id: "R-007", origem: "Rotina",
+    criadoEm: dayOffset(-1),
+    titulo: "Revisar e-mails pendentes",
+    categoria: "Administrativo",
+    prioridade: "Baixa", status: "Pendente",
+    frequencia: "Diária", ultimaConclusao: dayOffset(-1),
+    tempoEst: 0.5,
+  },
+  {
+    id: "R-008", origem: "Rotina",
+    criadoEm: dayOffset(-2),
+    titulo: "Estudo / leitura técnica",
+    categoria: "Pessoal / Desenvolvimento",
+    prioridade: "Baixa", status: "Pendente",
+    frequencia: "Diária", ultimaConclusao: dayOffset(-2),
+    tempoEst: 0.5,
+  },
+
+  // ── PEDIDOS ──────────────────────────────────────────────────────────────
+  {
+    id: "D-001", origem: "Pedido",
+    criadoEm: dayOffset(-1),
+    solicitante: "Gestor",
+    titulo: "Levantamento de custos por modal",
+    descricao: "Custo por modal nos últimos 6 meses, por região",
+    categoria: "Análise de Dados",
+    prioridade: "Alta", status: "Em Andamento",
+    recebidoEm: dayOffset(-2), prazo: dayOffset(3),
+  },
+  {
+    id: "D-002", origem: "Pedido",
+    criadoEm: dayOffset(-3),
+    solicitante: "Outra área",
+    titulo: "Dados de devolução para o financeiro",
+    descricao: "Volume e valor de devoluções por motivo, último trimestre",
+    categoria: "Relatórios / KPIs",
+    prioridade: "Média", status: "Recebido",
+    recebidoEm: dayOffset(-1), prazo: dayOffset(5),
+  },
+  {
+    id: "D-003", origem: "Pedido",
+    criadoEm: dayOffset(-5),
+    solicitante: "Equipe",
+    titulo: "Apoio na conferência de inventário CD-2",
+    descricao: "Auxiliar na contagem dos itens classe A no fim do mês",
+    categoria: "Estoque / Armazém",
+    prioridade: "Baixa", status: "Recebido",
+    recebidoEm: dayOffset(0), prazo: dayOffset(10),
+  },
+  {
+    id: "D-004", origem: "Pedido",
+    criadoEm: dayOffset(-2),
+    solicitante: "Cliente interno",
+    titulo: "Treinamento sobre o novo painel",
+    descricao: "Sessão de 1h para o time comercial sobre uso do painel de SLA",
+    categoria: "Pessoal / Desenvolvimento",
+    prioridade: "Média", status: "Recebido",
+    recebidoEm: dayOffset(0), prazo: dayOffset(7),
+  },
+  {
+    id: "D-005", origem: "Pedido",
+    criadoEm: dayOffset(-7),
+    solicitante: "Gestor",
+    titulo: "Análise rápida de avarias",
+    descricao: "Volume de avarias por transportadora, últimas 4 semanas",
+    categoria: "Análise de Dados",
+    prioridade: "Alta", status: "Em Andamento",
+    recebidoEm: dayOffset(-3), prazo: dayOffset(1),
+  },
+  {
+    id: "D-006", origem: "Pedido",
+    criadoEm: dayOffset(-4),
+    solicitante: "Externo",
+    titulo: "Confirmar agenda da auditoria",
+    descricao: "Alinhar com transportadora a data da próxima auditoria de SLA",
+    categoria: "Administrativo",
+    prioridade: "Baixa", status: "Concluído",
+    recebidoEm: dayOffset(-5), prazo: dayOffset(-1),
+  },
+  {
+    id: "D-007", origem: "Pedido",
+    criadoEm: dayOffset(-10),
+    solicitante: "Equipe",
+    titulo: "Atualizar dashboard de avarias",
+    descricao: "Refresh do painel com novos dados",
+    categoria: "Operações Diárias",
+    prioridade: "Média", status: "Concluído",
+    recebidoEm: dayOffset(-2), prazo: dayOffset(0),
+  },
+];
+
+// ============================================================================
+// HELPERS DE STATUS
+// Cada origem tem seu próprio vocabulário de status. Aqui unificamos
+// em três buckets lógicos para a UI: "aberto", "andamento", "feito".
+// ============================================================================
+
+const STATUS_BUCKET = {
+  // Projetos
+  "Pendente":     "aberto",
+  "Em Andamento": "andamento",
+  "Pausado":      "aberto",
+  "Concluído":    "feito",
+  "Cancelado":    "feito",
+  // Rotina (já tratado acima)
+  // Pedidos
+  "Recebido":     "aberto",
+  "Recusado":     "feito",
+};
+
+const isAtivo = (item) => {
+  const b = STATUS_BUCKET[item.status];
+  return b === "aberto" || b === "andamento";
+};
+
+const isFeito = (item) => STATUS_BUCKET[item.status] === "feito" && item.status !== "Cancelado" && item.status !== "Recusado";
+
+const diasAteHoje = (date) => {
+  if (!date) return null;
+  const d = new Date(date); d.setHours(0,0,0,0);
+  const t = new Date(); t.setHours(0,0,0,0);
+  return Math.round((d - t) / (1000 * 60 * 60 * 24));
+};
+
+const isAtrasado = (item) => {
+  if (!isAtivo(item) || !item.prazo) return false;
+  return diasAteHoje(item.prazo) < 0;
+};
+
+const isHoje = (item) => {
+  if (!isAtivo(item) || !item.prazo) return false;
+  return diasAteHoje(item.prazo) === 0;
+};
+
+const isProximos48h = (item) => {
+  if (!isAtivo(item) || !item.prazo) return false;
+  const d = diasAteHoje(item.prazo);
+  return d >= 0 && d <= 2;
+};
+
+const isEstaSemana = (item) => {
+  if (!isAtivo(item) || !item.prazo) return false;
+  const d = diasAteHoje(item.prazo);
+  return d >= 0 && d <= 7;
+};
+
+const isConcluidoRecente = (item) => {
+  if (!isFeito(item)) return false;
+  // Considera concluído nos últimos 7 dias (usa prazo como aproximação se não houver concluidoEm)
+  if (item.prazo) {
+    const d = diasAteHoje(item.prazo);
+    return d >= -7 && d <= 0;
+  }
+  if (item.ultimaConclusao) {
+    const d = diasAteHoje(item.ultimaConclusao);
+    return d >= -7 && d <= 0;
+  }
+  return false;
+};
+
+const formatDate = (d) => {
+  if (!d) return "—";
+  const date = new Date(d);
+  return date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).replace('.', '');
+};
+
+const formatRelative = (d) => {
+  if (!d) return "—";
+  const dias = diasAteHoje(d);
+  if (dias === 0) return "hoje";
+  if (dias === 1) return "amanhã";
+  if (dias === -1) return "ontem";
+  if (dias > 0 && dias <= 6) return `em ${dias}d`;
+  if (dias < 0 && dias >= -6) return `${Math.abs(dias)}d atrás`;
+  return formatDate(d);
+};
+
+// Multi-categoria: armazenada como string separada por vírgula ("A, B")
+const splitCats = (c) => String(c || '').split(',').map(s => s.trim()).filter(Boolean);
+const hasCat = (item, cat) => splitCats(item.categoria).includes(cat);
+
+window.PLANNER_DATA = {
+  MOCK_ITEMS,
+  CATEGORIAS,
+  STATUS_BUCKET,
+  isAtivo, isFeito, isAtrasado, isHoje, isProximos48h, isEstaSemana, isConcluidoRecente,
+  diasAteHoje, formatDate, formatRelative,
+  splitCats, hasCat,
+};
+
+</script>
+  <script type="text/babel" data-presets="react">
+// ============================================================================
+// OPS PLANNER
+// Design system Villares Financial (Syne+DM Sans+DM Mono, dark editorial)
+// Disposição Mercado Livre (sidebar fixa + tabs + listas horizontais densas)
+// ============================================================================
+
+const { useState, useEffect, useMemo } = React;
+const D = window.PLANNER_DATA;
+
+// ────────────────────────────────────────────────────────────────────────────
+// ICONS · SVG inline
+// ────────────────────────────────────────────────────────────────────────────
+const Icon = ({ children, size = 16, ...rest }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
+       stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
+       style={{ flexShrink: 0, display: 'inline-block', verticalAlign: 'middle', ...rest.style }} {...rest}>
+    {children}
+  </svg>
+);
+const Search = (p) => <Icon {...p}><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></Icon>;
+const Columns = (p) => <Icon {...p}><rect x="3" y="4" width="5" height="16"/><rect x="10" y="4" width="5" height="12"/><rect x="17" y="4" width="4" height="8"/></Icon>;
+const Note = (p) => <Icon {...p}><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M9 13h6M9 17h4"/></Icon>;
+const Pin = (p) => <Icon {...p}><path d="M12 17v5"/><path d="M9 3h6l1 7 2 2H6l2-2 1-7z"/></Icon>;
+const Plus = (p) => <Icon {...p}><path d="M12 5v14M5 12h14"/></Icon>;
+const Refresh = (p) => <Icon {...p}><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></Icon>;
+const Bell = (p) => <Icon {...p}><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></Icon>;
+const Moon = (p) => <Icon {...p}><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></Icon>;
+const Sun = (p) => <Icon {...p}><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></Icon>;
+const Dashboard = (p) => <Icon {...p}><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></Icon>;
+const Box = (p) => <Icon {...p}><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></Icon>;
+const Repeat = (p) => <Icon {...p}><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></Icon>;
+const Inbox = (p) => <Icon {...p}><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.5 5.7 2 12v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-7l-3.5-6.3a2 2 0 0 0-1.8-1.1H7.3a2 2 0 0 0-1.8 1.1z"/></Icon>;
+const Cal = (p) => <Icon {...p}><rect x="3" y="4" width="18" height="18"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></Icon>;
+const Stats = (p) => <Icon {...p}><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></Icon>;
+const Users = (p) => <Icon {...p}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></Icon>;
+const Cog = (p) => <Icon {...p}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></Icon>;
+const LogOut = (p) => <Icon {...p}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></Icon>;
+const Activity = (p) => <Icon {...p}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></Icon>;
+const Clock = (p) => <Icon {...p}><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></Icon>;
+const Warning = (p) => <Icon {...p}><path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3z"/><path d="M12 9v4M12 17h.01"/></Icon>;
+const Check = (p) => <Icon {...p}><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></Icon>;
+const Loader = (p) => <Icon {...p}><path d="M21 12a9 9 0 1 1-6.2-8.6"/></Icon>;
+const Layers = (p) => <Icon {...p}><path d="m12 2 9 5-9 5-9-5 9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></Icon>;
+const SortIcon = (p) => <Icon {...p}><path d="M3 6h18M6 12h12M10 18h4"/></Icon>;
+const FilterIcon = (p) => <Icon {...p}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></Icon>;
+const More = (p) => <Icon {...p}><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></Icon>;
+const Chevron = (p) => <Icon {...p}><polyline points="6 9 12 15 18 9"/></Icon>;
+const X = (p) => <Icon {...p}><path d="M18 6 6 18M6 6l12 12"/></Icon>;
+const Edit = (p) => <Icon {...p}><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></Icon>;
+const Trash = (p) => <Icon {...p}><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></Icon>;
+const Copy = (p) => <Icon {...p}><rect x="9" y="9" width="13" height="13" rx="0"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></Icon>;
+const CheckDouble = (p) => <Icon {...p}><polyline points="3 13 9 19 21 7"/></Icon>;
+const Undo = (p) => <Icon {...p}><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-15-6.7L3 13"/></Icon>;
+
+// ────────────────────────────────────────────────────────────────────────────
+// THEME
+// ────────────────────────────────────────────────────────────────────────────
+function useTheme() {
+  const [theme, setTheme] = useState(() => {
+    try { return localStorage.getItem('ops_theme') || 'dark'; } catch { return 'dark'; }
+  });
+  useEffect(() => {
+    document.documentElement.classList.remove('light', 'dark');
+    document.documentElement.classList.add(theme);
+    try { localStorage.setItem('ops_theme', theme); } catch {}
+  }, [theme]);
+  return [theme, () => setTheme(t => t === 'dark' ? 'light' : 'dark')];
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// DONUT SVG
+// ────────────────────────────────────────────────────────────────────────────
+function Donut({ pct, size, stroke }) {
+  const [drawn, setDrawn] = useState(0);
+  useEffect(() => {
+    const t = setTimeout(() => setDrawn(pct), 80);
+    return () => clearTimeout(t);
+  }, [pct]);
+  const r = (size - stroke) / 2;
+  const c = 2 * Math.PI * r;
+  const off = c - (drawn / 100) * c;
+  const color = drawn >= 70 ? 'var(--color-positive)'
+              : drawn >= 40 ? 'var(--color-warning)'
+              : drawn > 0   ? 'var(--color-negative)'
+              : 'var(--color-text-quaternary)';
+  return (
+    <svg width={size} height={size} style={{ transform: 'rotate(-90deg)', display: 'block' }}>
+      <circle cx={size/2} cy={size/2} r={r} fill="none"
+              stroke="var(--color-bg-surface-3)" strokeWidth={stroke}/>
+      <circle cx={size/2} cy={size/2} r={r} fill="none"
+              stroke={color} strokeWidth={stroke}
+              strokeDasharray={c} strokeDashoffset={off}
+              style={{ transition: 'stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1), stroke 250ms' }}/>
+    </svg>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// SIDEBAR (dark sempre)
+// ────────────────────────────────────────────────────────────────────────────
+function Sidebar({ theme, view, onNavigate, onToggleTheme, onOpenSettings }) {
+  const navItems = [
+    { key: 'dashboard',  title: 'Dashboard',  icon: Dashboard },
+    { key: 'kanban',     title: 'Kanban',     icon: Columns },
+    { key: 'notas',      title: 'Notas',      icon: Note },
+    { key: 'calendario', title: 'Calendário', icon: Cal },
+    { key: 'relatorios', title: 'Relatórios', icon: Stats },
+    { key: 'equipe',     title: 'Equipe',     icon: Users },
+  ];
+  return (
+    <aside className="sidebar">
+      <div className="sidebar__logo">
+        <Icon size={15}><path d="m12 2 9 5-9 5-9-5 9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></Icon>
+      </div>
+      <nav className="sidebar__nav">
+        {navItems.map(({ key, title, icon: IconC }) => (
+          <button key={key}
+                  className={`sidebar__item ${view === key ? 'sidebar__item--active' : ''}`}
+                  title={title}
+                  onClick={() => onNavigate(key)}>
+            <IconC size={17}/>
+          </button>
+        ))}
+      </nav>
+      <div className="sidebar__footer">
+        <button className="sidebar__item" onClick={onToggleTheme} title="Alternar tema">
+          {theme === 'dark' ? <Sun size={17}/> : <Moon size={17}/>}
+        </button>
+        <button className="sidebar__item" onClick={onOpenSettings} title="Configurações">
+          <Cog size={17}/>
+        </button>
+        <button className="sidebar__item" title="Sair"><LogOut size={17}/></button>
+      </div>
+    </aside>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// TOPBAR
+// ────────────────────────────────────────────────────────────────────────────
+function Topbar({ query, onQueryChange, onNew }) {
+  return (
+    <header className="topbar">
+      <div className="topbar__title">
+        VILLARES<span className="topbar__title-accent"> | </span>PLANNER
+      </div>
+      <div className="topbar__search">
+        <Search size={14} className="topbar__search-icon"/>
+        <input type="text" placeholder="Buscar item..."
+               value={query} onChange={(e) => onQueryChange(e.target.value)}/>
+      </div>
+      <div className="topbar__actions">
+        <button className="topbar__btn topbar__btn--bell" title="Notificações"><Bell size={15}/></button>
+        <button className="topbar__cta" onClick={onNew}>
+          <Plus size={14}/> Novo
+        </button>
+      </div>
+    </header>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// PAGE HEADER
+// ────────────────────────────────────────────────────────────────────────────
+function PageHeader({ today, lastUpdate, onRefresh, syncStatus, onOpenSettings }) {
+  const [refreshing, setRefreshing] = useState(false);
+  const handleRefresh = () => {
+    setRefreshing(true); onRefresh();
+    setTimeout(() => setRefreshing(false), 700);
+  };
+
+  const syncLabels = {
+    'idle':    'Pronto',
+    'syncing': 'Sincronizando…',
+    'synced':  'Sincronizado',
+    'error':   'Erro de sincronização',
+    'offline': 'Modo local',
+  };
+  const syncTitles = {
+    'idle':    'Aguardando',
+    'syncing': 'Sincronizando com Google Sheets',
+    'synced':  'Conectado ao Google Sheets',
+    'error':   'Erro ao sincronizar — clique para abrir as configurações',
+    'offline': 'Sem conexão com Google Sheets — clique para configurar',
+  };
+
+  return (
+    <div className="page__header">
+      <div>
+        <h1 className="page__header-title">Dashboard Operacional</h1>
+        <div className="page__header-sub">Logística · {today}</div>
+      </div>
+      <div className="page__header-meta">
+        <button className={`sync-indicator sync-indicator--${syncStatus}`}
+                onClick={onOpenSettings}
+                title={syncTitles[syncStatus]}>
+          <span className="sync-indicator__dot"/>
+          <span>{syncLabels[syncStatus]}</span>
+        </button>
+        <span style={{ color: 'var(--color-text-tertiary)' }}>Atualizado {lastUpdate}</span>
+        <button className="topbar__btn" style={{ width: 30, height: 30 }} onClick={handleRefresh} title="Atualizar">
+          <Refresh size={13} style={refreshing ? { animation: 'spin 700ms linear' } : null}/>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// HERO (4 KPI tiles + donut compacto)
+// ────────────────────────────────────────────────────────────────────────────
+function KPI({ label, value, sub, icon: IconC, variant }) {
+  return (
+    <div className={`kpi kpi--${variant} fade-up`}>
+      <div className="kpi__label">
+        <span>{label}</span>
+        {IconC && <IconC size={11}/>}
+      </div>
+      <div className="kpi__value">{value}</div>
+      <div className="kpi__sub">{sub}</div>
+    </div>
+  );
+}
+
+function Conclusion({ pct, feitos, ativos, total, categorias }) {
+  const [drawn, setDrawn] = useState(0);
+  useEffect(() => {
+    const t = setTimeout(() => setDrawn(pct), 100);
+    return () => clearTimeout(t);
+  }, [pct]);
+
+  return (
+    <>
+      <div className="conclusion fade-up">
+        <div className="conclusion__chart" style={{ width: 112, height: 112 }}>
+          <Donut pct={pct} size={112} stroke={9}/>
+          <div className="conclusion__center">
+            <div>
+              <span className="conclusion__num">{Math.round(drawn)}</span>
+              <span className="conclusion__pct">%</span>
+            </div>
+          </div>
+        </div>
+        <div className="conclusion__info">
+          <div className="conclusion__label">Conclusão geral</div>
+          <div className="conclusion__caption">Total ativo: {total} {total === 1 ? 'Item' : 'Itens'}</div>
+          <div className="conclusion__breakdown">
+            <span><b>{feitos}</b> Concluídos</span>
+            <span><b>{ativos}</b> Em aberto</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="cat-breakdown fade-up">
+        <div className="cat-breakdown__header">
+          <div className="cat-breakdown__title">
+            <Layers size={11}/>
+            Conclusão por categoria
+          </div>
+          <div className="cat-breakdown__meta">
+            Principais categorias operacionais
+          </div>
+        </div>
+        {categorias.length === 0 ? (
+          <div style={{ padding: '20px 0', textAlign: 'center', color: 'var(--color-text-tertiary)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>
+            Sem dados disponíveis
+          </div>
+        ) : (
+          <div className="cat-breakdown__grid">
+            {categorias.slice(0, 5).map(c => (
+              <div key={c.nome} className="cat-tile">
+                <div className="cat-tile__top">
+                  <div className="cat-tile__name" title={c.nome}>{c.nome}</div>
+                  <div className="cat-tile__pct">{Math.round(c.pct)}%</div>
+                </div>
+                <div className="cat-tile__bar">
+                  <div className={`cat-tile__bar-fill ${c.pct < 30 && c.total > 0 ? 'cat-tile__bar-fill--critical' : ''}`}
+                       style={{ width: `${c.pct}%` }}/>
+                </div>
+                <div className="cat-tile__ratio">{c.feitos} de {c.total} Concluídos</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// TABS (estilo Mercado Livre)
+// ────────────────────────────────────────────────────────────────────────────
+function Tabs({ active, onChange, counts }) {
+  const tabs = [
+    { key: 'Hoje', label: 'Hoje' },
+    { key: 'Todos', label: 'Todos' },
+    { key: 'Projeto', label: 'Projetos' },
+    { key: 'Rotina', label: 'Rotina' },
+    { key: 'Pedido', label: 'Pedidos' },
+    { key: 'Atrasados', label: 'Atrasados' },
+    { key: 'Concluidos', label: 'Concluídos' },
+  ];
+  return (
+    <div className="tabs">
+      {tabs.map(t => (
+        <button key={t.key}
+                className={`tab ${active === t.key ? 'tab--active' : ''}`}
+                onClick={() => onChange(t.key)}>
+          {t.label}
+          <span className="tab__count">{counts[t.key] || 0}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// TOOLBAR (search + sort + filter + count)
+// ────────────────────────────────────────────────────────────────────────────
+const SORT_OPTIONS = [
+  { key: null,         label: 'Urgência' },
+  { key: 'prazo',      label: 'Prazo' },
+  { key: 'titulo',     label: 'Título' },
+  { key: 'prioridade', label: 'Prioridade' },
+  { key: 'status',     label: 'Status' },
+  { key: 'criadoEm',   label: 'Criado em' },
+];
+
+function ToolbarDropdown({ icon: IconC, label, value, open, onToggle, children }) {
+  return (
+    <div className="dropdown">
+      <button className="toolbar__select" onClick={onToggle}>
+        <IconC size={13}/>
+        <span className="toolbar__select-label">{label}:</span>
+        <span>{value}</span>
+        <Chevron size={12}/>
+      </button>
+      {open && (
+        <div className="dropdown__menu dropdown__menu--left">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Toolbar({ count, sortBy, onSortSelect, prio, onPrio, cat, onCat }) {
+  const [openMenu, setOpenMenu] = useState(null); // 'sort' | 'prio' | 'cat' | null
+
+  useEffect(() => {
+    if (!openMenu) return;
+    const onClick = (e) => { if (!e.target.closest('.dropdown')) setOpenMenu(null); };
+    const onKey = (e) => { if (e.key === 'Escape') setOpenMenu(null); };
+    const t = setTimeout(() => {
+      document.addEventListener('click', onClick);
+      document.addEventListener('keydown', onKey);
+    }, 0);
+    return () => {
+      clearTimeout(t);
+      document.removeEventListener('click', onClick);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [openMenu]);
+
+  const toggle = (m) => setOpenMenu(prev => prev === m ? null : m);
+  const sortLabel = (SORT_OPTIONS.find(o => o.key === sortBy) || SORT_OPTIONS[0]).label;
+
+  return (
+    <div className="toolbar">
+      <ToolbarDropdown icon={SortIcon} label="Ordenar" value={sortLabel}
+                       open={openMenu === 'sort'} onToggle={() => toggle('sort')}>
+        {SORT_OPTIONS.map(o => (
+          <button key={String(o.key)}
+                  className={`dropdown__item ${sortBy === o.key ? 'dropdown__item--active' : ''}`}
+                  onClick={() => { onSortSelect(o.key); setOpenMenu(null); }}>
+            {o.label}
+            {sortBy === o.key && <span className="dropdown__check">■</span>}
+          </button>
+        ))}
+      </ToolbarDropdown>
+
+      <ToolbarDropdown icon={FilterIcon} label="Prioridade" value={prio}
+                       open={openMenu === 'prio'} onToggle={() => toggle('prio')}>
+        {['Todas', 'Alta', 'Média', 'Baixa'].map(p => (
+          <button key={p}
+                  className={`dropdown__item ${prio === p ? 'dropdown__item--active' : ''}`}
+                  onClick={() => { onPrio(p); setOpenMenu(null); }}>
+            {p}
+            {prio === p && <span className="dropdown__check">■</span>}
+          </button>
+        ))}
+      </ToolbarDropdown>
+
+      <ToolbarDropdown icon={Layers} label="Categoria" value={cat}
+                       open={openMenu === 'cat'} onToggle={() => toggle('cat')}>
+        {['Todas', ...D.CATEGORIAS].map(c => (
+          <button key={c}
+                  className={`dropdown__item ${cat === c ? 'dropdown__item--active' : ''}`}
+                  onClick={() => { onCat(c); setOpenMenu(null); }}>
+            {c}
+            {cat === c && <span className="dropdown__check">■</span>}
+          </button>
+        ))}
+      </ToolbarDropdown>
+
+      <span className="toolbar__count">{count} {count === 1 ? 'Item' : 'Itens'}</span>
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// LIST ROW
+// ────────────────────────────────────────────────────────────────────────────
+function statusKey(status) {
+  return {
+    'Pendente': 'pendente', 'Recebido': 'pendente',
+    'Em Andamento': 'andamento',
+    'Pausado': 'pausado',
+    'Concluído': 'concluido',
+    'Bloqueado': 'bloqueado',
+    'Cancelado': 'pendente', 'Recusado': 'pendente',
+  }[status] || 'pendente';
+}
+
+function ListRow({ item, menuOpen, onMenuToggle, onEdit, onToggleComplete, onDuplicate, onDelete }) {
+  const origemClass = item.origem === 'Projeto' ? 'projeto'
+                    : item.origem === 'Rotina'  ? 'rotina' : 'pedido';
+  const origemLetter = item.origem === 'Projeto' ? 'PJ'
+                     : item.origem === 'Rotina'  ? 'RT' : 'PD';
+
+  // — Coluna "Recebido em" (data de criação) —
+  const criadoEm = item.criadoEm || item.recebidoEm;
+  const criadoDate = criadoEm
+    ? new Date(criadoEm).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).replace('.', '')
+    : null;
+  const criadoDias = criadoEm ? D.diasAteHoje(criadoEm) : null;
+  const criadoSub = criadoDias === null ? null
+    : criadoDias === 0 ? 'Hoje'
+    : criadoDias === -1 ? 'Ontem'
+    : criadoDias < 0 ? `há ${Math.abs(criadoDias)} dias`
+    : `em ${criadoDias} dias`;
+
+  // — Coluna "Prazo" —
+  const isLate = D.isAtrasado(item);
+  const isToday = D.isHoje(item);
+  const prazoDate = item.prazo
+    ? new Date(item.prazo).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).replace('.', '')
+    : null;
+  const prazoDias = item.prazo ? D.diasAteHoje(item.prazo) : null;
+  const prazoSub = prazoDias === null ? null
+    : prazoDias === 0 ? 'Hoje'
+    : prazoDias === 1 ? 'Amanhã'
+    : prazoDias < 0 ? `${Math.abs(prazoDias)} dias atrás`
+    : `em ${prazoDias} dias`;
+  const prazoPrimaryCls = isLate ? 'date-cell__primary--late'
+                        : isToday ? 'date-cell__primary--today' : '';
+  const prazoSubCls = isLate ? 'date-cell__sub--late' : '';
+
+  const statusK = statusKey(item.status);
+  const isFeito = D.isFeito(item);
+
+  return (
+    <div className={`list-row fade-up ${menuOpen ? 'list-row--menu-open' : ''}`}>
+      <div className={`list-row__origem list-row__origem--${origemClass}`}>{origemLetter}</div>
+
+      <div className="list-row__main">
+        <div className="list-row__title">{item.titulo}</div>
+        <div className="list-row__sub">
+          <span>{item.origem}</span>
+          {item.solicitante && (
+            <>
+              <span className="list-row__sub-dot"/>
+              <span>de {item.solicitante}</span>
+            </>
+          )}
+          {item.frequencia && (
+            <>
+              <span className="list-row__sub-dot"/>
+              <span>{item.frequencia}</span>
+            </>
+          )}
+        </div>
+      </div>
+
+      <div className="tag-cat" title={item.categoria}>{item.categoria}</div>
+
+      <div>
+        {item.prioridade === 'Alta' && <span className="tag-prio tag-prio--alta">Alta</span>}
+        {item.prioridade === 'Média' && <span className="tag-prio tag-prio--media">Média</span>}
+        {item.prioridade === 'Baixa' && <span className="tag-prio">Baixa</span>}
+      </div>
+
+      <div className="date-cell">
+        {criadoDate ? (
+          <>
+            <span className="date-cell__primary">{criadoDate}</span>
+            <span className="date-cell__sub">{criadoSub}</span>
+          </>
+        ) : (
+          <span className="date-cell__none">—</span>
+        )}
+      </div>
+
+      <div className="date-cell">
+        {prazoDate ? (
+          <>
+            <span className={`date-cell__primary ${prazoPrimaryCls}`}>{prazoDate}</span>
+            <span className={`date-cell__sub ${prazoSubCls}`}>{prazoSub}</span>
+          </>
+        ) : (
+          <span className="date-cell__none">Sem prazo</span>
+        )}
+      </div>
+
+      <div>
+        <div className={`status status--${statusK}`}>
+          <span className="status__dot"/>
+          <span>{item.status}</span>
+        </div>
+      </div>
+
+      <div className="dropdown">
+        <button className="list-row__action" title="Mais ações"
+                onClick={(e) => { e.stopPropagation(); onMenuToggle(item.id); }}>
+          <More size={14}/>
+        </button>
+        {menuOpen && (
+          <div className="dropdown__menu" onClick={(e) => e.stopPropagation()}>
+            <button className="dropdown__item" onClick={() => { onEdit(item); onMenuToggle(null); }}>
+              <Edit size={14}/> Editar
+            </button>
+            <button className="dropdown__item" onClick={() => { onToggleComplete(item); onMenuToggle(null); }}>
+              {isFeito ? <><Undo size={14}/> Reabrir</> : <><CheckDouble size={14}/> Marcar Concluído</>}
+            </button>
+            <button className="dropdown__item" onClick={() => { onDuplicate(item); onMenuToggle(null); }}>
+              <Copy size={14}/> Duplicar
+            </button>
+            <div className="dropdown__divider"/>
+            <button className="dropdown__item dropdown__item--danger" onClick={() => { onDelete(item); onMenuToggle(null); }}>
+              <Trash size={14}/> Excluir
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Ícone seta pra sort
+const SortArrow = (p) => <Icon {...p}><path d="M12 5v14M5 12l7 7 7-7"/></Icon>;
+
+function ListHeader({ sortBy, sortDir, onSort }) {
+  const cell = (key, label) => {
+    const active = sortBy === key;
+    const cls = `list-header__cell ${active ? 'list-header__cell--active' : ''} ${active && sortDir === 'desc' ? 'list-header__cell--desc' : ''}`;
+    return (
+      <button className={cls} onClick={() => onSort(key)}>
+        {label}
+        <SortArrow size={11} className="list-header__cell-icon"/>
+      </button>
+    );
+  };
+  return (
+    <div className="list-header">
+      <div/>
+      {cell('titulo', 'Item')}
+      {cell('categoria', 'Categoria')}
+      {cell('prioridade', 'Prioridade')}
+      {cell('criadoEm', 'Recebido em')}
+      {cell('prazo', 'Prazo')}
+      {cell('status', 'Status')}
+      <div/>
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// ASIDE: Próximos vencimentos + Categorias
+// ────────────────────────────────────────────────────────────────────────────
+function UpcomingPanel({ items }) {
+  return (
+    <div className="aside-panel">
+      <div className="aside-panel__title">
+        <Cal size={11}/>
+        Próximos vencimentos
+        <span className="aside-panel__title-meta">Próximos 7 dias</span>
+      </div>
+      {items.length === 0 ? (
+        <div style={{ padding: '20px 0', textAlign: 'center', color: 'var(--color-text-tertiary)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>
+          Sem vencimentos próximos
+        </div>
+      ) : (
+        <div className="upcoming">
+          {items.map(item => {
+            const dias = D.diasAteHoje(item.prazo);
+            const isLate = dias < 0;
+            const isToday = dias === 0;
+            const cls = isLate ? 'upcoming-row__date--late' : isToday ? 'upcoming-row__date--today' : '';
+            const lbl = isLate ? `${Math.abs(dias)}d atrás`
+                      : isToday ? 'Hoje'
+                      : dias === 1 ? 'Amanhã'
+                      : `Em ${dias}d`;
+            const origemCls = item.origem === 'Projeto' ? 'projeto'
+                            : item.origem === 'Rotina'  ? 'rotina' : 'pedido';
+            return (
+              <div key={item.id} className="upcoming-row">
+                <div className={`upcoming-row__date ${cls}`}>{lbl}</div>
+                <div style={{ minWidth: 0 }}>
+                  <div className="upcoming-row__title">{item.titulo}</div>
+                  <div className="upcoming-row__cat">{item.categoria}</div>
+                </div>
+                <div className={`upcoming-row__origem upcoming-row__origem--${origemCls}`}>
+                  {item.origem}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CategoriesPanel({ data }) {
+  return (
+    <div className="aside-panel">
+      <div className="aside-panel__title">
+        <Layers size={11}/>
+        Progresso por categoria
+        <span className="aside-panel__title-meta">{data.length} Ativas</span>
+      </div>
+      {data.length === 0 ? (
+        <div style={{ padding: '20px 0', textAlign: 'center', color: 'var(--color-text-tertiary)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>
+          Sem dados disponíveis
+        </div>
+      ) : (
+        <div className="cat-list">
+          {data.slice(0, 6).map(row => {
+            const variant = row.pct >= 70 ? 'positive'
+                          : row.pct >= 40 ? 'warning'
+                          : row.pct > 0   ? 'negative' : '';
+            return (
+              <div key={row.nome}>
+                <div className="cat-row__head">
+                  <div>
+                    <span className="cat-row__name">{row.nome}</span>
+                    <span className="cat-row__ratio">{row.feitos}/{row.total}</span>
+                  </div>
+                  <span className="cat-row__pct">{Math.round(row.pct)}%</span>
+                </div>
+                <div className="bar">
+                  <div className={`bar__fill ${variant ? 'bar__fill--' + variant : ''}`}
+                       style={{ width: `${row.pct}%` }}/>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// ITEM MODAL — criar/editar item
+// ────────────────────────────────────────────────────────────────────────────
+function ItemModal({ open, item, onClose, onSave }) {
+  const isEdit = !!item;
+  const todayISO = new Date().toISOString().slice(0, 10);
+
+  const [origem, setOrigem] = useState('Projeto');
+  const [titulo, setTitulo] = useState('');
+  const [descricao, setDescricao] = useState('');
+  const [categorias, setCategorias] = useState([D.CATEGORIAS[0]]);
+  const [prioridade, setPrioridade] = useState('Média');
+  const [status, setStatus] = useState('Pendente');
+  const [prazo, setPrazo] = useState('');
+  const [solicitante, setSolicitante] = useState('');
+  const [frequencia, setFrequencia] = useState('Diária');
+  const [error, setError] = useState('');
+
+  // Reset state quando abre / muda item
+  useEffect(() => {
+    if (!open) return;
+    setOrigem(item?.origem || 'Projeto');
+    setTitulo(item?.titulo || '');
+    setDescricao(item?.descricao || '');
+    const cats = D.splitCats(item?.categoria);
+    setCategorias(cats.length > 0 ? cats : [D.CATEGORIAS[0]]);
+    setPrioridade(item?.prioridade || 'Média');
+    setStatus(item?.status || (item?.origem === 'Pedido' ? 'Recebido' : 'Pendente'));
+    setPrazo(item?.prazo ? item.prazo.slice(0, 10) : '');
+    setSolicitante(item?.solicitante || '');
+    setFrequencia(item?.frequencia || 'Diária');
+    setError('');
+  }, [open, item]);
+
+  // Quando muda origem, ajusta status default e limpa campos específicos
+  useEffect(() => {
+    if (!open || isEdit) return;
+    if (origem === 'Pedido') setStatus('Recebido');
+    else if (origem === 'Rotina') setStatus('Pendente');
+    else setStatus('Pendente');
+  }, [origem, open, isEdit]);
+
+  // ESC fecha
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!titulo.trim()) {
+      setError('O título é obrigatório');
+      return;
+    }
+    if (categorias.length === 0) {
+      setError('Selecione ao menos uma categoria');
+      return;
+    }
+    const data = {
+      origem,
+      titulo: titulo.trim(),
+      descricao: descricao.trim() || undefined,
+      categoria: categorias.join(', '),
+      prioridade,
+      status,
+      criadoEm: item?.criadoEm || todayISO,
+    };
+    if (prazo) data.prazo = prazo;
+    if (origem === 'Pedido') {
+      if (solicitante.trim()) data.solicitante = solicitante.trim();
+      data.recebidoEm = item?.recebidoEm || todayISO;
+    }
+    if (origem === 'Rotina') {
+      data.frequencia = frequencia;
+    }
+    if (origem === 'Projeto' && item?.progresso !== undefined) {
+      data.progresso = item.progresso;
+    }
+    onSave(data);
+  };
+
+  const statusOpts = origem === 'Pedido'
+    ? ['Recebido', 'Em Andamento', 'Concluído', 'Recusado']
+    : origem === 'Rotina'
+      ? ['Pendente', 'Concluído']
+      : ['Pendente', 'Em Andamento', 'Pausado', 'Bloqueado', 'Concluído', 'Cancelado'];
+
+  return (
+    <div className="modal-backdrop" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+      <div className="modal">
+        <header className="modal__header">
+          <div className="modal__title">{isEdit ? 'Editar item' : 'Novo item'}</div>
+          <button type="button" className="modal__close" onClick={onClose} title="Fechar">
+            <X size={16}/>
+          </button>
+        </header>
+
+        <form onSubmit={handleSubmit}>
+          <div className="modal__body">
+            {/* Origem */}
+            <div className="form-group">
+              <label className="form-group__label">Origem</label>
+              <div className="form-segmented">
+                {['Projeto', 'Rotina', 'Pedido'].map(o => (
+                  <button key={o} type="button"
+                          className={`form-segmented__item ${origem === o ? 'form-segmented__item--active' : ''}`}
+                          onClick={() => setOrigem(o)}>
+                    {o}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Título */}
+            <div className="form-group">
+              <label className="form-group__label">
+                Título<span className="form-group__label-req">*</span>
+              </label>
+              <input type="text" className="form-input" value={titulo}
+                     onChange={(e) => { setTitulo(e.target.value); setError(''); }}
+                     placeholder="Ex: Revisar tabela de fretes regional Sul"
+                     autoFocus/>
+              {error && <div className="form-group__hint" style={{ color: 'var(--color-critical)' }}>{error}</div>}
+            </div>
+
+            {/* Descrição */}
+            <div className="form-group">
+              <label className="form-group__label">Descrição</label>
+              <textarea className="form-textarea" value={descricao}
+                        onChange={(e) => setDescricao(e.target.value)}
+                        placeholder="Detalhes adicionais (opcional)"
+                        rows={2}/>
+            </div>
+
+            {/* Categorias (multi-seleção) */}
+            <div className="form-group">
+              <label className="form-group__label">
+                Categorias <span style={{ color: 'var(--color-text-quaternary)', fontWeight: 400 }}>· Selecione uma ou mais</span>
+              </label>
+              <div className="form-chips">
+                {D.CATEGORIAS.map(c => {
+                  const active = categorias.includes(c);
+                  return (
+                    <button key={c} type="button"
+                            className={`form-chip ${active ? 'form-chip--active' : ''}`}
+                            onClick={() => setCategorias(prev =>
+                              active ? prev.filter(x => x !== c) : [...prev, c]
+                            )}>
+                      <span className="form-chip__mark">{active ? '■' : '□'}</span>
+                      {c}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Prioridade */}
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-group__label">Prioridade</label>
+                <div className="form-segmented">
+                  {['Alta', 'Média', 'Baixa'].map(p => (
+                    <button key={p} type="button"
+                            className={`form-segmented__item ${prioridade === p ? 'form-segmented__item--active' : ''}`}
+                            onClick={() => setPrioridade(p)}>
+                      {p}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Status + (Prazo OU Frequência) */}
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-group__label">Status</label>
+                <select className="form-select" value={status}
+                        onChange={(e) => setStatus(e.target.value)}>
+                  {statusOpts.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+              </div>
+              {origem === 'Rotina' ? (
+                <div className="form-group">
+                  <label className="form-group__label">Frequência</label>
+                  <select className="form-select" value={frequencia}
+                          onChange={(e) => setFrequencia(e.target.value)}>
+                    <option>Diária</option>
+                    <option>Semanal</option>
+                    <option>Quinzenal</option>
+                    <option>Mensal</option>
+                  </select>
+                </div>
+              ) : (
+                <div className="form-group">
+                  <label className="form-group__label">Prazo de entrega</label>
+                  <input type="date" className="form-input" value={prazo}
+                         onChange={(e) => setPrazo(e.target.value)}/>
+                </div>
+              )}
+            </div>
+
+            {/* Campos específicos */}
+            {origem === 'Pedido' && (
+              <div className="form-group">
+                <label className="form-group__label">Solicitante</label>
+                <input type="text" className="form-input" value={solicitante}
+                       onChange={(e) => setSolicitante(e.target.value)}
+                       placeholder="Ex: Gestor, Cliente interno, Outra área"/>
+              </div>
+            )}
+
+            {/* Para Rotina, mostrar também prazo opcional (próxima execução) */}
+            {origem === 'Rotina' && (
+              <div className="form-group">
+                <label className="form-group__label">Próxima execução (opcional)</label>
+                <input type="date" className="form-input" value={prazo}
+                       onChange={(e) => setPrazo(e.target.value)}/>
+                <div className="form-group__hint">
+                  Quando esta tarefa de rotina deve ser executada novamente.
+                </div>
+              </div>
+            )}
+          </div>
+
+          <footer className="modal__footer">
+            <button type="button" className="btn" onClick={onClose}>Cancelar</button>
+            <button type="submit" className="btn btn--primary">
+              {isEdit ? 'Salvar alterações' : 'Adicionar item'}
+            </button>
+          </footer>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// KANBAN — colunas por status com arrastar e soltar
+// ────────────────────────────────────────────────────────────────────────────
+const KANBAN_COLS = [
+  { status: 'Pendente',     extra: ['Recebido'], mod: '' },
+  { status: 'Em Andamento', extra: [],           mod: '' },
+  { status: 'Pausado',      extra: [],           mod: '' },
+  { status: 'Bloqueado',    extra: [],           mod: 'kanban__col--blocked' },
+  { status: 'Concluído',    extra: [],           mod: 'kanban__col--done' },
+];
+
+function KanbanView({ items, onEdit, onSetStatus }) {
+  const [draggingId, setDraggingId] = useState(null);
+  const [overCol, setOverCol] = useState(null);
+
+  const colItems = (col) =>
+    items.filter(it => it.status === col.status || col.extra.includes(it.status));
+
+  const handleDrop = (e, col) => {
+    e.preventDefault();
+    setOverCol(null);
+    const id = e.dataTransfer.getData('text/plain') || draggingId;
+    setDraggingId(null);
+    const item = items.find(it => it.id === id);
+    if (item) onSetStatus(item, col.status);
+  };
+
+  return (
+    <>
+      <div className="view-head">
+        <div className="view-head__title">Kanban</div>
+        <div className="view-head__meta">Arraste os cards entre colunas para mudar o status</div>
+      </div>
+      <div className="kanban">
+        {KANBAN_COLS.map(col => {
+          const cards = colItems(col);
+          return (
+            <div key={col.status}
+                 className={`kanban__col ${col.mod} ${overCol === col.status ? 'kanban__col--over' : ''}`}
+                 onDragOver={(e) => { e.preventDefault(); setOverCol(col.status); }}
+                 onDragLeave={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setOverCol(null); }}
+                 onDrop={(e) => handleDrop(e, col)}>
+              <div className="kanban__col-head">
+                <div className="kanban__col-title">
+                  <span className="kanban__col-dot"/>
+                  {col.status}
+                </div>
+                <span className="kanban__col-count">{cards.length}</span>
+              </div>
+              <div className="kanban__cards">
+                {cards.length === 0 ? (
+                  <div className="kanban__empty">Solte aqui</div>
+                ) : cards.map(it => (
+                  <div key={it.id}
+                       className={`kanban__card ${it.prioridade === 'Alta' ? 'kanban__card--alta' : it.prioridade === 'Média' ? 'kanban__card--media' : ''} ${draggingId === it.id ? 'kanban__card--dragging' : ''}`}
+                       draggable
+                       onDragStart={(e) => {
+                         e.dataTransfer.setData('text/plain', it.id);
+                         e.dataTransfer.effectAllowed = 'move';
+                         setDraggingId(it.id);
+                       }}
+                       onDragEnd={() => { setDraggingId(null); setOverCol(null); }}
+                       onDoubleClick={() => onEdit(it)}
+                       title="Arraste para mover · Duplo clique para editar">
+                    <div className="kanban__card-title">{it.titulo}</div>
+                    <div className="kanban__card-meta">
+                      <span>{it.origem}</span>
+                      {it.prioridade && <span>· {it.prioridade}</span>}
+                      {it.prazo && (
+                        <span className={D.isAtrasado(it) ? 'late' : ''}>
+                          · {D.formatRelative(it.prazo)}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// NOTAS — anotações rápidas, salvas localmente no navegador
+// ────────────────────────────────────────────────────────────────────────────
+function NotesView() {
+  const [notas, setNotas] = useState(() => {
+    try {
+      const saved = localStorage.getItem('villares_planner_notas');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch {}
+    return [];
+  });
+
+  useEffect(() => {
+    try { localStorage.setItem('villares_planner_notas', JSON.stringify(notas)); } catch {}
+  }, [notas]);
+
+  const criar = () => {
+    const nota = {
+      id: 'N-' + Date.now().toString(36),
+      titulo: '',
+      texto: '',
+      fixada: false,
+      criadoEm: new Date().toISOString(),
+    };
+    setNotas(prev => [nota, ...prev]);
+  };
+
+  const atualizar = (id, patch) =>
+    setNotas(prev => prev.map(n => n.id === id ? { ...n, ...patch } : n));
+
+  const excluir = (nota) => {
+    const vazia = !nota.titulo.trim() && !nota.texto.trim();
+    if (!vazia && !window.confirm('Excluir esta nota? Esta ação não pode ser desfeita.')) return;
+    setNotas(prev => prev.filter(n => n.id !== nota.id));
+  };
+
+  const ordenadas = useMemo(() =>
+    [...notas].sort((a, b) =>
+      (b.fixada ? 1 : 0) - (a.fixada ? 1 : 0) ||
+      new Date(b.criadoEm) - new Date(a.criadoEm)
+    )
+  , [notas]);
+
+  return (
+    <>
+      <div className="view-head">
+        <div className="view-head__title">Notas</div>
+        <div className="view-head__meta">
+          {notas.length} {notas.length === 1 ? 'Nota' : 'Notas'} · Salvas localmente neste navegador
+        </div>
+      </div>
+      <div className="notes-toolbar">
+        <button className="topbar__cta" onClick={criar}>
+          <Plus size={14}/> Nova nota
+        </button>
+      </div>
+      {ordenadas.length === 0 ? (
+        <div className="empty-view fade-up">
+          Nenhuma nota ainda. Clique em "Nova nota" para registrar lembretes,<br/>
+          ideias e pendências rápidas que não precisam virar um item do Planner.
+        </div>
+      ) : (
+        <div className="notes-grid">
+          {ordenadas.map(n => (
+            <div key={n.id} className={`note fade-up ${n.fixada ? 'note--pinned' : ''}`}>
+              <div className="note__bar">
+                <span className="note__date">
+                  {new Date(n.criadoEm).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).replace('.', '')}
+                </span>
+                <button className={`note__btn ${n.fixada ? 'note__btn--on' : ''}`}
+                        title={n.fixada ? 'Desafixar' : 'Fixar no topo'}
+                        onClick={() => atualizar(n.id, { fixada: !n.fixada })}>
+                  <Pin size={13}/>
+                </button>
+                <button className="note__btn note__btn--danger" title="Excluir nota"
+                        onClick={() => excluir(n)}>
+                  <Trash size={13}/>
+                </button>
+              </div>
+              <input className="note__title" placeholder="Título"
+                     value={n.titulo}
+                     onChange={(e) => atualizar(n.id, { titulo: e.target.value })}/>
+              <textarea className="note__text" placeholder="Escreva sua nota..."
+                        value={n.texto}
+                        onChange={(e) => atualizar(n.id, { texto: e.target.value })}/>
+            </div>
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// CALENDÁRIO — itens distribuídos por prazo
+// ────────────────────────────────────────────────────────────────────────────
+function CalendarView({ items, onEdit }) {
+  const now = new Date();
+  const [ym, setYm] = useState({ y: now.getFullYear(), m: now.getMonth() });
+
+  const monthLabel = new Date(ym.y, ym.m, 1)
+    .toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+
+  const shift = (delta) => setYm(({ y, m }) => {
+    const d = new Date(y, m + delta, 1);
+    return { y: d.getFullYear(), m: d.getMonth() };
+  });
+
+  // Grade: começa na segunda-feira
+  const cells = useMemo(() => {
+    const first = new Date(ym.y, ym.m, 1);
+    const start = new Date(first);
+    const dow = (first.getDay() + 6) % 7; // 0 = segunda
+    start.setDate(first.getDate() - dow);
+    return Array.from({ length: 42 }, (_, i) => {
+      const d = new Date(start);
+      d.setDate(start.getDate() + i);
+      return d;
+    });
+  }, [ym]);
+
+  const sameDay = (a, b) =>
+    a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+
+  const byDay = (d) =>
+    items.filter(it => it.prazo && sameDay(new Date(it.prazo), d))
+         .sort((a, b) => (D.isFeito(a) ? 1 : 0) - (D.isFeito(b) ? 1 : 0));
+
+  const today = new Date();
+
+  return (
+    <>
+      <div className="view-head">
+        <div className="view-head__title">Calendário</div>
+        <div className="view-head__meta">Itens distribuídos por prazo de entrega</div>
+      </div>
+      <div className="cal fade-up">
+        <div className="cal__bar">
+          <div className="cal__month">{monthLabel}</div>
+          <div className="cal__nav">
+            <button className="cal__nav-btn" onClick={() => shift(-1)}>← Anterior</button>
+            <button className="cal__nav-btn" onClick={() => setYm({ y: today.getFullYear(), m: today.getMonth() })}>Hoje</button>
+            <button className="cal__nav-btn" onClick={() => shift(1)}>Próximo →</button>
+          </div>
+        </div>
+        <div className="cal__dows">
+          {['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map(d => (
+            <div key={d} className="cal__dow">{d}</div>
+          ))}
+        </div>
+        <div className="cal__grid">
+          {cells.map((d, i) => {
+            const evs = byDay(d);
+            const out = d.getMonth() !== ym.m;
+            const isToday = sameDay(d, today);
+            return (
+              <div key={i} className={`cal__cell ${out ? 'cal__cell--out' : ''} ${isToday ? 'cal__cell--today' : ''}`}>
+                <div className="cal__day">{d.getDate()}</div>
+                {evs.slice(0, 3).map(it => (
+                  <button key={it.id}
+                          className={`cal__ev ${D.isFeito(it) ? 'cal__ev--done' : D.isAtrasado(it) ? 'cal__ev--late' : ''}`}
+                          title={it.titulo}
+                          onClick={() => onEdit(it)}>
+                    {it.titulo}
+                  </button>
+                ))}
+                {evs.length > 3 && <div className="cal__more">+{evs.length - 3} Itens</div>}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// RELATÓRIOS — distribuições por status, prioridade, origem e categoria
+// ────────────────────────────────────────────────────────────────────────────
+function ReportBars({ title, icon: IconC, rows, criticalKeys = [], strongKeys = [] }) {
+  const max = Math.max(1, ...rows.map(r => r.total));
+  return (
+    <div className="report-panel fade-up">
+      <div className="report-panel__title"><IconC size={12}/> {title}</div>
+      {rows.length === 0 ? (
+        <div style={{ color: 'var(--color-text-quaternary)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>
+          Sem dados disponíveis
+        </div>
+      ) : rows.map(r => (
+        <div key={r.nome} className="report-row">
+          <div className="report-row__label" title={r.nome}>{r.nome}</div>
+          <div className="report-row__bar">
+            <div className={`report-row__fill ${criticalKeys.includes(r.nome) ? 'report-row__fill--critical' : strongKeys.includes(r.nome) ? 'report-row__fill--strong' : ''}`}
+                 style={{ width: `${(r.total / max) * 100}%` }}/>
+          </div>
+          <div className="report-row__num">{r.total} {r.total === 1 ? 'Item' : 'Itens'}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ReportsView({ items, allCats, metrics }) {
+  const countBy = (fn) => {
+    const map = new Map();
+    items.forEach(it => {
+      const k = fn(it);
+      if (!k) return;
+      map.set(k, (map.get(k) || 0) + 1);
+    });
+    return [...map.entries()].map(([nome, total]) => ({ nome, total }))
+                             .sort((a, b) => b.total - a.total);
+  };
+
+  const porStatus     = countBy(it => it.status);
+  const porPrioridade = ['Alta', 'Média', 'Baixa']
+    .map(p => ({ nome: p, total: items.filter(it => it.prioridade === p).length }))
+    .filter(r => r.total > 0);
+  const porOrigem     = countBy(it => it.origem);
+  const porCategoria  = allCats.map(c => ({ nome: c.nome, total: c.total }));
+
+  return (
+    <>
+      <div className="view-head">
+        <div className="view-head__title">Relatórios</div>
+        <div className="view-head__meta">
+          {items.length} {items.length === 1 ? 'Item' : 'Itens'} · {Math.round(metrics.pct)}% Concluídos
+        </div>
+      </div>
+      <div className="report-grid">
+        <ReportBars title="Distribuição por status" icon={Stats} rows={porStatus}
+                    criticalKeys={['Bloqueado']} strongKeys={['Concluído']}/>
+        <ReportBars title="Distribuição por prioridade" icon={Warning} rows={porPrioridade}
+                    criticalKeys={['Alta']}/>
+        <ReportBars title="Distribuição por origem" icon={Layers} rows={porOrigem}/>
+        <ReportBars title="Distribuição por categoria" icon={Box} rows={porCategoria}/>
+      </div>
+    </>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// EQUIPE — solicitantes dos pedidos
+// ────────────────────────────────────────────────────────────────────────────
+function TeamView({ items }) {
+  const pessoas = useMemo(() => {
+    const map = new Map();
+    items.filter(it => it.origem === 'Pedido' && it.solicitante).forEach(it => {
+      const k = it.solicitante.trim();
+      if (!map.has(k)) map.set(k, []);
+      map.get(k).push(it);
+    });
+    return [...map.entries()]
+      .map(([nome, its]) => ({
+        nome,
+        total: its.length,
+        feitos: its.filter(D.isFeito).length,
+        abertos: its.filter(D.isAtivo).length,
+      }))
+      .sort((a, b) => b.total - a.total);
+  }, [items]);
+
+  return (
+    <>
+      <div className="view-head">
+        <div className="view-head__title">Equipe</div>
+        <div className="view-head__meta">Solicitantes de pedidos e volume por pessoa</div>
+      </div>
+      {pessoas.length === 0 ? (
+        <div className="empty-view fade-up">
+          Nenhum solicitante registrado ainda.<br/>
+          Crie pedidos com o campo "Solicitante" preenchido para popular esta visão.
+        </div>
+      ) : (
+        <div className="team-grid">
+          {pessoas.map(p => {
+            const pct = p.total === 0 ? 0 : (p.feitos / p.total) * 100;
+            return (
+              <div key={p.nome} className="team-card fade-up">
+                <div className="team-card__name">{p.nome}</div>
+                <div className="team-card__role">Solicitante</div>
+                <div className="team-card__stats">
+                  <div>
+                    <div className="team-card__stat-num">{p.total}</div>
+                    <div className="team-card__stat-label">Pedidos</div>
+                  </div>
+                  <div>
+                    <div className="team-card__stat-num">{p.feitos}</div>
+                    <div className="team-card__stat-label">Concluídos</div>
+                  </div>
+                  <div>
+                    <div className="team-card__stat-num">{p.abertos}</div>
+                    <div className="team-card__stat-label">Em aberto</div>
+                  </div>
+                </div>
+                <div className="bar">
+                  <div className="bar__fill" style={{ width: `${pct}%` }}/>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// API SERVICE — Google Apps Script backend
+// ────────────────────────────────────────────────────────────────────────────
+function createApi(url, token) {
+  if (!url || !token) return null;
+
+  // JSONP: cria <script> tag — único jeito de chamar Apps Script sem CORS
+  // Apps Script precisa ter &callback=xxx e retornar: callback({...})
+  const requestGet = (action, data) => new Promise((resolve, reject) => {
+    const cbName = '__apscb_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+    const timer = setTimeout(() => {
+      delete window[cbName];
+      script.remove();
+      reject(new Error('Timeout: servidor demorou demais'));
+    }, 20000);
+    window[cbName] = (json) => {
+      clearTimeout(timer);
+      delete window[cbName];
+      script.remove();
+      if (!json.ok) reject(new Error(json.error || 'erro desconhecido'));
+      else resolve(json);
+    };
+    const params = new URLSearchParams({ action, token, callback: cbName, ...(data || {}) });
+    const script = document.createElement('script');
+    script.onerror = () => {
+      clearTimeout(timer);
+      delete window[cbName];
+      reject(new Error('Erro ao carregar script — verifique a URL do Apps Script'));
+    };
+    script.src = `${url}?${params}`;
+    document.head.appendChild(script);
+  });
+
+  // POST com text/plain não dispara preflight CORS — Apps Script aceita.
+  // Funciona inclusive via file:// (Apps Script responde Access-Control-Allow-Origin: *).
+  // Se o XHR falhar mesmo assim (CORS/file://), cai para JSONP via GET com payload.
+  const requestPostXhr = (action, data) => new Promise((resolve, reject) => {
+    const params = new URLSearchParams({ action, token });
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `${url}?${params}`, true);
+    xhr.setRequestHeader('Content-Type', 'text/plain;charset=utf-8');
+    xhr.timeout = 20000;
+    xhr.onload = () => {
+      try {
+        const json = JSON.parse(xhr.responseText);
+        if (!json.ok) reject(new Error(json.error || 'erro desconhecido'));
+        else resolve(json);
+      } catch { reject(new Error('Resposta inválida do servidor')); }
+    };
+    xhr.onerror = () => { const e = new Error(`HTTP ${xhr.status || 'NetworkError'} — verifique a URL`); e.isNetwork = true; reject(e); };
+    xhr.ontimeout = () => reject(new Error('Timeout: servidor demorou demais'));
+    xhr.send(JSON.stringify(data || {}));
+  });
+
+  const requestPost = async (action, data) => {
+    try {
+      return await requestPostXhr(action, data);
+    } catch (err) {
+      // Fallback JSONP (sempre funciona em file://): envia o payload como
+      // parâmetro GET `payload`. Requer suporte no doGet do Apps Script.
+      if (err.isNetwork) {
+        return requestGet(action, { payload: JSON.stringify(data || {}) });
+      }
+      throw err;
+    }
+  };
+
+  return {
+    async ping()        { const r = await requestGet('list');              return r.items; },
+    async list()        { const r = await requestGet('list');              return r.items; },
+    async create(item)  { const r = await requestPost('create', item);    return r.item; },
+    async update(item)  { const r = await requestPost('update', item);    return r.item; },
+    async delete(id)    { const r = await requestPost('delete', { id });  return r.id; },
+    async bulk(items)   { const r = await requestPost('bulk', { items }); return r.count; },
+  };
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// SETTINGS MODAL — configurar Google Sheets API
+// ────────────────────────────────────────────────────────────────────────────
+function SettingsModal({ open, config, items, onClose, onSave, onUploaded }) {
+  const [url, setUrl] = useState(config?.url || '');
+  const [token, setToken] = useState(config?.token || '');
+  const [testing, setTesting] = useState(false);
+  const [testResult, setTestResult] = useState(null);
+  const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+    setUrl(config?.url || '');
+    setToken(config?.token || '');
+    setTestResult(null);
+  }, [open, config]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  const handleTest = async () => {
+    setTesting(true);
+    setTestResult(null);
+    try {
+      const api = createApi(url.trim(), token.trim());
+      const items = await api.list();
+      setTestResult({ ok: true, msg: `Conexão estabelecida. ${items.length} ${items.length === 1 ? 'item encontrado' : 'itens encontrados'} na planilha.` });
+    } catch (err) {
+      setTestResult({ ok: false, msg: `Falha: ${err.message}` });
+    } finally {
+      setTesting(false);
+    }
+  };
+
+  const handleSave = () => {
+    if (!url.trim() || !token.trim()) return;
+    onSave({ url: url.trim(), token: token.trim() });
+  };
+
+  const handleDisconnect = () => {
+    if (window.confirm('Desconectar do Google Sheets? Os dados continuarão disponíveis localmente.')) {
+      onSave(null);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!url.trim() || !token.trim() || !items || items.length === 0) return;
+    if (!window.confirm(`Enviar ${items.length} ${items.length === 1 ? 'item local' : 'itens locais'} para a planilha? Isso substitui o conteúdo atual da aba "Items".`)) return;
+    setUploading(true);
+    setTestResult(null);
+    try {
+      const api = createApi(url.trim(), token.trim());
+      const count = await api.bulk(items);
+      setTestResult({ ok: true, msg: `${count} ${count === 1 ? 'item enviado' : 'itens enviados'} para a planilha.` });
+      if (onUploaded) onUploaded(); // recarrega o dashboard logo após o envio
+    } catch (err) {
+      setTestResult({ ok: false, msg: `Falha no envio: ${err.message}` });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <div className="modal-backdrop" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+      <div className="modal" style={{ width: 640 }}>
+        <header className="modal__header">
+          <div className="modal__title">Configurações · Google Sheets</div>
+          <button type="button" className="modal__close" onClick={onClose} title="Fechar">
+            <X size={16}/>
+          </button>
+        </header>
+
+        <div className="modal__body">
+          <div className="help-block" style={{ marginBottom: 18 }}>
+            Para conectar uma planilha do Google Sheets como banco de dados,
+            siga o guia <code>SETUP-GOOGLE-SHEETS.md</code> incluído no projeto.
+            Você precisará da <b>URL do Web App</b> (terminada em <code>/exec</code>)
+            e do <b>token</b> definido no Apps Script.
+          </div>
+
+          <div className="form-group">
+            <label className="form-group__label">URL do Web App</label>
+            <input type="text" className="form-input" value={url}
+                   onChange={(e) => setUrl(e.target.value)}
+                   placeholder="https://script.google.com/macros/s/.../exec"/>
+          </div>
+
+          <div className="form-group">
+            <label className="form-group__label">Token de autenticação</label>
+            <input type="password" className="form-input" value={token}
+                   onChange={(e) => setToken(e.target.value)}
+                   placeholder="O mesmo SECRET_TOKEN definido no Apps Script"/>
+            <div className="form-group__hint">
+              Recomenda-se uma string longa e aleatória (mínimo 24 caracteres).
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: 10, marginTop: 8, marginBottom: 12 }}>
+            <button type="button" className="btn" onClick={handleTest}
+                    disabled={testing || !url.trim() || !token.trim()}>
+              {testing ? 'Testando…' : 'Testar conexão'}
+            </button>
+            {items && items.length > 0 && (
+              <button type="button" className="btn" onClick={handleUpload}
+                      disabled={uploading || !url.trim() || !token.trim()}>
+                {uploading ? 'Enviando…' : `Enviar ${items.length} itens locais`}
+              </button>
+            )}
+            {config && (
+              <button type="button" className="btn btn--danger" onClick={handleDisconnect}
+                      style={{ marginLeft: 'auto' }}>
+                Desconectar
+              </button>
+            )}
+          </div>
+
+          {testResult && (
+            <div className={`test-result ${testResult.ok ? 'test-result--ok' : 'test-result--err'}`}>
+              {testResult.ok ? '✓ ' : '✕ '}{testResult.msg}
+            </div>
+          )}
+        </div>
+
+        <footer className="modal__footer">
+          <button type="button" className="btn" onClick={onClose}>Cancelar</button>
+          <button type="button" className="btn btn--primary" onClick={handleSave}
+                  disabled={!url.trim() || !token.trim()}>
+            Salvar conexão
+          </button>
+        </footer>
+      </div>
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// MAIN APP
+// ────────────────────────────────────────────────────────────────────────────
+function App() {
+  const [theme, toggleTheme] = useTheme();
+  const [query, setQuery] = useState('');
+  const [activeTab, setActiveTab] = useState('Hoje');
+  const [view, setView] = useState('dashboard'); // dashboard | kanban | notas | calendario | relatorios | equipe
+  const [filterPrio, setFilterPrio] = useState('Todas');
+  const [filterCat, setFilterCat] = useState('Todas');
+  const [lastUpdate, setLastUpdate] = useState('agora');
+
+  // ── API config (Google Sheets) ──
+  const [apiConfig, setApiConfig] = useState(() => {
+    try {
+      const saved = localStorage.getItem('villares_planner_api');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // Descarta URLs corrompidas (sem https://)
+        if (parsed?.url && !parsed.url.startsWith('https://')) return null;
+        return parsed;
+      }
+    } catch {}
+    return null;
+  });
+  useEffect(() => {
+    try {
+      if (apiConfig) localStorage.setItem('villares_planner_api', JSON.stringify(apiConfig));
+      else localStorage.removeItem('villares_planner_api');
+    } catch {}
+  }, [apiConfig]);
+
+  const api = useMemo(() => apiConfig ? createApi(apiConfig.url, apiConfig.token) : null, [apiConfig]);
+
+  // syncStatus: 'idle' | 'syncing' | 'synced' | 'error' | 'offline'
+  const [syncStatus, setSyncStatus] = useState(apiConfig ? 'syncing' : 'offline');
+  const [syncError, setSyncError] = useState(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
+  // Items: persistido em localStorage como cache; quando API conectada, sincroniza
+  const [items, setItems] = useState(() => {
+    try {
+      const saved = localStorage.getItem('villares_planner_items');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch {}
+    return D.MOCK_ITEMS;
+  });
+  useEffect(() => {
+    try { localStorage.setItem('villares_planner_items', JSON.stringify(items)); } catch {}
+  }, [items]);
+
+  // ── Carrega da API quando configurada / muda ──
+  const loadFromApi = async () => {
+    if (!api) { setSyncStatus('offline'); return; }
+    setSyncStatus('syncing');
+    setSyncError(null);
+    try {
+      const remoteItems = await api.list();
+      if (Array.isArray(remoteItems)) {
+        setItems(remoteItems);
+        setSyncStatus('synced');
+        setLastUpdate('agora');
+      }
+    } catch (err) {
+      console.error('Sync error:', err);
+      setSyncStatus('error');
+      setSyncError(err.message);
+    }
+  };
+
+  useEffect(() => {
+    if (api) loadFromApi();
+    else setSyncStatus('offline');
+  // eslint-disable-next-line
+  }, [api]);
+
+  // Modal item + menu
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState(null);
+  const [openMenuId, setOpenMenuId] = useState(null);
+
+  // Click outside fecha menu
+  useEffect(() => {
+    if (!openMenuId) return;
+    const onClick = (e) => {
+      if (!e.target.closest('.dropdown')) setOpenMenuId(null);
+    };
+    const onKey = (e) => { if (e.key === 'Escape') setOpenMenuId(null); };
+    const t = setTimeout(() => {
+      document.addEventListener('click', onClick);
+      document.addEventListener('keydown', onKey);
+    }, 0);
+    return () => {
+      clearTimeout(t);
+      document.removeEventListener('click', onClick);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [openMenuId]);
+
+  const handleNavigate = (v) => setView(v);
+
+  const handleNew = () => { setEditingItem(null); setModalOpen(true); };
+  const handleEdit = (item) => { setEditingItem(item); setModalOpen(true); };
+  const handleModalClose = () => { setModalOpen(false); setEditingItem(null); };
+
+  const generateId = (origem) => {
+    const prefix = origem === 'Projeto' ? 'P' : origem === 'Rotina' ? 'R' : 'D';
+    return `${prefix}-${Date.now().toString(36)}`;
+  };
+
+  // Sync funciona em http:// e também em file:// (JSONP + POST text/plain)
+  const canSync = () => !!api;
+
+  // Operações: otimistas (atualiza UI primeiro) + sincroniza com API
+  const handleModalSave = async (data) => {
+    if (editingItem) {
+      const merged = { ...editingItem, ...data };
+      setItems(prev => prev.map(it => it.id === editingItem.id ? merged : it));
+      handleModalClose();
+      if (canSync()) {
+        setSyncStatus('syncing');
+        try {
+          await api.update(merged);
+          await loadFromApi(); // recarrega da planilha logo após o envio
+        } catch (err) {
+          setSyncStatus('error'); setSyncError(err.message);
+        }
+      }
+    } else {
+      const newItem = { id: generateId(data.origem), ...data };
+      setItems(prev => [newItem, ...prev]);
+      handleModalClose();
+      if (canSync()) {
+        setSyncStatus('syncing');
+        try {
+          await api.create(newItem);
+          await loadFromApi(); // recarrega da planilha logo após o envio
+        } catch (err) {
+          setSyncStatus('error'); setSyncError(err.message);
+        }
+      }
+    }
+  };
+
+  // Kanban: mover card de coluna = mudar status (otimista + sync)
+  const handleSetStatus = async (item, newStatus) => {
+    if (item.status === newStatus) return;
+    const updated = { ...item, status: newStatus };
+    setItems(prev => prev.map(it => it.id === item.id ? updated : it));
+    if (canSync()) {
+      setSyncStatus('syncing');
+      try { await api.update(updated); await loadFromApi(); }
+      catch (err) { setSyncStatus('error'); setSyncError(err.message); }
+    }
+  };
+
+  const handleToggleComplete = async (item) => {
+    const isFeito = D.isFeito(item);
+    const newStatus = isFeito
+      ? (item.origem === 'Pedido' ? 'Recebido' : 'Pendente')
+      : 'Concluído';
+    const updated = { ...item, status: newStatus };
+    setItems(prev => prev.map(it => it.id === item.id ? updated : it));
+    if (canSync()) {
+      setSyncStatus('syncing');
+      try { await api.update(updated); await loadFromApi(); }
+      catch (err) { setSyncStatus('error'); setSyncError(err.message); }
+    }
+  };
+
+  const handleDuplicate = async (item) => {
+    const copy = {
+      ...item,
+      id: generateId(item.origem),
+      titulo: `${item.titulo} (cópia)`,
+      criadoEm: new Date().toISOString().slice(0, 10),
+      status: 'Pendente',
+    };
+    setItems(prev => [copy, ...prev]);
+    if (canSync()) {
+      setSyncStatus('syncing');
+      try { await api.create(copy); await loadFromApi(); }
+      catch (err) { setSyncStatus('error'); setSyncError(err.message); }
+    }
+  };
+
+  const handleDelete = async (item) => {
+    if (!window.confirm(`Excluir "${item.titulo}"? Esta ação não pode ser desfeita.`)) return;
+    setItems(prev => prev.filter(it => it.id !== item.id));
+    if (canSync()) {
+      setSyncStatus('syncing');
+      try { await api.delete(item.id); await loadFromApi(); }
+      catch (err) { setSyncStatus('error'); setSyncError(err.message); }
+    }
+  };
+
+  const handleSettingsSave = (config) => {
+    setApiConfig(config);
+    setSettingsOpen(false);
+  };
+
+  // Ordenação por header
+  const [sortBy, setSortBy] = useState(null);
+  const [sortDir, setSortDir] = useState('asc');
+  const handleSort = (key) => {
+    if (sortBy === key) {
+      if (sortDir === 'asc') setSortDir('desc');
+      else { setSortBy(null); setSortDir('asc'); }
+    } else {
+      setSortBy(key);
+      setSortDir('asc');
+    }
+  };
+
+  const today = useMemo(() => {
+    return new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).replace('.', '');
+  }, []);
+
+  // Refresh manual: se tem API, recarrega; senão só atualiza timestamp
+  const refresh = () => {
+    if (api) loadFromApi();
+    else setLastUpdate('agora');
+  };
+
+  useEffect(() => {
+    let mins = 0;
+    const id = setInterval(() => {
+      mins += 1;
+      setLastUpdate(mins === 1 ? 'há 1 min' : `há ${mins} min`);
+    }, 60000);
+    return () => clearInterval(id);
+  }, [api]);
+
+  // ── filtros ──
+  const queryFiltered = useMemo(() => {
+    let arr = items;
+    if (query.trim()) {
+      const q = query.toLowerCase();
+      arr = arr.filter(it => {
+        const blob = `${it.titulo} ${it.descricao || ''} ${it.categoria} ${it.origem}`.toLowerCase();
+        return blob.includes(q);
+      });
+    }
+    if (filterPrio !== 'Todas') arr = arr.filter(it => it.prioridade === filterPrio);
+    if (filterCat !== 'Todas') arr = arr.filter(it => D.hasCat(it, filterCat));
+    return arr;
+  }, [items, query, filterPrio, filterCat]);
+
+  const viewFiltered = queryFiltered;
+
+  const tabFiltered = useMemo(() => {
+    switch (activeTab) {
+      case 'Hoje':      return viewFiltered.filter(it => D.isAtivo(it) && (D.isHoje(it) || D.isAtrasado(it)));
+      case 'Todos':     return viewFiltered.filter(D.isAtivo);
+      case 'Projeto':   return viewFiltered.filter(it => it.origem === 'Projeto' && D.isAtivo(it));
+      case 'Rotina':    return viewFiltered.filter(it => it.origem === 'Rotina'  && D.isAtivo(it));
+      case 'Pedido':    return viewFiltered.filter(it => it.origem === 'Pedido'  && D.isAtivo(it));
+      case 'Atrasados': return viewFiltered.filter(D.isAtrasado);
+      case 'Concluidos': return viewFiltered.filter(D.isFeito);
+      default: return viewFiltered;
+    }
+  }, [viewFiltered, activeTab]);
+
+  const tabCounts = useMemo(() => ({
+    Hoje:       viewFiltered.filter(it => D.isAtivo(it) && (D.isHoje(it) || D.isAtrasado(it))).length,
+    Todos:      viewFiltered.filter(D.isAtivo).length,
+    Projeto:    viewFiltered.filter(it => it.origem === 'Projeto' && D.isAtivo(it)).length,
+    Rotina:     viewFiltered.filter(it => it.origem === 'Rotina'  && D.isAtivo(it)).length,
+    Pedido:     viewFiltered.filter(it => it.origem === 'Pedido'  && D.isAtivo(it)).length,
+    Atrasados:  viewFiltered.filter(D.isAtrasado).length,
+    Concluidos: viewFiltered.filter(D.isFeito).length,
+  }), [viewFiltered]);
+
+  // ── ordenação: por urgência (default) ou por coluna selecionada ──
+  const rank = (it) => {
+    if (D.isAtrasado(it)) return 0;
+    if (D.isHoje(it)) return 1;
+    if (D.isProximos48h(it)) return 2;
+    if (D.isEstaSemana(it)) return 3;
+    return 4;
+  };
+  const prioRank = { Alta: 0, 'Média': 1, Baixa: 2 };
+  const statusRank = { 'Bloqueado': 0, 'Pausado': 1, 'Em Andamento': 2, 'Pendente': 3, 'Recebido': 4, 'Concluído': 5, 'Recusado': 6, 'Cancelado': 7 };
+
+  const sorted = useMemo(() => {
+    const arr = [...tabFiltered];
+    if (!sortBy) {
+      // Default: urgência
+      return arr.sort((a, b) => {
+        const ra = rank(a), rb = rank(b);
+        if (ra !== rb) return ra - rb;
+        if (a.prazo && b.prazo) return new Date(a.prazo) - new Date(b.prazo);
+        if (a.prazo) return -1;
+        if (b.prazo) return 1;
+        return 0;
+      });
+    }
+    const dir = sortDir === 'asc' ? 1 : -1;
+    arr.sort((a, b) => {
+      let av, bv;
+      switch (sortBy) {
+        case 'titulo':
+          av = (a.titulo || '').toLowerCase();
+          bv = (b.titulo || '').toLowerCase();
+          break;
+        case 'categoria':
+          av = (a.categoria || '').toLowerCase();
+          bv = (b.categoria || '').toLowerCase();
+          break;
+        case 'prioridade':
+          av = prioRank[a.prioridade] ?? 99;
+          bv = prioRank[b.prioridade] ?? 99;
+          break;
+        case 'criadoEm':
+          av = a.criadoEm ? new Date(a.criadoEm).getTime() : 0;
+          bv = b.criadoEm ? new Date(b.criadoEm).getTime() : 0;
+          break;
+        case 'prazo':
+          av = a.prazo ? new Date(a.prazo).getTime() : Number.POSITIVE_INFINITY;
+          bv = b.prazo ? new Date(b.prazo).getTime() : Number.POSITIVE_INFINITY;
+          break;
+        case 'status':
+          av = statusRank[a.status] ?? 99;
+          bv = statusRank[b.status] ?? 99;
+          break;
+        default:
+          return 0;
+      }
+      if (av < bv) return -1 * dir;
+      if (av > bv) return 1 * dir;
+      return 0;
+    });
+    return arr;
+  }, [tabFiltered, sortBy, sortDir]);
+
+  // ── métricas globais (sobre TODOS os items, não só do tab) ──
+  const metrics = useMemo(() => {
+    const ativos    = items.filter(D.isAtivo);
+    const feitos    = items.filter(D.isFeito);
+    const atrasados = items.filter(D.isAtrasado);
+    const hoje      = items.filter(D.isHoje);
+    const andamento = items.filter(it => D.STATUS_BUCKET[it.status] === 'andamento');
+    const total     = ativos.length + feitos.length;
+    const pct       = total === 0 ? 0 : (feitos.length / total) * 100;
+    return { ativos, feitos, atrasados, hoje, andamento, total, pct };
+  }, [items]);
+
+  // ── aside ──
+  const upcoming = useMemo(() =>
+    items.filter(it => D.isAtivo(it) && it.prazo && D.diasAteHoje(it.prazo) <= 7)
+         .sort((a,b) => new Date(a.prazo) - new Date(b.prazo))
+         .slice(0, 6)
+  , [items]);
+
+  const allCats = useMemo(() =>
+    D.CATEGORIAS.map(cat => {
+      const cs = items.filter(it => D.hasCat(it, cat));
+      const feitos = cs.filter(D.isFeito).length;
+      const total = cs.length;
+      return { nome: cat, feitos, total, pct: total === 0 ? 0 : (feitos / total) * 100 };
+    }).filter(r => r.total > 0).sort((a, b) => b.total - a.total)
+  , [items]);
+
+  // Ordem fixa das 5 categorias destacadas no painel "Conclusão por categoria"
+  const ORDEM_DESTAQUE = [
+    'Operações Diárias',
+    'Relatórios / KPIs',
+    'Análise de Dados',
+    'Transportadoras',
+    'Pessoal / Desenvolvimento',
+  ];
+  const categoriasDestaque = useMemo(() =>
+    ORDEM_DESTAQUE.map(cat => {
+      const cs = items.filter(it => D.hasCat(it, cat));
+      const feitos = cs.filter(D.isFeito).length;
+      const total = cs.length;
+      return { nome: cat, feitos, total, pct: total === 0 ? 0 : (feitos / total) * 100 };
+    })
+  , [items]);
+
+  return (
+    <div className="app">
+      <div className="ambience"/>
+      <Sidebar theme={theme} view={view} onNavigate={handleNavigate}
+               onToggleTheme={toggleTheme} onOpenSettings={() => setSettingsOpen(true)}/>
+
+      <div className="main">
+        <Topbar query={query} onQueryChange={setQuery} onNew={handleNew}/>
+
+        <div className="page">
+          <PageHeader today={today} lastUpdate={lastUpdate} onRefresh={refresh}
+                      syncStatus={syncStatus}
+                      onOpenSettings={() => setSettingsOpen(true)}/>
+
+          {syncStatus === 'error' && syncError && (
+            <div className="banner banner--error">
+              <Warning size={16} className="banner__icon"/>
+              <div className="banner__body">
+                <div className="banner__title">Erro de sincronização com Google Sheets</div>
+                <div className="banner__text">
+                  {syncError.includes('403')
+                    ? 'Acesso negado (403). No Apps Script, republique o deploy com "Who has access: Anyone" (sem exigir login Google).'
+                    : syncError.includes('NetworkError') || syncError.includes('network')
+                    ? 'Sem conexão com o servidor. Verifique a URL do Apps Script nas configurações.'
+                    : `${syncError}. Os dados continuam disponíveis localmente.`}
+                </div>
+              </div>
+              <button className="banner__action" onClick={() => setSettingsOpen(true)}>
+                Abrir configurações
+              </button>
+              <button className="banner__close" onClick={() => setSyncError(null)} title="Fechar">
+                <X size={14}/>
+              </button>
+            </div>
+          )}
+
+          {!apiConfig && (
+            <div className="banner">
+              <Layers size={16} className="banner__icon"/>
+              <div className="banner__body">
+                <div className="banner__title">Modo local</div>
+                <div className="banner__text">
+                  Os dados estão salvos apenas no navegador. Conecte uma planilha Google Sheets para sincronizar com a equipe.
+                </div>
+              </div>
+              <button className="banner__action" onClick={() => setSettingsOpen(true)}>
+                Configurar Google Sheets
+              </button>
+            </div>
+          )}
+
+          {/* HERO: 4 KPI tiles em linha + faixa de conclusão geral abaixo */}
+          {view === 'dashboard' && (<>
+          <section className="hero">
+            <KPI label="Concluídos"  value={metrics.feitos.length}
+                 sub={`${Math.round(metrics.pct)}% de taxa de conclusão`}
+                 icon={Check} variant="positive"/>
+            <KPI label="Em andamento"  value={metrics.andamento.length}
+                 sub={`De ${metrics.ativos.length} Ativos`} icon={Loader} variant="info"/>
+            <KPI label="Vencimentos hoje"  value={metrics.hoje.length}
+                 sub={metrics.hoje.length === 0 ? 'Nenhum vencimento hoje' : 'Concluir no dia'}
+                 icon={Clock} variant="warning"/>
+            <KPI label="Atrasados"  value={metrics.atrasados.length}
+                 sub={metrics.atrasados.length === 0 ? 'Sem atrasos' : 'Requer atenção'}
+                 icon={Warning}
+                 variant={metrics.atrasados.length > 0 ? "negative" : ""}/>
+          </section>
+          <section className="hero-bottom">
+            <Conclusion
+              pct={metrics.pct}
+              feitos={metrics.feitos.length}
+              ativos={metrics.ativos.length}
+              total={metrics.total}
+              categorias={categoriasDestaque}
+            />
+          </section>
+          </>)}
+
+          {view === 'dashboard' && (<>
+          {/* Tabs estilo ML */}
+          <Tabs active={activeTab} onChange={setActiveTab} counts={tabCounts}/>
+
+          {/* Toolbar */}
+          <Toolbar count={sorted.length}
+                   sortBy={sortBy}
+                   onSortSelect={(key) => { setSortBy(key); setSortDir('asc'); }}
+                   prio={filterPrio} onPrio={setFilterPrio}
+                   cat={filterCat} onCat={setFilterCat}/>
+
+          {/* List header + list */}
+          <ListHeader sortBy={sortBy} sortDir={sortDir} onSort={handleSort}/>
+          {sorted.length === 0 ? (
+            <div className="list-empty">
+              {activeTab === 'Hoje'
+                ? 'Nada para hoje. Aproveite para adiantar o que está vindo nos próximos dias.'
+                : 'Nenhum item nesta visualização'}
+            </div>
+          ) : (
+            <div className="list">
+              {sorted.map(item => (
+                <ListRow key={item.id} item={item}
+                         menuOpen={openMenuId === item.id}
+                         onMenuToggle={(id) => setOpenMenuId(prev => prev === id ? null : id)}
+                         onEdit={handleEdit}
+                         onToggleComplete={handleToggleComplete}
+                         onDuplicate={handleDuplicate}
+                         onDelete={handleDelete}/>
+              ))}
+            </div>
+          )}
+
+          </>)}
+
+          {/* Aside grid — só no dashboard */}
+          {view === 'dashboard' && (
+            <div className="aside-grid">
+              <UpcomingPanel items={upcoming}/>
+              <CategoriesPanel data={allCats}/>
+            </div>
+          )}
+
+          {view === 'kanban' && (
+            <KanbanView items={queryFiltered} onEdit={handleEdit} onSetStatus={handleSetStatus}/>
+          )}
+          {view === 'notas' && <NotesView/>}
+          {view === 'calendario' && <CalendarView items={queryFiltered} onEdit={handleEdit}/>}
+          {view === 'relatorios' && <ReportsView items={items} allCats={allCats} metrics={metrics}/>}
+          {view === 'equipe' && <TeamView items={items}/>}
+
+          <footer className="footer">
+            <span>Villares · Planner v0.3</span>
+            <span>
+              {items.length} {items.length === 1 ? 'Item total' : 'Itens totais'} · {Math.round(metrics.pct)}% de taxa de conclusão{view === 'dashboard' ? ` · Aba ativa: ${activeTab}` : ''}
+            </span>
+          </footer>
+        </div>
+      </div>
+
+      <ItemModal
+        open={modalOpen}
+        item={editingItem}
+        onClose={handleModalClose}
+        onSave={handleModalSave}
+      />
+
+      <SettingsModal
+        open={settingsOpen}
+        config={apiConfig}
+        items={items}
+        onClose={() => setSettingsOpen(false)}
+        onSave={handleSettingsSave}
+        onUploaded={loadFromApi}
+      />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+
+</script>
+</body>
+</html>
