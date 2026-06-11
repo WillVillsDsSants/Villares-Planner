@@ -2331,7 +2331,7 @@ const MOCK_ITEMS = [
     titulo: "Conferir base de pedidos do dia",
     categoria: "Operações Diárias",
     prioridade: "Alta", status: "Pendente",
-    frequencia: "Diária", dias: "Seg, Ter, Qua, Qui, Sex", hora: "08:30", ultimaConclusao: dayOffset(-1),
+    frequencia: "Diária", dias: "Seg, Ter, Qua, Qui, Sex", hora: "08:30", conclusoes: [],
     tempoEst: 0.5,
   },
   {
@@ -2367,7 +2367,7 @@ const MOCK_ITEMS = [
     titulo: "Fechar KPIs da semana",
     categoria: "Relatórios / KPIs",
     prioridade: "Alta", status: "Pendente",
-    frequencia: "Semanal", dias: "Seg", hora: "09:00", ultimaConclusao: dayOffset(-7),
+    frequencia: "Semanal", dias: "Seg", hora: "09:00", conclusoes: [],
     tempoEst: 2.0,
   },
   {
@@ -2519,8 +2519,21 @@ const diasAteHoje = (date) => {
   return Math.round((d - t) / (1000 * 60 * 60 * 24));
 };
 
-const rotinaFeitaHoje = (item) =>
-  !!item.ultimaConclusao && diasAteHoje(item.ultimaConclusao) === 0;
+// Conclusões de rotina por DIA: lista de datas 'yyyy-mm-dd' em item.conclusoes.
+// Concluir hoje afeta SÓ hoje — cada dia tem seu próprio registro.
+const rotinaFeitaNoDia = (item, d) => {
+  const iso = localISO(parseLocalDate(d));
+  if (Array.isArray(item.conclusoes) && item.conclusoes.includes(iso)) return true;
+  // fallback legado (registros antigos em "Última Conclusão")
+  if (item.ultimaConclusao) {
+    const u = parseLocalDate(item.ultimaConclusao);
+    const dd = parseLocalDate(d);
+    return u.getFullYear() === dd.getFullYear() && u.getMonth() === dd.getMonth() && u.getDate() === dd.getDate();
+  }
+  return false;
+};
+
+const rotinaFeitaHoje = (item) => rotinaFeitaNoDia(item, new Date());
 
 const isAtivo = (item) => {
   if (temDias(item)) return !rotinaFeitaHoje(item);
@@ -2600,7 +2613,7 @@ window.PLANNER_DATA = {
   diasAteHoje, formatDate, formatRelative,
   parseLocalDate, localISO,
   splitCats, hasCat,
-  DIAS_SEMANA, splitDias, temDias, rotinaNoDia, rotinaFeitaHoje,
+  DIAS_SEMANA, splitDias, temDias, rotinaNoDia, rotinaFeitaHoje, rotinaFeitaNoDia,
 };
 
 </script>
@@ -3616,7 +3629,7 @@ const parseDia = (v) => D.parseLocalDate(v);
 
 // Ocorrência concluída naquele dia específico?
 const ocorrenciaFeita = (it, d) => {
-  if (D.temDias(it)) return !!it.ultimaConclusao && sameDay(parseDia(it.ultimaConclusao), d);
+  if (D.temDias(it)) return D.rotinaFeitaNoDia(it, d);
   return D.isFeito(it);
 };
 
@@ -4392,12 +4405,17 @@ function createApi(url, token) {
     async update(item)  { const r = await requestPost('update', item);    return r.item; },
     async delete(id)    { const r = await requestPost('delete', { id });  return r.id; },
     async bulk(items)   { const r = await requestPost('bulk', { items }); return r.count; },
+    async concluir(p)   { const r = await requestPost('concluir', p);     return r; },
   };
 }
 
 // ────────────────────────────────────────────────────────────────────────────
 // SETTINGS MODAL — configurar Google Sheets API
 // ────────────────────────────────────────────────────────────────────────────
+// Remove espaços, quebras e caracteres invisíveis (zero-width, BOM, NBSP)
+// que vêm junto ao copiar/colar e fazem o token parecer certo sem ser
+const cleanCred = (s) => String(s || '').replace(/[\u200B-\u200D\uFEFF\u00A0]/g, '').trim();
+
 function SettingsModal({ open, config, items, onClose, onSave, onUploaded }) {
   const [url, setUrl] = useState(config?.url || '');
   const [token, setToken] = useState(config?.token || '');
@@ -4425,7 +4443,7 @@ function SettingsModal({ open, config, items, onClose, onSave, onUploaded }) {
     setTesting(true);
     setTestResult(null);
     try {
-      const api = createApi(url.trim(), token.trim());
+      const api = createApi(cleanCred(url), cleanCred(token));
       const items = await api.list();
       setTestResult({ ok: true, msg: `Conexão estabelecida. ${items.length} ${items.length === 1 ? 'item encontrado' : 'itens encontrados'} na planilha.` });
     } catch (err) {
@@ -4436,8 +4454,8 @@ function SettingsModal({ open, config, items, onClose, onSave, onUploaded }) {
   };
 
   const handleSave = () => {
-    if (!url.trim() || !token.trim()) return;
-    onSave({ url: url.trim(), token: token.trim() });
+    if (!cleanCred(url) || !cleanCred(token)) return;
+    onSave({ url: cleanCred(url), token: cleanCred(token) });
   };
 
   const handleDisconnect = () => {
@@ -4452,7 +4470,7 @@ function SettingsModal({ open, config, items, onClose, onSave, onUploaded }) {
     setUploading(true);
     setTestResult(null);
     try {
-      const api = createApi(url.trim(), token.trim());
+      const api = createApi(cleanCred(url), cleanCred(token));
       const count = await api.bulk(items);
       setTestResult({ ok: true, msg: `${count} ${count === 1 ? 'item enviado' : 'itens enviados'} para a planilha.` });
       if (onUploaded) onUploaded(); // recarrega o dashboard logo após o envio
@@ -4565,6 +4583,17 @@ function SettingsModal({ open, config, items, onClose, onSave, onUploaded }) {
           {testResult && (
             <div className={`test-result ${testResult.ok ? 'test-result--ok' : 'test-result--err'}`}>
               {testResult.ok ? '✓ ' : '✕ '}{testResult.msg}
+            </div>
+          )}
+          {testResult && !testResult.ok && /token/i.test(testResult.msg) && (
+            <div className="help-block" style={{ marginTop: 10 }}>
+              <b>"Token inválido" com os dados certos?</b> Em 9 de 10 casos a causa é o deploy
+              desatualizado: o Apps Script só passa a usar o novo código/token depois de
+              <code> Implantar → Gerenciar implantações → ✎ → Versão: Nova versão → Implantar</code>.
+              Salvar o arquivo no editor <b>não</b> atualiza o Web App.
+              Confira também: (1) se você criou uma <b>Nova implantação</b> em vez de editar a
+              existente, a URL mudou — use a URL mais recente; (2) espaços ou quebra de linha
+              no valor do <code>SECRET_TOKEN</code> dentro do script.
             </div>
           )}
         </div>
@@ -4754,9 +4783,22 @@ function App() {
     const isFeito = D.isFeito(item);
     let updated;
     if (D.temDias(item)) {
-      // Rotina recorrente: concluir vale só para hoje; amanhã ela volta sozinha
-      updated = { ...item, ultimaConclusao: isFeito ? '' : D.localISO() };
-    } else {
+      // Rotina recorrente: registro POR DIA — concluir hoje afeta apenas hoje
+      const iso = D.localISO();
+      const lista = Array.isArray(item.conclusoes) ? item.conclusoes : [];
+      const conclusoes = isFeito ? lista.filter(x => x !== iso) : [...lista, iso];
+      updated = { ...item, conclusoes, ultimaConclusao: '' };
+      setItems(prev => prev.map(it => it.id === item.id ? updated : it));
+      if (canSync()) {
+        setSyncStatus('syncing');
+        try {
+          await api.concluir({ id: item.id, data: iso, done: !isFeito, titulo: item.titulo });
+          await loadFromApi();
+        } catch (err) { setSyncStatus('error'); setSyncError(err.message); }
+      }
+      return;
+    }
+    {
       const newStatus = isFeito
         ? (item.origem === 'Pedido' ? 'Recebido' : 'Pendente')
         : 'Concluído';
@@ -5107,7 +5149,7 @@ function App() {
           {view === 'equipe' && <TeamView items={items}/>}
 
           <footer className="footer">
-            <span>Villares · Planner v0.9</span>
+            <span>Villares · Planner v1.0</span>
             <span>
               {items.length} {items.length === 1 ? 'Item total' : 'Itens totais'} · {Math.round(metrics.pct)}% de taxa de conclusão{view === 'dashboard' ? ` · Aba ativa: ${activeTab}` : ''}
             </span>
