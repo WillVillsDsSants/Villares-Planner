@@ -3,7 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Villares | Planner - Dashboard</title>
+  <title>Villares Planner — Gestor de Tarefas, Rotinas e Calendário Operacional Online</title>
+
+  <!-- ══ SEO ══ -->
+  <meta name="description" content="Villares Planner: dashboard operacional para gestão de tarefas, rotinas recorrentes, pedidos e calendário. Kanban, agenda diária, relatórios e sincronização com Google Sheets. Feito no Brasil, em Bauru/SP." />
+  <meta name="keywords" content="villares planner, gestor de tarefas online, planner operacional, rotinas recorrentes, dashboard de tarefas, kanban online, calendário de tarefas, gestão de rotinas, planner logística, organizador de tarefas grátis, google sheets planner, produtividade, Bauru, São Paulo, Brasil" />
+  <meta name="author" content="Willian Villares" />
+  <meta name="robots" content="index, follow" />
+  <meta name="language" content="pt-BR" />
+  <link rel="canonical" href="https://willianvillares.com/planner" /> <!-- Ajuste para o domínio final de publicação -->
+
+  <!-- ══ Geolocalização ══ -->
+  <meta name="geo.region" content="BR-SP" />
+  <meta name="geo.placename" content="Bauru, São Paulo, Brasil" />
+  <meta name="geo.position" content="-22.3145;-49.0587" />
+  <meta name="ICBM" content="-22.3145, -49.0587" />
+
+  <!-- ══ Open Graph / Twitter ══ -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Villares Planner" />
+  <meta property="og:title" content="Villares Planner — Gestor de Tarefas, Rotinas e Calendário Operacional" />
+  <meta property="og:description" content="Dashboard operacional com tarefas, rotinas recorrentes por dia da semana, Kanban, calendário com 4 visualizações e sincronização com Google Sheets." />
+  <meta property="og:url" content="https://willianvillares.com/planner" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Villares Planner — Gestor de Tarefas e Rotinas Online" />
+  <meta name="twitter:description" content="Tarefas, rotinas recorrentes, Kanban e calendário operacional sincronizados com Google Sheets. Gratuito e em português." />
+
+  <!-- ══ Dados estruturados (JSON-LD) ══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "Villares Planner",
+        "alternateName": "Villares Planner — Dashboard Operacional",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "inLanguage": "pt-BR",
+        "description": "Gestor de tarefas, rotinas recorrentes, pedidos e calendário operacional com Kanban, relatórios e sincronização com Google Sheets.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "BRL" },
+        "author": { "@id": "#villares" },
+        "featureList": "Tarefas com hora e prazo, Rotinas recorrentes por dia da semana, Kanban com arrastar e soltar, Calendário com modos Agenda/Semana/Mês/Timeline, Notas rápidas, Relatórios, Sincronização com Google Sheets"
+      },
+      {
+        "@type": "Organization",
+        "@id": "#villares",
+        "name": "Villares",
+        "founder": { "@type": "Person", "name": "Willian Villares" },
+        "url": "https://willianvillares.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Bauru",
+          "addressRegion": "SP",
+          "addressCountry": "BR"
+        },
+        "areaServed": { "@type": "Country", "name": "Brasil" },
+        "location": {
+          "@type": "Place",
+          "geo": { "@type": "GeoCoordinates", "latitude": -22.3145, "longitude": -49.0587 }
+        }
+      }
+    ]
+  }
+  </script>
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23070707'/%3E%3Cpath d='M12 21 19 43 26 21' fill='none' stroke='%23E5E5E7' stroke-width='4.2'/%3E%3Crect x='30.8' y='23' width='2' height='18' fill='%23DC2222'/%3E%3Cpath d='M38.8 43V21h10.7v10.5H38.8' fill='none' stroke='%23E5E5E7' stroke-width='3.8'/%3E%3C/svg%3E" />
   <link rel="icon" type="image/png" sizes="180x180" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAACdklEQVR42u3dMW7jMBRF0dgIwEW4MdRm/0txK7jxPtK5iJKIlinxkzynHAwyGOfmP2uQYE4ppQ/4zdlLgDgQB+JAHIgDcSAOxIE4EAeIA3EgDsSBOBAH4kAciANxgDgQB+JAHIgDcSAOxIE4EAeIA3EgDsSBOBAH4kAciANxIA4QB+JAHIgDcSAOxIE4EAfigKdPL8EG83xf/T3TdA31kcXRWEBmBXEgjrAnt4MzPvQb0r0/f8+Pf9hbNpejzKftRxllQ1l+cIck+uWo+xlySCLGEe2rViXtPa2UasiCtBRHzC9QZyP000pMt8tl+Ytfj4dXpnIc83x/8wu6yqZM03X1z93894qzkuf9Xj6b4j0H4gj5zOI5pdU44lxym2JW6DGObetgU9qOI8I9tylmhX7jeHUjbEoPcdS96jbFrNB7HPlLYVP6iaPWbbcpZoUx4sjZC5vSWxzHX3ibYlbYUbhvE/z/e8OCbMog83fc5TjyztsUs8J4cfx1kD2n9BzHMdfeppgVxME4cWTe/OXbi8w3HDbF5UAciGN1WTzEVlHhn89zfgo5+EPsrj9I7XIgjhLLYlPGimOPk+sh1qwgDs8pI8dRdgVsillBHIij1BbYFJcDcSCOUotgU1wOxIE4Su2CTXE5EAfiKLUONsXlQByIo9RG1N2UQb7LxP/x5r9zMys0HUf+UnhOcTkQB+JAHIgDcSAOEAevOKWUvAq4HIgDcSAOxIE4EAfiQByIA8SBOBAH4kAciANxIA7EgThAHIgDcSAOxIE4EAfiQByIA3GAOBAH4kAciANxIA7EgTgQB4gDcSAOxIE4EAfiQByIA3GAOFjxDYYTmZpUhOnsAAAAAElFTkSuQmCC" />
@@ -2088,6 +2152,44 @@ body {
   opacity: 0.88;
 }
 
+/* ── Guia de configuração (Settings) ── */
+.setup-guide {
+  border: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-surface-2);
+  margin-bottom: 18px;
+}
+.setup-guide__summary {
+  cursor: pointer; list-style: none;
+  padding: 11px 14px;
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--color-text-secondary);
+  display: flex; align-items: center; gap: 8px;
+}
+.setup-guide__summary::-webkit-details-marker { display: none; }
+.setup-guide__summary::before { content: '+'; font-size: 13px; color: var(--color-text-quaternary); }
+.setup-guide[open] .setup-guide__summary::before { content: '–'; }
+.setup-guide__summary:hover { color: var(--color-text-primary); }
+.setup-steps {
+  margin: 0; padding: 4px 14px 14px 30px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.setup-step {
+  font-size: 12.5px; line-height: 1.6; color: var(--color-text-secondary);
+}
+.setup-step b { color: var(--color-text-primary); font-weight: 600; }
+.setup-step code {
+  font-family: var(--font-mono); font-size: 11px;
+  background: var(--color-bg-surface-3);
+  padding: 1px 5px; color: var(--color-text-primary);
+}
+.setup-cols {
+  font-family: var(--font-mono); font-size: 10.5px; line-height: 1.7;
+  color: var(--color-text-tertiary);
+  border: 1px dashed var(--color-border-default);
+  padding: 8px 10px; margin: 7px 0;
+}
+
 </style>
 
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -2096,6 +2198,42 @@ body {
 </head>
 <body>
   <div id="root"></div>
+
+  <!-- ══ Conteúdo SEO (exibido a buscadores e quando o JavaScript está desativado) ══ -->
+  <noscript>
+  <main style="max-width:880px;margin:0 auto;padding:48px 24px;font-family:sans-serif;line-height:1.7;color:#222">
+    <h1>Villares Planner — Gestor de Tarefas, Rotinas e Calendário Operacional Online</h1>
+    <p>O <strong>Villares Planner</strong> é um dashboard operacional completo para <strong>gestão de tarefas, rotinas recorrentes, pedidos e prazos</strong>, criado em <strong>Bauru, interior de São Paulo, Brasil</strong>, e pensado para quem precisa organizar o dia a dia de operações com velocidade e clareza. Diferente de planilhas soltas ou aplicativos genéricos de listas, o Villares Planner nasceu dentro da rotina real de <strong>logística e business intelligence</strong>: torres de controle, fechamentos de turno, indicadores de SLA, pedidos de outras áreas e rotinas que se repetem todos os dias úteis. É uma ferramenta de produtividade construída por quem vive operação, para quem vive operação.</p>
+
+    <h2>O que é o Villares Planner</h2>
+    <p>O Villares Planner é um <strong>organizador de tarefas online e gratuito</strong>, em português do Brasil, que funciona direto no navegador — inclusive aberto localmente, sem necessidade de servidor. Ele reúne em uma única tela tudo o que um profissional de operações, um analista ou uma pequena equipe precisa para planejar o dia: <strong>painel de indicadores</strong> com taxa de conclusão, itens em andamento, vencimentos do dia e atrasados; <strong>lista de tarefas</strong> com busca global, filtros por prioridade e categoria, ordenação por urgência e visualização compacta ou detalhada; <strong>quadro Kanban</strong> com arrastar e soltar entre colunas de status; <strong>calendário</strong> com quatro modos de visualização; e <strong>notas rápidas</strong> para registrar ideias que ainda não viraram tarefa.</p>
+
+    <h2>Rotinas recorrentes de verdade</h2>
+    <p>O grande diferencial do Villares Planner está nas <strong>rotinas recorrentes por dia da semana</strong>. Ao criar uma rotina, você marca em quais dias ela deve acontecer — segunda, terça, quarta, quinta, sexta, sábado ou domingo — e o sistema cuida do resto. A rotina <strong>reaparece automaticamente</strong> em cada dia configurado, sem que você precise recriá-la manualmente. Concluir uma rotina vale apenas para o dia atual: no dia seguinte, ela volta como pendente, exatamente como uma checklist operacional deve funcionar. Conferências diárias de base, dailies, fechamentos de turno, relatórios semanais de KPI, reuniões fixas: tudo se organiza sozinho, e a taxa de conclusão acompanha o ritmo real da operação.</p>
+
+    <h2>Tarefas com hora, prazo e prioridade</h2>
+    <p>Cada tarefa pode receber <strong>hora opcional</strong>, exibida no formato 09:30 | Título | Descrição, prazo de entrega com atalhos por dia da semana ("quero isso pronto até sexta"), descrição com quebras de linha preservadas e botão "ver mais", múltiplas categorias simultâneas e quatro níveis de prioridade — <strong>Crítica, Alta, Média e Baixa</strong> — com indicadores visuais imediatos. Pedidos de outras áreas ganham campo de solicitante, permitindo enxergar quem demanda o quê e acompanhar o volume por pessoa na visão de equipe.</p>
+
+    <h2>Calendário com Agenda, Semana, Mês e Timeline</h2>
+    <p>O <strong>calendário de tarefas</strong> do Villares Planner foi projetado como ferramenta de planejamento, não como enfeite. São quatro modos: <strong>Agenda</strong>, em lista cronológica agrupada por dia; <strong>Semana</strong>, com sete colunas e os compromissos de cada dia ordenados por hora; <strong>Mês</strong>, na grade tradicional com painel detalhado do dia selecionado; e <strong>Timeline</strong>, uma linha do tempo vertical para enxergar a sequência de entregas. Uma barra de filtros real permite combinar <strong>tipo</strong> (projetos, rotinas, pedidos), <strong>status</strong> (pendente, em andamento, concluído, atrasado), <strong>prioridade</strong>, <strong>categorias com multi-seleção</strong> e <strong>período</strong> — hoje, amanhã, esta semana, próxima semana ou este mês — além de navegação rápida entre datas com botões de dia anterior, próximo dia e "ir para qualquer data".</p>
+
+    <h2>Sincronização com Google Sheets</h2>
+    <p>Os dados do Villares Planner podem viver onde sua equipe já trabalha: numa <strong>planilha do Google Sheets</strong>. A integração usa o Google Apps Script como backend gratuito — você cria a planilha, cola o script fornecido, define um token secreto e publica como Web App. Pronto: cada tarefa criada, editada ou concluída no Planner é gravada na planilha em tempo real, com colunas nomeadas em português (Id, Origem, Título, Descrição, Categoria, Prioridade, Status, Prazo, Hora, Dias da Semana, Última Conclusão e mais). Isso significa <strong>backup automático, dados auditáveis e zero dependência de servidores pagos</strong>. Sem conexão configurada, o aplicativo funciona em modo local, salvando tudo no próprio navegador.</p>
+
+    <h2>Para quem é</h2>
+    <p>O Villares Planner atende <strong>analistas de logística e supply chain</strong>, profissionais de <strong>torre de controle</strong>, times de <strong>business intelligence</strong>, assistentes administrativos, coordenadores de operação, freelancers e qualquer pessoa que precise de um <strong>planner diário online</strong> sério, rápido e sem mensalidade. Empresas de Bauru, da região de São Paulo e de todo o Brasil podem usar a ferramenta para padronizar rotinas de equipe, acompanhar pedidos internos entre áreas e medir a taxa de conclusão por categoria — de operações diárias a relatórios de KPI, análise de dados, transportadoras, estoque e desenvolvimento de pessoas.</p>
+
+    <h2>Design e experiência</h2>
+    <p>A interface segue um <strong>design system escuro, minimalista e tipográfico</strong>, com hierarquia clara, espaçamentos generosos e estados de interação cuidadosos. O resultado é um ambiente de trabalho silencioso e profissional, que carrega instantaneamente por ser um único arquivo HTML — sem instalação, sem cadastro, sem rastreadores e sem anúncios. Tema claro e escuro, atalhos visuais e responsividade para uso em notebooks e desktops da operação.</p>
+
+    <h2>Como começar</h2>
+    <p>Começar leva menos de um minuto: abra o Villares Planner no navegador, clique em "Novo" e crie sua primeira tarefa ou rotina. Para trabalhar em equipe, acesse as configurações, siga o passo a passo de integração com o Google Sheets — criação da planilha, instalação do script e publicação do Web App — e conecte a URL com o seu token. A partir daí, todo o planejamento do time fica centralizado, versionado e acessível de qualquer computador, mantendo a simplicidade de uma planilha com a experiência de um aplicativo profissional de gestão de tarefas e produtividade.</p>
+
+    <h2>Villares Planner em resumo</h2>
+    <p>Gestor de tarefas online gratuito e em português; rotinas recorrentes automáticas por dia da semana; Kanban com arrastar e soltar; calendário com quatro visualizações e filtros combináveis; notas rápidas; relatórios de distribuição por status, prioridade, origem e categoria; estatísticas de produtividade; busca global por título, descrição, categoria, data e hora; sincronização opcional com Google Sheets via Apps Script; e funcionamento local sem servidor. Desenvolvido por <strong>Willian Villares</strong> em <strong>Bauru/SP, Brasil</strong>, como parte do ecossistema Villares de ferramentas de produtividade e finanças. Ative o JavaScript do navegador para usar o aplicativo completo nesta página.</p>
+  </main>
+  </noscript>
+
   <script>
 // ============================================================================
 // DATA · Modelos, mock e helpers
@@ -2361,9 +2499,22 @@ const splitDias = (s) => String(s || '').split(',').map(x => x.trim()).filter(Bo
 const temDias = (item) => item.origem === 'Rotina' && splitDias(item.dias).length > 0;
 const rotinaNoDia = (item, date) => temDias(item) && splitDias(item.dias).includes(DIAS_SEMANA[date.getDay()]);
 
+// Datas 'yyyy-mm-dd' DEVEM ser interpretadas no fuso local (não UTC),
+// senão tudo desloca um dia no Brasil (UTC-3)
+const parseLocalDate = (v) => {
+  if (v instanceof Date) return new Date(v);
+  const s = String(v);
+  return new Date(/^\d{4}-\d{2}-\d{2}$/.test(s) ? s + 'T12:00:00' : s);
+};
+
+// Data de hoje (ou de d) como 'yyyy-mm-dd' no fuso LOCAL
+// (toISOString é UTC: à noite no Brasil já devolve o dia seguinte)
+const localISO = (d = new Date()) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
 const diasAteHoje = (date) => {
   if (!date) return null;
-  const d = new Date(date); d.setHours(0,0,0,0);
+  const d = parseLocalDate(date); d.setHours(0,0,0,0);
   const t = new Date(); t.setHours(0,0,0,0);
   return Math.round((d - t) / (1000 * 60 * 60 * 24));
 };
@@ -2422,7 +2573,7 @@ const isConcluidoRecente = (item) => {
 
 const formatDate = (d) => {
   if (!d) return "—";
-  const date = new Date(d);
+  const date = parseLocalDate(d);
   return date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).replace('.', '');
 };
 
@@ -2447,6 +2598,7 @@ window.PLANNER_DATA = {
   STATUS_BUCKET,
   isAtivo, isFeito, isAtrasado, isHoje, isProximos48h, isEstaSemana, isConcluidoRecente,
   diasAteHoje, formatDate, formatRelative,
+  parseLocalDate, localISO,
   splitCats, hasCat,
   DIAS_SEMANA, splitDias, temDias, rotinaNoDia, rotinaFeitaHoje,
 };
@@ -2781,7 +2933,7 @@ function Tabs({ active, onChange, counts, selDate, onDateShift, onDateToday, onD
         <button className="date-nav__btn" title="Próximo dia"
                 onClick={() => { onDateShift(1); onChange('Hoje'); }}>→</button>
         <input type="date" className="date-nav__input" title="Ir para qualquer data"
-               value={selDate.toISOString().slice(0, 10)}
+               value={D.localISO(selDate)}
                onChange={(e) => { if (e.target.value) { onDateSet(new Date(e.target.value + 'T12:00:00')); onChange('Hoje'); } }}/>
       </div>
     </div>
@@ -2926,7 +3078,7 @@ function ListRow({ item, menuOpen, onMenuToggle, onEdit, onToggleComplete, onDup
   // — Coluna "Recebido em" (data de criação) —
   const criadoEm = item.criadoEm || item.recebidoEm;
   const criadoDate = criadoEm
-    ? new Date(criadoEm).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).replace('.', '')
+    ? D.parseLocalDate(criadoEm).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).replace('.', '')
     : null;
   const criadoDias = criadoEm ? D.diasAteHoje(criadoEm) : null;
   const criadoSub = criadoDias === null ? null
@@ -3035,7 +3187,9 @@ function ListRow({ item, menuOpen, onMenuToggle, onEdit, onToggleComplete, onDup
               <Edit size={14}/> Editar
             </button>
             <button className="dropdown__item" onClick={() => { onToggleComplete(item); onMenuToggle(null); }}>
-              {isFeito ? <><Undo size={14}/> Reabrir</> : <><CheckDouble size={14}/> Marcar Concluído</>}
+              {D.temDias(item)
+                ? (isFeito ? <><Undo size={14}/> Reabrir hoje</> : <><CheckDouble size={14}/> Concluir hoje</>)
+                : (isFeito ? <><Undo size={14}/> Reabrir</> : <><CheckDouble size={14}/> Marcar Concluído</>)}
             </button>
             <button className="dropdown__item" onClick={() => { onDuplicate(item); onMenuToggle(null); }}>
               <Copy size={14}/> Duplicar
@@ -3458,11 +3612,7 @@ function ItemModal({ open, item, onClose, onSave }) {
 const sameDay = (a, b) =>
   a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 
-const parseDia = (v) => {
-  if (v instanceof Date) return v;
-  const s = String(v);
-  return new Date(s.length === 10 ? s + 'T12:00:00' : s);
-};
+const parseDia = (v) => D.parseLocalDate(v);
 
 // Ocorrência concluída naquele dia específico?
 const ocorrenciaFeita = (it, d) => {
@@ -3898,7 +4048,7 @@ function CalendarView({ items, onEdit }) {
         <div className="cal-nav__group">
           <label className="cal-nav__label">Ir para:</label>
           <input type="date" className="form-input cal-nav__date"
-                 value={selected.toISOString().slice(0, 10)}
+                 value={D.localISO(selected)}
                  onChange={(e) => { if (e.target.value) goTo(new Date(e.target.value + 'T12:00:00')); }}/>
         </div>
       </div>
@@ -4324,12 +4474,57 @@ function SettingsModal({ open, config, items, onClose, onSave, onUploaded }) {
         </header>
 
         <div className="modal__body">
-          <div className="help-block" style={{ marginBottom: 18 }}>
-            Para conectar uma planilha do Google Sheets como banco de dados,
-            siga o guia <code>SETUP-GOOGLE-SHEETS.md</code> incluído no projeto.
+          <div className="help-block" style={{ marginBottom: 14 }}>
+            Conecte uma planilha do Google Sheets como banco de dados.
             Você precisará da <b>URL do Web App</b> (terminada em <code>/exec</code>)
-            e do <b>token</b> definido no Apps Script.
+            e do <b>token</b> definido no Apps Script. Primeira vez? Abra o guia abaixo.
           </div>
+
+          <details className="setup-guide">
+            <summary className="setup-guide__summary">Como configurar · Passo a passo completo</summary>
+            <ol className="setup-steps">
+              <li className="setup-step">
+                <b>Crie a planilha.</b> Acesse <code>sheets.new</code> e crie uma planilha
+                em branco no Google Sheets, com qualquer nome (ex: "Villares Planner").
+              </li>
+              <li className="setup-step">
+                <b>Sobre as colunas.</b> O script cria automaticamente a aba <code>Itens</code> com
+                as colunas certas na primeira linha. Se preferir criar manualmente, use exatamente
+                estes nomes, nesta ordem:
+                <div className="setup-cols">
+                  Id · Origem · Título · Descrição · Categoria · Prioridade · Status · Prazo ·
+                  Hora · Progresso · Solicitante · Recebido Em · Frequência · Dias da Semana ·
+                  Última Conclusão · Criado Em
+                </div>
+                Não renomeie nem reordene as colunas depois de conectar.
+              </li>
+              <li className="setup-step">
+                <b>Instale o script.</b> Na planilha, vá em <code>Extensões → Apps Script</code>,
+                apague o conteúdo do editor e cole o arquivo <code>Code.gs</code> do Planner por inteiro.
+              </li>
+              <li className="setup-step">
+                <b>Defina o token.</b> No topo do script, troque o valor de
+                <code> SECRET_TOKEN</code> por uma senha longa e aleatória (mínimo 24 caracteres).
+                Guarde esse valor: ele será usado aqui no campo abaixo.
+              </li>
+              <li className="setup-step">
+                <b>Publique o Web App.</b> Clique em <code>Implantar → Nova implantação</code>,
+                escolha o tipo <b>App da Web</b> e configure:
+                executar como <b>Eu</b> · quem pode acessar: <b>Qualquer pessoa</b>.
+                Autorize as permissões e copie a URL terminada em <code>/exec</code>.
+              </li>
+              <li className="setup-step">
+                <b>Conecte.</b> Cole a URL e o token nos campos abaixo, clique em
+                <b> Testar conexão</b> e depois em <b>Salvar conexão</b>. Se já houver itens
+                locais, use "Enviar itens locais" para subir tudo para a planilha.
+              </li>
+              <li className="setup-step">
+                <b>Atualizou o script depois?</b> Toda mudança no <code>Code.gs</code> exige
+                <code> Implantar → Gerenciar implantações → ✎ → Nova versão</code> para entrar no ar.
+                A URL permanece a mesma.
+              </li>
+            </ol>
+          </details>
 
           <div className="form-group">
             <label className="form-group__label">URL do Web App</label>
@@ -4560,7 +4755,7 @@ function App() {
     let updated;
     if (D.temDias(item)) {
       // Rotina recorrente: concluir vale só para hoje; amanhã ela volta sozinha
-      updated = { ...item, ultimaConclusao: isFeito ? '' : new Date().toISOString().slice(0, 10) };
+      updated = { ...item, ultimaConclusao: isFeito ? '' : D.localISO() };
     } else {
       const newStatus = isFeito
         ? (item.origem === 'Pedido' ? 'Recebido' : 'Pendente')
@@ -4912,7 +5107,7 @@ function App() {
           {view === 'equipe' && <TeamView items={items}/>}
 
           <footer className="footer">
-            <span>Villares · Planner v0.7</span>
+            <span>Villares · Planner v0.9</span>
             <span>
               {items.length} {items.length === 1 ? 'Item total' : 'Itens totais'} · {Math.round(metrics.pct)}% de taxa de conclusão{view === 'dashboard' ? ` · Aba ativa: ${activeTab}` : ''}
             </span>
