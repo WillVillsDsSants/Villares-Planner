@@ -2036,6 +2036,58 @@ html.light .date-nav__input { color-scheme: light; }
 .cal-filterbar { position: relative; z-index: 30; }
 .cal-nav { position: relative; z-index: 1; }
 
+/* ════ REFINO v0.7 — tipografia e estados de hover ════ */
+
+/* Nitidez: nunca sintetizar negrito e priorizar legibilidade */
+body {
+  text-rendering: optimizeLegibility;
+  font-synthesis: none;
+}
+
+/* Syne 700 em tamanhos pequenos fica pesado e "embaçado" — reduzir para 600
+   e suavizar o tracking nos títulos de seção */
+.view-head__title { font-weight: 600; letter-spacing: 0.05em; }
+.cal__month { font-weight: 600; }
+.day-panel__title { font-weight: 600; }
+.agenda__day-name { font-weight: 600; }
+.timeline__date { font-weight: 600; }
+.week__col-num { font-weight: 600; }
+.team-card__name { font-weight: 600; }
+.note__title { font-weight: 600; }
+
+/* Rótulos mono muito pequenos com tracking largo também embaçam — ajuste fino */
+.kanban__col-title { font-size: 11px; letter-spacing: 0.1em; }
+.report-panel__title { letter-spacing: 0.1em; }
+.cat-breakdown__title { letter-spacing: 0.1em; }
+
+/* ── Hover branco sobre botão branco: estados ativos mantêm contraste ── */
+.date-nav__today--active:hover {
+  color: var(--color-bg-base);
+  border-color: var(--color-neutral-strong);
+  opacity: 0.88;
+}
+.cal-mode--active:hover { color: var(--color-bg-base); opacity: 0.88; }
+.cal-filter--active:hover {
+  color: var(--color-bg-base);
+  border-color: var(--color-neutral-strong);
+  opacity: 0.88;
+}
+.day-chip--active:hover {
+  color: var(--color-bg-base);
+  border-color: var(--color-neutral-strong);
+  opacity: 0.88;
+}
+.form-chip--active:hover {
+  color: var(--color-bg-base);
+  border-color: var(--color-neutral-strong);
+  opacity: 0.92;
+}
+.cal__nav-btn--strong:hover {
+  color: var(--color-bg-base);
+  border-color: var(--color-neutral-strong);
+  opacity: 0.88;
+}
+
 </style>
 
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -4860,7 +4912,7 @@ function App() {
           {view === 'equipe' && <TeamView items={items}/>}
 
           <footer className="footer">
-            <span>Villares · Planner v0.6</span>
+            <span>Villares · Planner v0.7</span>
             <span>
               {items.length} {items.length === 1 ? 'Item total' : 'Itens totais'} · {Math.round(metrics.pct)}% de taxa de conclusão{view === 'dashboard' ? ` · Aba ativa: ${activeTab}` : ''}
             </span>
