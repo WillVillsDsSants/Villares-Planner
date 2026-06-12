@@ -325,13 +325,6 @@ html.light .ambience { display: none; }
   background: rgba(255, 255, 255, 0.06);
 }
 .topbar__btn--bell { position: relative; }
-.topbar__btn--bell::after {
-  content: '';
-  position: absolute;
-  top: 7px; right: 8px;
-  width: 6px; height: 6px;
-  background: var(--color-critical);
-}
 
 .topbar__cta {
   display: inline-flex; align-items: center; gap: 6px;
@@ -2190,6 +2183,164 @@ body {
   padding: 8px 10px; margin: 7px 0;
 }
 
+/* ── Topbar: separador e seletor de data ── */
+.topbar__sep {
+  width: 1px; height: 20px; flex-shrink: 0;
+  background: var(--color-border-default);
+  margin: 0 4px;
+}
+.topbar__updated {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--color-text-tertiary); white-space: nowrap;
+}
+.topbar__date {
+  display: flex; align-items: center; gap: 3px; flex-shrink: 0;
+}
+.topbar__date .date-nav__btn { width: 26px; height: 26px; font-size: 12px; }
+.topbar__date .date-nav__today { height: 26px; padding: 0 10px; font-size: 10px; }
+.topbar__date .date-nav__input { height: 26px; padding: 0 7px; font-size: 11px; width: 130px; }
+/* Ocultar o seletor de data na Topbar nas telas muito estreitas */
+@media (max-width: 900px) {
+  .topbar__updated { display: none; }
+  .topbar__date .date-nav__input { width: 100px; }
+}
+
+/* ── Notificações ── */
+/* ════ NOTIF PANEL — redesign ════ */
+.notif-panel {
+  position: absolute;
+  top: calc(100% + 10px); right: 0;
+  width: 380px;
+  background: #0e0e0f;
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.7), 0 0 0 0.5px rgba(255,255,255,0.04) inset;
+  z-index: 900;
+  display: flex; flex-direction: column;
+  max-height: 520px;
+  overflow: hidden;
+  animation: notifIn 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes notifIn {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Linha de accent no topo */
+.notif-panel::before {
+  content: '';
+  display: block; height: 2px; flex-shrink: 0;
+  background: linear-gradient(90deg, var(--color-critical) 0%, transparent 70%);
+}
+
+.notif-panel__head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  flex-shrink: 0;
+}
+.notif-panel__title {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: rgba(255,255,255,0.5);
+  display: flex; align-items: center; gap: 8px;
+}
+.notif-panel__title strong {
+  font-size: 14px; font-family: var(--font-display); font-weight: 700;
+  letter-spacing: 0.06em; color: var(--color-text-primary);
+}
+.notif-panel__mark {
+  font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(255,255,255,0.3);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 5px 11px; cursor: pointer;
+  transition: color 120ms, border-color 120ms;
+}
+.notif-panel__mark:hover { color: var(--color-text-primary); border-color: rgba(255,255,255,0.3); }
+
+.notif-panel__body { overflow-y: auto; flex: 1; }
+.notif-panel__body::-webkit-scrollbar { width: 3px; }
+.notif-panel__body::-webkit-scrollbar-track { background: transparent; }
+.notif-panel__body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); }
+
+.notif-panel__empty {
+  padding: 40px 18px; text-align: center;
+  font-family: var(--font-mono); font-size: 11px;
+  color: rgba(255,255,255,0.25); line-height: 1.8;
+}
+
+/* Grupo: label com linha de separação */
+.notif-group__label {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 18px 7px;
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: rgba(255,255,255,0.28);
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.notif-group__label::after {
+  content: ''; flex: 1; height: 1px;
+  background: rgba(255,255,255,0.06);
+}
+.notif-group__label:first-child { border-top: none; }
+
+/* Item */
+.notif-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  cursor: pointer; width: 100%; text-align: left;
+  background: transparent;
+  transition: background 100ms ease;
+}
+.notif-item:last-child { border-bottom: none; }
+.notif-item:hover { background: rgba(255,255,255,0.04); }
+.notif-item--unread { background: rgba(255,255,255,0.025); }
+.notif-item--unread:hover { background: rgba(255,255,255,0.055); }
+
+/* Accent bar esquerda por tipo */
+.notif-item {
+  border-left: 2px solid transparent;
+  padding-left: 16px;
+}
+.notif-item[data-type="late"]   { border-left-color: var(--color-critical); }
+.notif-item[data-type="today"]  { border-left-color: #e07b00; }
+.notif-item[data-type="soon"]   { border-left-color: #5a5a40; }
+.notif-item[data-type="critica"]{ border-left-color: #8b2020; }
+.notif-item[data-type="rotina"] { border-left-color: rgba(255,255,255,0.2); }
+
+.notif-item__dot {
+  width: 6px; height: 6px; flex-shrink: 0;
+  background: var(--color-critical);
+}
+.notif-item__dot--warn { background: #e07b00; }
+.notif-item__dot--info { background: rgba(255,255,255,0.3); }
+.notif-item__dot--ok   { background: #22C55E; }
+.notif-item__dot--read { background: transparent; border: 1px solid rgba(255,255,255,0.15); }
+
+.notif-item__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.notif-item__title {
+  font-size: 13px; font-weight: 500; color: var(--color-text-primary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3;
+}
+.notif-item--unread .notif-item__title { color: #fff; }
+.notif-item__sub {
+  font-family: var(--font-mono); font-size: 10px;
+  color: rgba(255,255,255,0.35); letter-spacing: 0.03em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.notif-item__sub--critical { color: var(--color-critical); }
+.notif-item__sub--warn     { color: #e07b00; }
+
+/* Badge */
+.topbar__btn--bell .notif-badge {
+  position: absolute; top: 5px; right: 6px;
+  min-width: 16px; height: 16px; padding: 0 4px;
+  background: var(--color-critical); color: #fff;
+  font-family: var(--font-mono); font-size: 9px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 0;
+  pointer-events: none;
+}
+
 </style>
 
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -2496,8 +2647,18 @@ const STATUS_BUCKET = {
 // última data concluída; no dia seguinte a rotina volta como pendente sozinha.
 const DIAS_SEMANA = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 const splitDias = (s) => String(s || '').split(',').map(x => x.trim()).filter(Boolean);
-const temDias = (item) => item.origem === 'Rotina' && splitDias(item.dias).length > 0;
-const rotinaNoDia = (item, date) => temDias(item) && splitDias(item.dias).includes(DIAS_SEMANA[date.getDay()]);
+
+// Dias efetivos da rotina: os marcados; ou, para rotinas antigas criadas só com
+// frequência "Diária" (sem dias), todos os 7 dias — evita o modo legado por status
+const diasEfetivos = (item) => {
+  if (item.origem !== 'Rotina') return [];
+  const d = splitDias(item.dias);
+  if (d.length > 0) return d;
+  if (/di[áa]ria/i.test(String(item.frequencia || ''))) return [...DIAS_SEMANA];
+  return [];
+};
+const temDias = (item) => diasEfetivos(item).length > 0;
+const rotinaNoDia = (item, date) => diasEfetivos(item).includes(DIAS_SEMANA[date.getDay()]);
 
 // Datas 'yyyy-mm-dd' DEVEM ser interpretadas no fuso local (não UTC),
 // senão tudo desloca um dia no Brasil (UTC-3)
@@ -2613,7 +2774,7 @@ window.PLANNER_DATA = {
   diasAteHoje, formatDate, formatRelative,
   parseLocalDate, localISO,
   splitCats, hasCat,
-  DIAS_SEMANA, splitDias, temDias, rotinaNoDia, rotinaFeitaHoje, rotinaFeitaNoDia,
+  DIAS_SEMANA, splitDias, diasEfetivos, temDias, rotinaNoDia, rotinaFeitaHoje, rotinaFeitaNoDia,
 };
 
 </script>
@@ -2758,7 +2919,23 @@ function Sidebar({ theme, view, onNavigate, onToggleTheme, onOpenSettings }) {
 // ────────────────────────────────────────────────────────────────────────────
 // TOPBAR
 // ────────────────────────────────────────────────────────────────────────────
-function Topbar({ query, onQueryChange, onNew }) {
+function Topbar({ query, onQueryChange, onNew,
+                  syncStatus, syncLabels, syncTitles, lastUpdate, onRefresh, onOpenSettings,
+                  selDate, onDateShift, onDateToday, onDateSet,
+                  notifOpen, setNotifOpen, notifCount, items, notifRead, saveRead, handleEdit,
+                  notifDismissed, dismissNotif }) {
+  const [refreshing, setRefreshing] = useState(false);
+  const handleRefresh = () => {
+    setRefreshing(true); onRefresh();
+    setTimeout(() => setRefreshing(false), 700);
+  };
+  const isTodaySel = D.diasAteHoje(selDate) === 0;
+  useEffect(() => {
+    if (!notifOpen) return;
+    const close = (e) => { if (!e.target.closest('.notif-panel') && !e.target.closest('.topbar__btn--bell')) setNotifOpen(false); };
+    const t = setTimeout(() => document.addEventListener('click', close), 0);
+    return () => { clearTimeout(t); document.removeEventListener('click', close); };
+  }, [notifOpen]);
   return (
     <header className="topbar">
       <div className="topbar__title">
@@ -2770,7 +2947,51 @@ function Topbar({ query, onQueryChange, onNew }) {
                value={query} onChange={(e) => onQueryChange(e.target.value)}/>
       </div>
       <div className="topbar__actions">
-        <button className="topbar__btn topbar__btn--bell" title="Notificações"><Bell size={15}/></button>
+        {/* Sincronizado | Atualizado | Refresh */}
+        <button className={`sync-indicator sync-indicator--${syncStatus}`}
+                onClick={onOpenSettings} title={syncTitles[syncStatus]}>
+          <span className="sync-indicator__dot"/>
+          <span>{syncLabels[syncStatus]}</span>
+        </button>
+        <span className="topbar__updated">Atualizado {lastUpdate}</span>
+        <button className="topbar__btn" style={{ width: 30, height: 30 }} onClick={handleRefresh} title="Atualizar">
+          <Refresh size={13} style={refreshing ? { animation: 'spin 700ms linear' } : null}/>
+        </button>
+        {/* Seletor de data */}
+        <span className="topbar__sep"/>
+        <div className="topbar__date">
+          <button className="date-nav__btn" title="Dia anterior"
+                  onClick={() => onDateShift(-1)}>←</button>
+          <button className={`date-nav__today ${isTodaySel ? 'date-nav__today--active' : ''}`}
+                  onClick={onDateToday}>Hoje</button>
+          <button className="date-nav__btn" title="Próximo dia"
+                  onClick={() => onDateShift(1)}>→</button>
+          <input type="date" className="date-nav__input" title="Ir para qualquer data"
+                 value={D.localISO(selDate)}
+                 onChange={(e) => { if (e.target.value) onDateSet(new Date(e.target.value + 'T12:00:00')); }}/>
+        </div>
+        <span className="topbar__sep"/>
+        <div style={{ position: 'relative' }}>
+          <button className="topbar__btn topbar__btn--bell" title="Notificações"
+                  onClick={() => {
+                    setNotifOpen(v => !v);
+                    if (!notifOpen) {
+                      const ids = buildNotifs(items).filter(n => !notifDismissed.has(n.id)).map(n => n.id);
+                      saveRead(new Set([...notifRead, ...ids]));
+                    }
+                  }}>
+            <Bell size={15}/>
+            {notifCount > 0 && <span className="notif-badge">{notifCount > 9 ? '9+' : notifCount}</span>}
+          </button>
+          {notifOpen && (
+            <NotifPanel items={items} readIds={notifRead}
+                        onMarkAll={() => saveRead(new Set(buildNotifs(items).filter(n => !notifDismissed.has(n.id)).map(n => n.id)))}
+                        onClose={() => setNotifOpen(false)}
+                        onEditItem={handleEdit}
+                        dismissedIds={notifDismissed}
+                        onDismiss={dismissNotif}/>
+          )}
+        </div>
         <button className="topbar__cta" onClick={onNew}>
           <Plus size={14}/> Novo
         </button>
@@ -2782,28 +3003,7 @@ function Topbar({ query, onQueryChange, onNew }) {
 // ────────────────────────────────────────────────────────────────────────────
 // PAGE HEADER
 // ────────────────────────────────────────────────────────────────────────────
-function PageHeader({ today, lastUpdate, onRefresh, syncStatus, onOpenSettings }) {
-  const [refreshing, setRefreshing] = useState(false);
-  const handleRefresh = () => {
-    setRefreshing(true); onRefresh();
-    setTimeout(() => setRefreshing(false), 700);
-  };
-
-  const syncLabels = {
-    'idle':    'Pronto',
-    'syncing': 'Sincronizando…',
-    'synced':  'Sincronizado',
-    'error':   'Erro de sincronização',
-    'offline': 'Modo local',
-  };
-  const syncTitles = {
-    'idle':    'Aguardando',
-    'syncing': 'Sincronizando com Google Sheets',
-    'synced':  'Conectado ao Google Sheets',
-    'error':   'Erro ao sincronizar — clique para abrir as configurações',
-    'offline': 'Sem conexão com Google Sheets — clique para configurar',
-  };
-
+function PageHeader({ today }) {
   return (
     <div className="page__header">
       <div>
@@ -2811,18 +3011,7 @@ function PageHeader({ today, lastUpdate, onRefresh, syncStatus, onOpenSettings }
         <div className="page__header-sub">Logística · {today}</div>
       </div>
 
-      <div className="page__header-meta">
-        <button className={`sync-indicator sync-indicator--${syncStatus}`}
-                onClick={onOpenSettings}
-                title={syncTitles[syncStatus]}>
-          <span className="sync-indicator__dot"/>
-          <span>{syncLabels[syncStatus]}</span>
-        </button>
-        <span style={{ color: 'var(--color-text-tertiary)' }}>Atualizado {lastUpdate}</span>
-        <button className="topbar__btn" style={{ width: 30, height: 30 }} onClick={handleRefresh} title="Atualizar">
-          <Refresh size={13} style={refreshing ? { animation: 'spin 700ms linear' } : null}/>
-        </button>
-      </div>
+{/* sync, data e refresh movidos para a Topbar */}
     </div>
   );
 }
@@ -2915,7 +3104,7 @@ function Conclusion({ pct, feitos, ativos, total, categorias, rotinasHoje }) {
 // ────────────────────────────────────────────────────────────────────────────
 // TABS (estilo Mercado Livre)
 // ────────────────────────────────────────────────────────────────────────────
-function Tabs({ active, onChange, counts, selDate, onDateShift, onDateToday, onDateSet }) {
+function Tabs({ active, onChange, counts, selDate }) {
   const isTodaySel = D.diasAteHoje(selDate) === 0;
   const dateLabel = isTodaySel ? 'Hoje'
     : `${D.DIAS_SEMANA[selDate.getDay()]} ${String(selDate.getDate()).padStart(2, '0')}/${String(selDate.getMonth() + 1).padStart(2, '0')}`;
@@ -2938,17 +3127,7 @@ function Tabs({ active, onChange, counts, selDate, onDateShift, onDateToday, onD
           <span className="tab__count">{counts[t.key] || 0}</span>
         </button>
       ))}
-      <div className="tabs__date" title="A primeira aba mostra os itens da data selecionada">
-        <button className="date-nav__btn" title="Dia anterior"
-                onClick={() => { onDateShift(-1); onChange('Hoje'); }}>←</button>
-        <button className={`date-nav__today ${isTodaySel ? 'date-nav__today--active' : ''}`}
-                onClick={() => { onDateToday(); onChange('Hoje'); }}>Hoje</button>
-        <button className="date-nav__btn" title="Próximo dia"
-                onClick={() => { onDateShift(1); onChange('Hoje'); }}>→</button>
-        <input type="date" className="date-nav__input" title="Ir para qualquer data"
-               value={D.localISO(selDate)}
-               onChange={(e) => { if (e.target.value) { onDateSet(new Date(e.target.value + 'T12:00:00')); onChange('Hoje'); } }}/>
-      </div>
+{/* seletor de data na Topbar */}
     </div>
   );
 }
@@ -3082,7 +3261,7 @@ function RowDesc({ text }) {
   );
 }
 
-function ListRow({ item, menuOpen, onMenuToggle, onEdit, onToggleComplete, onDuplicate, onDelete }) {
+function ListRow({ item, occDate, menuOpen, onMenuToggle, onEdit, onToggleComplete, onDuplicate, onDelete }) {
   const origemClass = item.origem === 'Projeto' ? 'projeto'
                     : item.origem === 'Rotina'  ? 'rotina' : 'pedido';
   const origemLetter = item.origem === 'Projeto' ? 'PJ'
@@ -3116,8 +3295,16 @@ function ListRow({ item, menuOpen, onMenuToggle, onEdit, onToggleComplete, onDup
                         : isToday ? 'date-cell__primary--today' : '';
   const prazoSubCls = isLate ? 'date-cell__sub--late' : '';
 
-  const statusK = statusKey(item.status);
-  const isFeito = D.isFeito(item);
+  // Para rotinas recorrentes, o estado exibido é o da DATA da ocorrência
+  const dia = occDate || new Date();
+  const recorrente = D.temDias(item);
+  const programada = recorrente ? D.rotinaNoDia(item, dia) : true;
+  const feitaNoDia = recorrente ? D.rotinaFeitaNoDia(item, dia) : D.isFeito(item);
+  const ehHoje = D.diasAteHoje(dia) === 0;
+  const statusK = recorrente
+    ? (feitaNoDia ? 'feito' : programada ? 'aberto' : 'pausado')
+    : statusKey(item.status);
+  const isFeito = feitaNoDia;
 
   return (
     <div className={`list-row fade-up ${menuOpen ? 'list-row--menu-open' : ''}`}>
@@ -3185,7 +3372,9 @@ function ListRow({ item, menuOpen, onMenuToggle, onEdit, onToggleComplete, onDup
       <div>
         <div className={`status status--${statusK}`}>
           <span className="status__dot"/>
-          <span>{item.status}</span>
+          <span>{recorrente
+            ? (feitaNoDia ? 'Concluído' : programada ? 'Pendente' : 'Não programada')
+            : item.status}</span>
         </div>
       </div>
 
@@ -3199,11 +3388,15 @@ function ListRow({ item, menuOpen, onMenuToggle, onEdit, onToggleComplete, onDup
             <button className="dropdown__item" onClick={() => { onEdit(item); onMenuToggle(null); }}>
               <Edit size={14}/> Editar
             </button>
-            <button className="dropdown__item" onClick={() => { onToggleComplete(item); onMenuToggle(null); }}>
-              {D.temDias(item)
-                ? (isFeito ? <><Undo size={14}/> Reabrir hoje</> : <><CheckDouble size={14}/> Concluir hoje</>)
+            {(!recorrente || programada || feitaNoDia) && (
+            <button className="dropdown__item" onClick={() => { onToggleComplete(item, dia); onMenuToggle(null); }}>
+              {recorrente
+                ? (feitaNoDia
+                    ? <><Undo size={14}/> Reabrir {ehHoje ? 'hoje' : `(${D.DIAS_SEMANA[dia.getDay()]} ${String(dia.getDate()).padStart(2, '0')}/${String(dia.getMonth() + 1).padStart(2, '0')})`}</>
+                    : <><CheckDouble size={14}/> Concluir {ehHoje ? 'hoje' : `(${D.DIAS_SEMANA[dia.getDay()]} ${String(dia.getDate()).padStart(2, '0')}/${String(dia.getMonth() + 1).padStart(2, '0')})`}</>)
                 : (isFeito ? <><Undo size={14}/> Reabrir</> : <><CheckDouble size={14}/> Marcar Concluído</>)}
             </button>
+            )}
             <button className="dropdown__item" onClick={() => { onDuplicate(item); onMenuToggle(null); }}>
               <Copy size={14}/> Duplicar
             </button>
@@ -3620,6 +3813,140 @@ function ItemModal({ open, item, onClose, onSave }) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
+// PAINEL DE NOTIFICAÇÕES — vencimentos, atrasados, rotinas pendentes
+// ────────────────────────────────────────────────────────────────────────────
+function buildNotifs(items) {
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const notifs = [];
+
+  items.forEach(it => {
+    // ── Atrasados ──
+    if (!D.temDias(it) && D.isAtivo(it) && D.isAtrasado(it)) {
+      const dias = Math.abs(D.diasAteHoje(it.prazo));
+      notifs.push({
+        id: 'late-' + it.id, type: 'late', prio: 0,
+        titulo: it.titulo,
+        sub: `Atrasado há ${dias} ${dias === 1 ? 'dia' : 'dias'}`,
+        dotClass: 'notif-item__dot',
+        subClass: 'notif-item__sub--critical',
+        item: it,
+      });
+    }
+    // ── Vence hoje ──
+    else if (!D.temDias(it) && D.isAtivo(it) && D.isHoje(it)) {
+      notifs.push({
+        id: 'today-' + it.id, type: 'today', prio: 1,
+        titulo: it.titulo,
+        sub: 'Vence hoje' + (it.hora ? ` às ${it.hora}` : ''),
+        dotClass: 'notif-item__dot--warn',
+        subClass: 'notif-item__sub--warn',
+        item: it,
+      });
+    }
+    // ── Vence em 1–3 dias ──
+    else if (!D.temDias(it) && D.isAtivo(it) && it.prazo) {
+      const d = D.diasAteHoje(it.prazo);
+      if (d > 0 && d <= 3) {
+        notifs.push({
+          id: 'soon-' + it.id, type: 'soon', prio: 2,
+          titulo: it.titulo,
+          sub: `Vence em ${d} ${d === 1 ? 'dia' : 'dias'} — ${D.formatDate(it.prazo)}`,
+          dotClass: 'notif-item__dot--warn',
+          subClass: '',
+          item: it,
+        });
+      }
+    }
+    // ── Prioridade Crítica sem prazo ──
+    if (!D.temDias(it) && D.isAtivo(it) && it.prioridade === 'Crítica' && !it.prazo) {
+      notifs.push({
+        id: 'critica-' + it.id, type: 'critica', prio: 3,
+        titulo: it.titulo,
+        sub: 'Crítica · sem prazo definido',
+        dotClass: 'notif-item__dot--warn',
+        subClass: '',
+        item: it,
+      });
+    }
+    // ── Rotina pendente de hoje ──
+    if (D.temDias(it) && D.rotinaNoDia(it, hoje) && !D.rotinaFeitaHoje(it)) {
+      notifs.push({
+        id: 'rotina-' + it.id, type: 'rotina', prio: 4,
+        titulo: it.titulo,
+        sub: 'Rotina de hoje' + (it.hora ? ` · ${it.hora}` : ''),
+        dotClass: 'notif-item__dot--info',
+        subClass: '',
+        item: it,
+      });
+    }
+  });
+
+  return notifs.sort((a, b) => a.prio - b.prio);
+}
+
+const NOTIF_GROUP_LABELS = {
+  late:    '⚠ Atrasados',
+  today:   '📅 Vencem hoje',
+  soon:    '⏳ Próximos 3 dias',
+  critica: '🔴 Críticos sem prazo',
+  rotina:  '🔁 Rotinas de hoje',
+};
+
+function NotifPanel({ items, readIds, onMarkAll, onClose, onEditItem, dismissedIds, onDismiss }) {
+  const notifs = useMemo(() => buildNotifs(items), [items]);
+  const dismissed = dismissedIds || new Set();
+  const visible = useMemo(() => notifs.filter(n => !dismissed.has(n.id)), [notifs, dismissed]);
+  const unread = visible.filter(n => !readIds.has(n.id));
+
+  const groups = useMemo(() => {
+    const map = new Map();
+    visible.forEach(n => {
+      if (!map.has(n.type)) map.set(n.type, []);
+      map.get(n.type).push(n);
+    });
+    return [...map.entries()].filter(([, list]) => list.length > 0);
+  }, [visible]);
+
+  return (
+    <div className="notif-panel">
+      <div className="notif-panel__head">
+        <span className="notif-panel__title">
+          <strong>Notificações</strong>
+          {unread.length > 0 && `${unread.length} nova${unread.length > 1 ? 's' : ''}`}
+        </span>
+        {unread.length > 0 && (
+          <button className="notif-panel__mark" onClick={onMarkAll}>Marcar todas lidas</button>
+        )}
+      </div>
+      <div className="notif-panel__body">
+        {notifs.length === 0 ? (
+          <div className="notif-panel__empty">Nenhuma notificação.<br/>Tudo em dia ✓</div>
+        ) : groups.map(([type, list]) => (
+          <div key={type}>
+            <div className="notif-group__label">{NOTIF_GROUP_LABELS[type]}</div>
+            {list.map(n => (
+              <div key={n.id}
+                   className={`notif-item ${!readIds.has(n.id) ? 'notif-item--unread' : 'notif-item--seen'}`}
+                   data-type={n.type}>
+                <span className={`notif-item__dot ${n.dotClass}`}/>
+                <button style={{ background:'transparent',border:'none',cursor:'pointer',textAlign:'left',padding:0,flex:1,minWidth:0,display:'flex',flexDirection:'column',gap:2 }}
+                        onClick={() => { onEditItem(n.item); onClose(); }}>
+                  <span className="notif-item__title">{n.titulo}</span>
+                  <span className={`notif-item__sub ${n.subClass}`}>{n.sub}</span>
+                </button>
+                <button className="notif-item__dismiss"
+                        title="Dispensar"
+                        onClick={(e) => { e.stopPropagation(); onDismiss && onDismiss(n.id); }}>×</button>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
 // OCORRÊNCIAS — tarefas com prazo no dia + rotinas recorrentes do dia da semana
 // ────────────────────────────────────────────────────────────────────────────
 const sameDay = (a, b) =>
@@ -3656,12 +3983,19 @@ const KANBAN_COLS = [
   { status: 'Concluído',    extra: [],           mod: 'kanban__col--done' },
 ];
 
-function KanbanView({ items, onEdit, onSetStatus }) {
+function KanbanView({ items, onEdit, onSetStatus, onToggle }) {
   const [draggingId, setDraggingId] = useState(null);
   const [overCol, setOverCol] = useState(null);
 
   const colItems = (col) =>
-    items.filter(it => it.status === col.status || col.extra.includes(it.status));
+    items.filter(it => {
+      if (D.temDias(it)) {
+        // Rotina recorrente no Kanban: coluna pelo estado de HOJE
+        const alvo = D.rotinaFeitaHoje(it) ? 'Concluído' : 'Pendente';
+        return col.status === alvo;
+      }
+      return it.status === col.status || col.extra.includes(it.status);
+    });
 
   const handleDrop = (e, col) => {
     e.preventDefault();
@@ -3669,7 +4003,15 @@ function KanbanView({ items, onEdit, onSetStatus }) {
     const id = e.dataTransfer.getData('text/plain') || draggingId;
     setDraggingId(null);
     const item = items.find(it => it.id === id);
-    if (item) onSetStatus(item, col.status);
+    if (!item) return;
+    if (D.temDias(item)) {
+      // Rotina: arrastar para Concluído = concluir HOJE; sair de lá = reabrir HOJE
+      const feitaHoje = D.rotinaFeitaHoje(item);
+      if (col.status === 'Concluído' && !feitaHoje) onToggle(item);
+      else if (col.status !== 'Concluído' && feitaHoje) onToggle(item);
+      return;
+    }
+    onSetStatus(item, col.status);
   };
 
   return (
@@ -4619,8 +4961,29 @@ function App() {
   const [activeTab, setActiveTab] = useState('Hoje');
   const [view, setView] = useState('dashboard'); // dashboard | kanban | notas | calendario | relatorios | equipe
   const [selDate, setSelDate] = useState(() => { const d = new Date(); d.setHours(12, 0, 0, 0); return d; });
-  const shiftSelDate = (delta) => setSelDate(prev => { const d = new Date(prev); d.setDate(d.getDate() + delta); return d; });
+  const shiftSelDate = (delta) => {
+    setSelDate(prev => { const d = new Date(prev); d.setDate(d.getDate() + delta); return d; });
+    setActiveTab('Hoje');
+  };
   const [filterPrio, setFilterPrio] = useState('Todas');
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [notifRead, setNotifRead] = useState(() => {
+    try { return new Set(JSON.parse(localStorage.getItem('villares_notif_read') || '[]')); }
+    catch { return new Set(); }
+  });
+  const saveRead = (set) => {
+    setNotifRead(set);
+    try { localStorage.setItem('villares_notif_read', JSON.stringify([...set])); } catch {}
+  };
+  const [notifDismissed, setNotifDismissed] = useState(() => {
+    try { return new Set(JSON.parse(localStorage.getItem('villares_notif_dismissed') || '[]')); }
+    catch { return new Set(); }
+  });
+  const dismissNotif = (id) => {
+    const next = new Set([...notifDismissed, id]);
+    setNotifDismissed(next);
+    try { localStorage.setItem('villares_notif_dismissed', JSON.stringify([...next])); } catch {}
+  };
   const [filterCat, setFilterCat] = useState('Todas');
   const [density, setDensity] = useState(() => {
     try { return localStorage.getItem('villares_planner_density') || 'detalhada'; } catch { return 'detalhada'; }
@@ -4670,6 +5033,9 @@ function App() {
     } catch {}
     return D.MOCK_ITEMS;
   });
+  const notifCount = useMemo(() =>
+    buildNotifs(items).filter(n => !notifRead.has(n.id) && !notifDismissed.has(n.id)).length
+  , [items, notifRead, notifDismissed]);
   useEffect(() => {
     try { localStorage.setItem('villares_planner_items', JSON.stringify(items)); } catch {}
   }, [items]);
@@ -4723,6 +5089,17 @@ function App() {
   }, [openMenuId]);
 
   const handleNavigate = (v) => setView(v);
+
+  const SYNC_LABELS = {
+    'idle':    'Pronto', 'syncing': 'Sincronizando…', 'synced':  'Sincronizado',
+    'error':   'Erro de sincronização', 'offline': 'Modo local',
+  };
+  const SYNC_TITLES = {
+    'idle':    'Aguardando', 'syncing': 'Sincronizando com Google Sheets',
+    'synced':  'Conectado ao Google Sheets',
+    'error':   'Erro ao sincronizar — clique para abrir as configurações',
+    'offline': 'Sem conexão com Google Sheets — clique para configurar',
+  };
 
   const handleNew = () => { setEditingItem(null); setModalOpen(true); };
   const handleEdit = (item) => { setEditingItem(item); setModalOpen(true); };
@@ -4779,25 +5156,38 @@ function App() {
     }
   };
 
-  const handleToggleComplete = async (item) => {
-    const isFeito = D.isFeito(item);
-    let updated;
+  // occDate: a data da OCORRÊNCIA sendo marcada (default: hoje).
+  // Para rotinas, cada data tem registro próprio — concluir/reabrir
+  // afeta exclusivamente aquele dia.
+  const handleToggleComplete = async (item, occDate) => {
+    const dia = occDate ? new Date(occDate) : new Date();
     if (D.temDias(item)) {
-      // Rotina recorrente: registro POR DIA — concluir hoje afeta apenas hoje
-      const iso = D.localISO();
+      const iso = D.localISO(dia);
+      const feitaNoDia = D.rotinaFeitaNoDia(item, dia);
       const lista = Array.isArray(item.conclusoes) ? item.conclusoes : [];
-      const conclusoes = isFeito ? lista.filter(x => x !== iso) : [...lista, iso];
-      updated = { ...item, conclusoes, ultimaConclusao: '' };
+      const conclusoes = feitaNoDia ? lista.filter(x => x !== iso) : [...lista, iso];
+      // legado: só limpa "Última Conclusão" se ela apontar para ESTE dia
+      const legadoBate = item.ultimaConclusao &&
+        D.localISO(D.parseLocalDate(item.ultimaConclusao)) === iso;
+      const updated = { ...item, conclusoes,
+        ultimaConclusao: legadoBate ? '' : (item.ultimaConclusao || '') };
       setItems(prev => prev.map(it => it.id === item.id ? updated : it));
       if (canSync()) {
         setSyncStatus('syncing');
         try {
-          await api.concluir({ id: item.id, data: iso, done: !isFeito, titulo: item.titulo });
+          await api.concluir({ id: item.id, data: iso, done: !feitaNoDia, titulo: item.titulo });
           await loadFromApi();
-        } catch (err) { setSyncStatus('error'); setSyncError(err.message); }
+        } catch (err) {
+          setSyncStatus('error');
+          setSyncError(/desconhecida/i.test(err.message)
+            ? 'Seu Code.gs publicado é antigo e não grava conclusões por dia. Cole o Code.gs mais recente e faça: Implantar → Gerenciar implantações → ✎ → Nova versão. As abas Segunda–Domingo serão criadas sozinhas.'
+            : err.message);
+        }
       }
       return;
     }
+    const isFeito = D.isFeito(item);
+    let updated;
     {
       const newStatus = isFeito
         ? (item.origem === 'Pedido' ? 'Recebido' : 'Pendente')
@@ -4894,6 +5284,16 @@ function App() {
 
   const isTodaySel = D.diasAteHoje(selDate) === 0;
 
+  // ── Estado POR DATA SELECIONADA ──
+  // Rotinas recorrentes: ativo/concluído sempre relativo à data escolhida no
+  // seletor — mudar a data muda o que cada aba mostra, de forma coerente.
+  const ativoNoDia = (it) =>
+    D.temDias(it)
+      ? (D.rotinaNoDia(it, selDate) && !D.rotinaFeitaNoDia(it, selDate))
+      : D.isAtivo(it);
+  const feitoNoDia = (it) =>
+    D.temDias(it) ? D.rotinaFeitaNoDia(it, selDate) : D.isFeito(it);
+
   const tabFiltered = useMemo(() => {
     switch (activeTab) {
       case 'Hoje':
@@ -4901,12 +5301,13 @@ function App() {
         return isTodaySel
           ? viewFiltered.filter(it => D.isAtivo(it) && (D.isHoje(it) || D.isAtrasado(it)))
           : occurrencesForDay(viewFiltered, selDate);
-      case 'Todos':     return viewFiltered.filter(D.isAtivo);
+      case 'Todos':     return viewFiltered.filter(ativoNoDia);
       case 'Projeto':   return viewFiltered.filter(it => it.origem === 'Projeto' && D.isAtivo(it));
-      case 'Rotina':    return viewFiltered.filter(it => it.origem === 'Rotina'  && D.isAtivo(it));
+      // Rotina: TODAS as rotinas (visão de gestão); o status mostrado é o do dia selecionado
+      case 'Rotina':    return viewFiltered.filter(it => it.origem === 'Rotina');
       case 'Pedido':    return viewFiltered.filter(it => it.origem === 'Pedido'  && D.isAtivo(it));
       case 'Atrasados': return viewFiltered.filter(D.isAtrasado);
-      case 'Concluidos': return viewFiltered.filter(D.isFeito);
+      case 'Concluidos': return viewFiltered.filter(feitoNoDia);
       default: return viewFiltered;
     }
   }, [viewFiltered, activeTab, selDate]);
@@ -4915,12 +5316,12 @@ function App() {
     Hoje:       isTodaySel
                   ? viewFiltered.filter(it => D.isAtivo(it) && (D.isHoje(it) || D.isAtrasado(it))).length
                   : occurrencesForDay(viewFiltered, selDate).length,
-    Todos:      viewFiltered.filter(D.isAtivo).length,
+    Todos:      viewFiltered.filter(ativoNoDia).length,
     Projeto:    viewFiltered.filter(it => it.origem === 'Projeto' && D.isAtivo(it)).length,
-    Rotina:     viewFiltered.filter(it => it.origem === 'Rotina'  && D.isAtivo(it)).length,
+    Rotina:     viewFiltered.filter(it => it.origem === 'Rotina').length,
     Pedido:     viewFiltered.filter(it => it.origem === 'Pedido'  && D.isAtivo(it)).length,
     Atrasados:  viewFiltered.filter(D.isAtrasado).length,
-    Concluidos: viewFiltered.filter(D.isFeito).length,
+    Concluidos: viewFiltered.filter(feitoNoDia).length,
   }), [viewFiltered, selDate]);
 
   // ── ordenação: por urgência (default) ou por coluna selecionada ──
@@ -5020,12 +5421,21 @@ function App() {
                onToggleTheme={toggleTheme} onOpenSettings={() => setSettingsOpen(true)}/>
 
       <div className="main">
-        <Topbar query={query} onQueryChange={setQuery} onNew={handleNew}/>
+        <Topbar query={query} onQueryChange={setQuery} onNew={handleNew}
+                syncStatus={syncStatus} syncLabels={SYNC_LABELS} syncTitles={SYNC_TITLES}
+                lastUpdate={lastUpdate} onRefresh={refresh}
+                onOpenSettings={() => setSettingsOpen(true)}
+                selDate={selDate}
+                onDateShift={shiftSelDate}
+                onDateToday={() => { const d = new Date(); d.setHours(12,0,0,0); setSelDate(d); }}
+                onDateSet={(d) => { setSelDate(d); setActiveTab('Hoje'); }}
+                notifOpen={notifOpen} setNotifOpen={setNotifOpen}
+                notifCount={notifCount} items={items} notifRead={notifRead}
+                saveRead={saveRead} handleEdit={handleEdit}
+                notifDismissed={notifDismissed} dismissNotif={dismissNotif}/>
 
         <div className="page">
-          <PageHeader today={today} lastUpdate={lastUpdate} onRefresh={refresh}
-                      syncStatus={syncStatus}
-                      onOpenSettings={() => setSettingsOpen(true)}/>
+          <PageHeader today={today}/>
 
           {syncStatus === 'error' && syncError && (
             <div className="banner banner--error">
@@ -5095,10 +5505,7 @@ function App() {
           {view === 'dashboard' && (<>
           {/* Tabs estilo ML */}
           <Tabs active={activeTab} onChange={setActiveTab} counts={tabCounts}
-                selDate={selDate}
-                onDateShift={shiftSelDate}
-                onDateToday={() => { const d = new Date(); d.setHours(12, 0, 0, 0); setSelDate(d); }}
-                onDateSet={setSelDate}/>
+                selDate={selDate}/>
 
           {/* Toolbar */}
           <Toolbar count={sorted.length}
@@ -5120,6 +5527,7 @@ function App() {
             <div className={`list ${density === 'compacta' ? 'list--compact' : ''}`}>
               {sorted.map(item => (
                 <ListRow key={item.id} item={item}
+                         occDate={selDate}
                          menuOpen={openMenuId === item.id}
                          onMenuToggle={(id) => setOpenMenuId(prev => prev === id ? null : id)}
                          onEdit={handleEdit}
@@ -5141,7 +5549,8 @@ function App() {
           )}
 
           {view === 'kanban' && (
-            <KanbanView items={queryFiltered} onEdit={handleEdit} onSetStatus={handleSetStatus}/>
+            <KanbanView items={queryFiltered} onEdit={handleEdit} onSetStatus={handleSetStatus}
+                        onToggle={handleToggleComplete}/>
           )}
           {view === 'notas' && <NotesView/>}
           {view === 'calendario' && <CalendarView items={queryFiltered} onEdit={handleEdit}/>}
@@ -5149,7 +5558,7 @@ function App() {
           {view === 'equipe' && <TeamView items={items}/>}
 
           <footer className="footer">
-            <span>Villares · Planner v1.0</span>
+            <span>Villares · Planner v1.6</span>
             <span>
               {items.length} {items.length === 1 ? 'Item total' : 'Itens totais'} · {Math.round(metrics.pct)}% de taxa de conclusão{view === 'dashboard' ? ` · Aba ativa: ${activeTab}` : ''}
             </span>
