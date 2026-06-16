@@ -344,9 +344,13 @@ html.light .ambience { display: none; }
    PAGE BODY + HEADER
    ========================================================================= */
 .page {
-  padding: 28px 24px;
+  padding: 26px 28px;
   flex: 1;
+  max-width: 1680px;
+  width: 100%;
+  margin: 0 auto;
 }
+@media (max-width: 1280px) { .page { padding: 22px 20px; } }
 
 .page__header {
   display: flex; align-items: flex-end; justify-content: space-between;
@@ -440,11 +444,11 @@ html.light .ambience { display: none; }
 
 .kpi {
   background: var(--color-bg-surface-1);
-  padding: 18px 22px;
+  padding: 16px 18px;
   position: relative;
   display: flex; flex-direction: column;
   justify-content: space-between;
-  min-height: 130px;
+  min-height: 120px;
 }
 .kpi::before {
   content: '';
@@ -745,7 +749,7 @@ html.light .ambience { display: none; }
 }
 .list-row {
   display: grid;
-  grid-template-columns: 36px minmax(0, 1.7fr) 140px 100px 110px 110px 120px 40px;
+  grid-template-columns: 36px 72px minmax(0, 1.7fr) 140px 100px 110px 110px 120px 40px;
   align-items: center;
   gap: 16px;
   padding: 16px 22px;
@@ -889,6 +893,19 @@ html.light .ambience { display: none; }
 .status--concluido .status__dot { background: var(--color-neutral-strong); }
 .status--bloqueado  { color: var(--color-critical); background: var(--color-critical-soft); }
 .status--bloqueado .status__dot { background: var(--color-critical); }
+.status--falha      { color: #ff5c5c; background: rgba(220,34,34,0.12); }
+.status--falha .status__dot { background: #ff5c5c; }
+.dropdown__item--warn { color: #ff9a3c; }
+.dropdown__item--warn:hover { background: rgba(224,123,0,0.12); }
+.dropdown__item--andamento { color: #8ab4ff; }
+.dropdown__item--andamento:hover { background: rgba(99,102,241,0.12); }
+
+/* Motivo da falha (tooltip inline na linha) */
+.list-row__falha-motivo {
+  font-size: 11px; color: #ff7a7a; margin-top: 3px;
+  display: flex; align-items: center; gap: 5px;
+}
+.list-row__falha-motivo::before { content: '⚠'; font-size: 10px; }
 
 /* Botão ação (⋯) */
 .list-row__action {
@@ -924,7 +941,7 @@ html.light .ambience { display: none; }
 /* List header row (clickable filter columns) */
 .list-header {
   display: grid;
-  grid-template-columns: 36px minmax(0, 1.7fr) 140px 100px 110px 110px 120px 40px;
+  grid-template-columns: 36px 72px minmax(0, 1.7fr) 140px 100px 110px 110px 120px 40px;
   align-items: center;
   gap: 16px;
   padding: 14px 22px;
@@ -1478,21 +1495,35 @@ html.light .dropdown__menu {
 /* ============================================================================
    RESPONSIVE
    ========================================================================= */
+@media (max-width: 1440px) {
+  .topbar__updated { display: none; }
+  .topbar__search { max-width: 280px; }
+}
 @media (max-width: 1280px) {
   .hero { grid-template-columns: 1fr 1fr; }
   .hero-bottom { grid-template-columns: 1fr; }
   .cat-breakdown__grid { grid-template-columns: repeat(5, 1fr); }
+  .topbar { gap: 10px; padding: 0 16px; }
+  .topbar__search { max-width: 200px; }
+  .topbar__title { font-size: 13px; }
+  .topbar__date .date-nav__input { width: 110px; }
+  .sync-indicator span:last-child { display: none; }
+  .sync-indicator { padding: 0 9px; }
+}
+@media (max-width: 1100px) {
+  .topbar__search { display: none; }
+  .topbar__date .date-nav__today { display: none; }
 }
 @media (max-width: 960px) {
   .hero { grid-template-columns: 1fr 1fr; }
   .cat-breakdown__grid { grid-template-columns: repeat(3, 1fr); }
   .list-row {
-    grid-template-columns: 36px minmax(0, 1.5fr) 110px 110px 110px 40px;
+    grid-template-columns: 36px 64px minmax(0, 1.5fr) 110px 110px 110px 40px;
   }
   .list-row > :nth-child(3),
   .list-row > :nth-child(4) { display: none; }
   .list-header {
-    grid-template-columns: 36px minmax(0, 1.5fr) 110px 110px 110px 40px;
+    grid-template-columns: 36px 64px minmax(0, 1.5fr) 110px 110px 110px 40px;
   }
   .list-header > :nth-child(3),
   .list-header > :nth-child(4) { display: none; }
@@ -1509,7 +1540,7 @@ html.light .dropdown__menu {
   .page__header-title { font-size: 22px; }
   .sidebar { display: none; }
   .list-row {
-    grid-template-columns: 36px 1fr 110px;
+    grid-template-columns: 36px 56px 1fr 110px;
     gap: 10px;
     padding: 12px 14px;
   }
@@ -1769,11 +1800,11 @@ html.light .dropdown__menu {
 .cal__grid .cal__cell:nth-last-child(-n+7) { border-bottom: none; }
 
 /* ── Hora no título da lista ── */
-.list-row__hora {
-  font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+.list-row__hora-cell {
+  font-family: var(--font-mono); font-size: 12.5px; font-weight: 500;
   color: var(--color-text-secondary); letter-spacing: 0.02em;
 }
-.list-row__hora-sep { color: var(--color-text-quaternary); margin: 0 7px; }
+.list-row__hora-none { color: var(--color-text-quaternary); }
 
 /* ── Descrição visível na lista ── */
 .list-row__desc {
@@ -2206,129 +2237,117 @@ body {
 }
 
 /* ── Notificações ── */
-/* ════ NOTIF PANEL — redesign ════ */
+/* ════ NOTIF PANEL — refino v2 ════ */
 .notif-panel {
   position: absolute;
   top: calc(100% + 10px); right: 0;
-  width: 380px;
-  background: #0e0e0f;
-  border: 1px solid rgba(255,255,255,0.10);
-  box-shadow: 0 16px 48px rgba(0,0,0,0.7), 0 0 0 0.5px rgba(255,255,255,0.04) inset;
+  width: 384px;
+  background: var(--color-bg-surface-1);
+  border: 1px solid var(--color-border-default);
+  box-shadow: 0 24px 64px -12px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.02);
   z-index: 900;
   display: flex; flex-direction: column;
-  max-height: 520px;
+  max-height: min(560px, 80vh);
   overflow: hidden;
-  animation: notifIn 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: notifIn 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 @keyframes notifIn {
-  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  from { opacity: 0; transform: translateY(-8px) scale(0.97); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
-
-/* Linha de accent no topo */
-.notif-panel::before {
-  content: '';
-  display: block; height: 2px; flex-shrink: 0;
-  background: linear-gradient(90deg, var(--color-critical) 0%, transparent 70%);
-}
+.notif-panel::before { content: none; }
 
 .notif-panel__head {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 18px 12px;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
+  padding: 16px 18px 14px;
+  border-bottom: 1px solid var(--color-border-subtle);
   flex-shrink: 0;
 }
 .notif-panel__title {
-  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em;
-  text-transform: uppercase; color: rgba(255,255,255,0.5);
-  display: flex; align-items: center; gap: 8px;
+  display: flex; align-items: baseline; gap: 9px;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--color-text-quaternary);
 }
 .notif-panel__title strong {
-  font-size: 14px; font-family: var(--font-display); font-weight: 700;
-  letter-spacing: 0.06em; color: var(--color-text-primary);
+  font-family: var(--font-display); font-size: 14px; font-weight: 700;
+  letter-spacing: 0.04em; color: var(--color-text-primary); text-transform: none;
 }
 .notif-panel__mark {
-  font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.1em;
-  text-transform: uppercase; color: rgba(255,255,255,0.3);
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.1);
-  padding: 5px 11px; cursor: pointer;
-  transition: color 120ms, border-color 120ms;
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--color-text-tertiary);
+  background: transparent; border: 1px solid var(--color-border-subtle);
+  padding: 5px 10px; cursor: pointer;
+  transition: color 140ms, border-color 140ms;
 }
-.notif-panel__mark:hover { color: var(--color-text-primary); border-color: rgba(255,255,255,0.3); }
+.notif-panel__mark:hover { color: var(--color-text-primary); border-color: var(--color-border-strong); }
 
 .notif-panel__body { overflow-y: auto; flex: 1; }
-.notif-panel__body::-webkit-scrollbar { width: 3px; }
-.notif-panel__body::-webkit-scrollbar-track { background: transparent; }
+.notif-panel__body::-webkit-scrollbar { width: 4px; }
 .notif-panel__body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); }
 
-.notif-panel__empty {
-  padding: 40px 18px; text-align: center;
-  font-family: var(--font-mono); font-size: 11px;
-  color: rgba(255,255,255,0.25); line-height: 1.8;
+.notif-panel__empty { padding: 44px 24px; text-align: center; }
+.notif-panel__empty-mark {
+  width: 42px; height: 42px; margin: 0 auto 14px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid var(--color-neutral-strong); color: var(--color-neutral-strong);
+  font-size: 18px;
 }
+.notif-panel__empty-title { font-family: var(--font-display); font-size: 16px; font-weight: 600; margin-bottom: 5px; }
+.notif-panel__empty-sub { font-size: 12.5px; color: var(--color-text-tertiary); }
 
-/* Grupo: label com linha de separação */
+/* Grupo */
+.notif-group { padding: 6px 0; border-top: 1px solid var(--color-border-subtle); }
+.notif-group:first-child { border-top: none; }
 .notif-group__label {
-  display: flex; align-items: center; gap: 10px;
-  padding: 11px 18px 7px;
-  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em;
-  text-transform: uppercase; color: rgba(255,255,255,0.28);
-  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: center; gap: 9px;
+  padding: 10px 18px 8px;
+  font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--color-text-tertiary);
 }
-.notif-group__label::after {
-  content: ''; flex: 1; height: 1px;
-  background: rgba(255,255,255,0.06);
+.notif-group__bar { width: 8px; height: 2px; flex-shrink: 0; }
+.notif-group__count {
+  margin-left: auto; font-size: 9px; color: var(--color-text-quaternary);
+  background: var(--color-bg-surface-3); padding: 1px 7px;
 }
-.notif-group__label:first-child { border-top: none; }
 
 /* Item */
 .notif-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 11px 18px;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  cursor: pointer; width: 100%; text-align: left;
-  background: transparent;
-  transition: background 100ms ease;
+  display: flex; align-items: stretch;
+  transition: background 120ms ease;
 }
-.notif-item:last-child { border-bottom: none; }
-.notif-item:hover { background: rgba(255,255,255,0.04); }
-.notif-item--unread { background: rgba(255,255,255,0.025); }
-.notif-item--unread:hover { background: rgba(255,255,255,0.055); }
-
-/* Accent bar esquerda por tipo */
-.notif-item {
-  border-left: 2px solid transparent;
-  padding-left: 16px;
+.notif-item:hover { background: var(--color-bg-surface-2); }
+.notif-item--unread { background: rgba(255,255,255,0.018); }
+.notif-item__main {
+  flex: 1; min-width: 0; display: flex; align-items: stretch; gap: 0;
+  background: transparent; border: none; cursor: pointer; padding: 0; text-align: left;
 }
-.notif-item[data-type="late"]   { border-left-color: var(--color-critical); }
-.notif-item[data-type="today"]  { border-left-color: #e07b00; }
-.notif-item[data-type="soon"]   { border-left-color: #5a5a40; }
-.notif-item[data-type="critica"]{ border-left-color: #8b2020; }
-.notif-item[data-type="rotina"] { border-left-color: rgba(255,255,255,0.2); }
-
-.notif-item__dot {
-  width: 6px; height: 6px; flex-shrink: 0;
-  background: var(--color-critical);
+.notif-item__bar { width: 2px; flex-shrink: 0; margin: 10px 0; opacity: 0.55; transition: opacity 140ms; }
+.notif-item:hover .notif-item__bar { opacity: 1; }
+.notif-item__content {
+  flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px;
+  padding: 11px 14px;
 }
-.notif-item__dot--warn { background: #e07b00; }
-.notif-item__dot--info { background: rgba(255,255,255,0.3); }
-.notif-item__dot--ok   { background: #22C55E; }
-.notif-item__dot--read { background: transparent; border: 1px solid rgba(255,255,255,0.15); }
-
-.notif-item__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .notif-item__title {
-  font-size: 13px; font-weight: 500; color: var(--color-text-primary);
+  font-size: 13px; font-weight: 500; color: var(--color-text-secondary);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3;
 }
-.notif-item--unread .notif-item__title { color: #fff; }
+.notif-item--unread .notif-item__title { color: var(--color-text-primary); }
 .notif-item__sub {
   font-family: var(--font-mono); font-size: 10px;
-  color: rgba(255,255,255,0.35); letter-spacing: 0.03em;
+  color: var(--color-text-quaternary); letter-spacing: 0.02em;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.notif-item__sub--critical { color: var(--color-critical); }
-.notif-item__sub--warn     { color: #e07b00; }
+.notif-item__sub--critical { color: #ff6b6b; }
+.notif-item__sub--warn     { color: #e0922b; }
+.notif-item__dismiss {
+  flex-shrink: 0; width: 38px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: none; cursor: pointer;
+  color: var(--color-text-quaternary); font-size: 15px; font-family: var(--font-mono);
+  opacity: 0; transition: opacity 120ms, color 120ms;
+}
+.notif-item:hover .notif-item__dismiss { opacity: 1; }
+.notif-item__dismiss:hover { color: var(--color-critical); }
 
 /* Badge */
 .topbar__btn--bell .notif-badge {
@@ -2337,8 +2356,696 @@ body {
   background: var(--color-critical); color: #fff;
   font-family: var(--font-mono); font-size: 9px; font-weight: 700;
   display: flex; align-items: center; justify-content: center;
-  border-radius: 0;
   pointer-events: none;
+}
+
+
+
+/* ── Toggle de alarme no painel de notificações ── */
+.notif-alarm {
+  display: flex; align-items: center; gap: 11px; width: 100%;
+  padding: 13px 18px;
+  background: var(--color-bg-surface-2);
+  border: none; border-bottom: 1px solid var(--color-border-subtle);
+  cursor: pointer; text-align: left;
+  transition: background 140ms;
+}
+.notif-alarm:hover { background: var(--color-bg-surface-3); }
+.notif-alarm__icon { font-size: 14px; opacity: 0.85; }
+.notif-alarm__text {
+  flex: 1; font-size: 11.5px; color: var(--color-text-tertiary);
+  font-family: var(--font-mono); letter-spacing: 0.02em;
+}
+.notif-alarm--on .notif-alarm__text { color: var(--color-text-primary); }
+.notif-alarm__switch {
+  position: relative; flex-shrink: 0;
+  width: 40px; height: 22px;
+  background: var(--color-bg-surface-3); border: 1px solid var(--color-border-default);
+  font-size: 0; padding: 0;
+  transition: background 200ms ease, border-color 200ms ease;
+}
+.notif-alarm__switch::after {
+  content: ''; position: absolute; top: 2px; left: 2px;
+  width: 16px; height: 16px; background: var(--color-text-tertiary);
+  transition: transform 200ms cubic-bezier(0.16,1,0.3,1), background 200ms ease;
+}
+.notif-alarm--on .notif-alarm__switch { background: var(--color-neutral-strong); border-color: var(--color-neutral-strong); }
+.notif-alarm--on .notif-alarm__switch::after { transform: translateX(18px); background: var(--color-bg-base); }
+
+/* ═══════════════════════════════════════════════════════════
+   REFINO v2.1 — animações, profundidade e micro-interações
+   ═══════════════════════════════════════════════════════════ */
+
+/* Transições globais suaves em elementos interativos */
+.kpi, .list-row, .cat-tile, .note, .kanban__card, .timeline__item,
+.day-panel__row, .agenda__day, .team-card, .report-panel, .todo__row,
+.cal__cell, .tab, .sidebar__item, .toolbar__select, .topbar__btn,
+.topbar__cta, .btn, .form-chip, .day-chip, .cal-filter, .cal-mode,
+.notif-item, .sync-indicator, .dropdown__item, .date-nav__btn, .date-nav__today {
+  transition: background-color 160ms ease, border-color 160ms ease,
+              color 160ms ease, transform 160ms cubic-bezier(0.16,1,0.3,1),
+              box-shadow 160ms ease, opacity 160ms ease;
+}
+
+/* Entrada escalonada da lista (stagger) */
+@keyframes rowIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.list-row { animation: rowIn 360ms cubic-bezier(0.16,1,0.3,1) both; }
+.list-row:nth-child(1) { animation-delay: 0ms; }
+.list-row:nth-child(2) { animation-delay: 28ms; }
+.list-row:nth-child(3) { animation-delay: 56ms; }
+.list-row:nth-child(4) { animation-delay: 84ms; }
+.list-row:nth-child(5) { animation-delay: 112ms; }
+.list-row:nth-child(6) { animation-delay: 140ms; }
+.list-row:nth-child(7) { animation-delay: 168ms; }
+.list-row:nth-child(8) { animation-delay: 196ms; }
+.list-row:nth-child(n+9) { animation-delay: 220ms; }
+
+/* KPI: leve elevação no hover + brilho sutil */
+.kpi { position: relative; overflow: hidden; }
+.kpi::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(120% 100% at 0% 0%, rgba(255,255,255,0.04), transparent 60%);
+  opacity: 0; transition: opacity 220ms ease; pointer-events: none;
+}
+.kpi:hover::after { opacity: 1; }
+.kpi:hover { transform: translateY(-2px); }
+
+/* KPI value — animação de contagem visual (pulse on mount) */
+@keyframes kpiPop {
+  0% { opacity: 0; transform: translateY(8px) scale(0.96); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.kpi__value { animation: kpiPop 480ms cubic-bezier(0.16,1,0.3,1) both; }
+
+/* Linhas da lista: barra de acento na origem ao passar o mouse */
+.list-row { position: relative; }
+.list-row::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2px; background: var(--color-neutral-strong);
+  transform: scaleY(0); transform-origin: center;
+  transition: transform 180ms cubic-bezier(0.16,1,0.3,1);
+}
+.list-row:hover::before { transform: scaleY(1); }
+
+/* Cards do Kanban: profundidade ao arrastar e hover */
+.kanban__card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.32); }
+.kanban__col { transition: background-color 180ms ease, border-color 180ms ease; }
+.kanban__col--over { box-shadow: inset 0 0 0 1px var(--color-neutral-strong); }
+
+/* Sidebar: indicador ativo deslizante */
+.sidebar__item { position: relative; }
+.sidebar__item::before {
+  content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%) scaleY(0);
+  width: 2px; height: 22px; background: var(--color-neutral-strong);
+  transition: transform 200ms cubic-bezier(0.16,1,0.3,1);
+}
+.sidebar__item--active::before { transform: translateY(-50%) scaleY(1); }
+.sidebar__item:hover { color: var(--color-text-primary); }
+.sidebar__item:hover svg { transform: scale(1.08); }
+.sidebar__item svg { transition: transform 180ms cubic-bezier(0.16,1,0.3,1); }
+
+/* Tabs: sublinhado animado */
+.tab { position: relative; }
+.tab::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+  background: var(--color-text-primary); transform: scaleX(0); transform-origin: center;
+  transition: transform 220ms cubic-bezier(0.16,1,0.3,1);
+}
+.tab--active::after { transform: scaleX(1); }
+
+/* Botão primário: brilho ao hover */
+.topbar__cta, .btn--primary { position: relative; overflow: hidden; }
+.topbar__cta::after, .btn--primary::after {
+  content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+  background: linear-gradient(110deg, transparent, rgba(255,255,255,0.35), transparent);
+  transition: left 520ms cubic-bezier(0.16,1,0.3,1);
+}
+.topbar__cta:hover::after, .btn--primary:hover::after { left: 140%; }
+.topbar__cta:active, .btn--primary:active { transform: scale(0.97); }
+
+/* Tiles de categoria: barra preenche com easing ao montar */
+.cat-tile__bar-fill { transition: width 640ms cubic-bezier(0.16,1,0.3,1); }
+.report-row__fill { transition: width 640ms cubic-bezier(0.16,1,0.3,1); }
+
+/* Notas e cards: leve lift */
+.note:hover, .team-card:hover, .report-panel:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.24); }
+
+/* Dropdown menus: entrada suave */
+@keyframes menuIn {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.dropdown__menu { animation: menuIn 150ms cubic-bezier(0.16,1,0.3,1) both; transform-origin: top right; }
+
+/* Modal: backdrop blur + entrada do card */
+.modal-backdrop {
+  backdrop-filter: blur(3px);
+  animation: fadeIn 180ms ease both;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.modal { animation: modalIn 260ms cubic-bezier(0.16,1,0.3,1) both; }
+
+/* Inputs/selects: foco com glow sutil */
+.form-input:focus, .form-select:focus, .form-textarea:focus,
+.todo__input:focus, .topbar__search input:focus {
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
+}
+.topbar__search { transition: box-shadow 180ms ease; }
+.topbar__search:focus-within { box-shadow: 0 0 0 3px rgba(255,255,255,0.05); }
+
+/* Checkbox do to-do: pop ao marcar */
+@keyframes checkPop { 0%{transform:scale(0.7)} 60%{transform:scale(1.15)} 100%{transform:scale(1)} }
+.todo__check--on, .day-agenda__check--on { animation: checkPop 240ms cubic-bezier(0.16,1,0.3,1); }
+
+/* Badge do sino: pulso quando há não-lidas */
+@keyframes badgePulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(220,34,34,0.5); }
+  50%     { box-shadow: 0 0 0 4px rgba(220,34,34,0); }
+}
+.topbar__btn--bell .notif-badge { animation: badgePulse 2.4s ease-in-out infinite; }
+
+/* Scrollbar global discreta */
+* { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.14) transparent; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.22); background-clip: padding-box; }
+
+/* Título do header com leve gradiente de texto */
+.page__header-title {
+  background: linear-gradient(180deg, var(--color-text-primary), rgba(255,255,255,0.7));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+html.light .page__header-title {
+  background: linear-gradient(180deg, #0e0e10, #3f3f48);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+/* Respeitar quem prefere menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ════ TO-DO BOARD v2 ════ */
+.todo2 { margin-top: 18px; max-width: 920px; }
+.todo2__progress {
+  display: flex; align-items: center; gap: 18px;
+  margin-bottom: 20px;
+}
+.todo2__progress-info { display: flex; align-items: baseline; gap: 10px; flex-shrink: 0; }
+.todo2__progress-pct {
+  font-family: var(--font-display); font-size: 28px; font-weight: 700;
+  letter-spacing: -0.01em; color: var(--color-text-primary);
+}
+.todo2__progress-label { font-family: var(--font-mono); font-size: 11px; color: var(--color-text-tertiary); }
+.todo2__progress-bar {
+  flex: 1; height: 6px; background: var(--color-bg-surface-3); overflow: hidden;
+}
+.todo2__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #22C55E, #4ade80);
+  transition: width 640ms cubic-bezier(0.16,1,0.3,1);
+}
+
+.todo2__add {
+  display: flex; align-items: center; gap: 0;
+  border: 1px solid var(--color-border-default);
+  background: var(--color-bg-surface-1);
+  margin-bottom: 22px;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+.todo2__add:focus-within { border-color: var(--color-border-strong); box-shadow: 0 0 0 3px rgba(255,255,255,0.05); }
+.todo2__add-icon {
+  font-size: 20px; color: var(--color-text-quaternary);
+  width: 48px; text-align: center; flex-shrink: 0; font-weight: 300;
+}
+.todo2__input {
+  flex: 1; height: 50px; background: transparent; border: none; outline: none;
+  color: var(--color-text-primary); font-size: 15px; font-family: var(--font-sans);
+}
+.todo2__input::placeholder { color: var(--color-text-quaternary); }
+.todo2__add-btn {
+  height: 50px; padding: 0 22px; flex-shrink: 0;
+  background: var(--color-neutral-strong); color: var(--color-bg-base);
+  border: none; cursor: pointer;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+  transition: opacity 140ms ease;
+}
+.todo2__add-btn:hover:not(:disabled) { opacity: 0.88; }
+.todo2__add-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.todo2__cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+@media (max-width: 900px) { .todo2__cols { grid-template-columns: 1fr; } }
+.todo2 { max-width: 1100px; }
+.todo2__col-dot--prog { background: #f59e0b; }
+.todo2__col-head--prog { color: var(--color-text-secondary); }
+.todo2__card--prog { border-left-color: #f59e0b; }
+.todo2__check--prog { border-color: #f59e0b; color: #f59e0b; font-size: 11px; }
+.todo2__check--prog:hover { background: rgba(245,158,11,0.12); }
+.todo2__move {
+  width: 24px; height: 24px; flex-shrink: 0;
+  background: transparent; border: none; cursor: pointer;
+  color: var(--color-text-quaternary); font-size: 14px; font-family: var(--font-mono);
+  opacity: 0; transition: opacity 120ms, color 120ms;
+}
+.todo2__card:hover .todo2__move { opacity: 1; }
+.todo2__move:hover { color: var(--color-text-primary); }
+.todo2__col {
+  background: var(--color-bg-surface-1);
+  border: 1px solid var(--color-border-subtle);
+  min-height: 200px;
+}
+.todo2__col-head {
+  display: flex; align-items: center; gap: 9px;
+  padding: 14px 16px; border-bottom: 1px solid var(--color-border-subtle);
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+.todo2__col-dot { width: 7px; height: 7px; background: var(--color-neutral-mid); }
+.todo2__col-dot--done { background: #22C55E; }
+.todo2__col-count {
+  font-family: var(--font-mono); font-size: 11px; color: var(--color-text-quaternary);
+  background: var(--color-bg-surface-3); padding: 1px 8px;
+}
+.todo2__col-head--done { color: var(--color-text-tertiary); }
+.todo2__clear {
+  margin-left: auto; background: transparent; border: none; cursor: pointer;
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--color-text-quaternary);
+}
+.todo2__clear:hover { color: var(--color-critical); }
+.todo2__list { padding: 10px; display: flex; flex-direction: column; gap: 8px; min-height: 60px; }
+.todo2__col-empty {
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--color-text-quaternary);
+  text-align: center; padding: 26px 8px;
+}
+@keyframes todoCardIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.todo2__card {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 13px;
+  background: var(--color-bg-surface-2);
+  border: 1px solid var(--color-border-subtle);
+  border-left: 2px solid var(--color-neutral-mid);
+  animation: todoCardIn 240ms cubic-bezier(0.16,1,0.3,1) both;
+  transition: border-color 140ms ease, transform 140ms ease, box-shadow 140ms ease;
+}
+.todo2__card:hover { border-color: var(--color-border-strong); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,0.3); }
+.todo2__card--done { border-left-color: #22C55E; opacity: 0.6; }
+.todo2__card--done .todo2__text { text-decoration: line-through; color: var(--color-text-tertiary); }
+.todo2__check {
+  width: 20px; height: 20px; flex-shrink: 0;
+  background: transparent; border: 1.5px solid var(--color-border-strong); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; color: var(--color-bg-base);
+  transition: all 140ms ease;
+}
+.todo2__check:hover { border-color: #22C55E; }
+.todo2__check--on { background: #22C55E; border-color: #22C55E; }
+@keyframes checkPop2 { 0%{transform:scale(0.6)} 55%{transform:scale(1.2)} 100%{transform:scale(1)} }
+.todo2__check--on { animation: checkPop2 260ms cubic-bezier(0.16,1,0.3,1); }
+.todo2__text { flex: 1; font-size: 14px; color: var(--color-text-primary); line-height: 1.4; }
+.todo2__del {
+  width: 24px; height: 24px; flex-shrink: 0;
+  background: transparent; border: none; cursor: pointer;
+  color: var(--color-text-quaternary); font-size: 17px; font-family: var(--font-mono);
+  opacity: 0; transition: opacity 120ms, color 120ms;
+}
+.todo2__card:hover .todo2__del { opacity: 1; }
+.todo2__del:hover { color: var(--color-critical); }
+.todo2__empty {
+  text-align: center; padding: 56px 24px;
+  border: 1px dashed var(--color-border-default);
+}
+.todo2__empty-mark {
+  width: 48px; height: 48px; margin: 0 auto 16px;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid #22C55E; color: #22C55E; font-size: 22px;
+}
+.todo2__empty-title { font-family: var(--font-display); font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+.todo2__empty-sub { font-size: 13px; color: var(--color-text-tertiary); max-width: 400px; margin: 0 auto; line-height: 1.6; }
+
+/* ── Toggle de configuração (switch) ── */
+.settings-toggle {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 14px 16px; margin-bottom: 16px;
+  background: var(--color-bg-surface-2);
+  border: 1px solid var(--color-border-subtle);
+}
+.settings-toggle__title { font-size: 13.5px; font-weight: 500; color: var(--color-text-primary); }
+.settings-toggle__sub { font-size: 11.5px; color: var(--color-text-tertiary); margin-top: 2px; }
+.settings-switch {
+  width: 44px; height: 24px; flex-shrink: 0;
+  background: var(--color-bg-surface-3); border: 1px solid var(--color-border-default);
+  cursor: pointer; position: relative; padding: 0;
+  transition: background 200ms ease, border-color 200ms ease;
+}
+.settings-switch--on { background: #22C55E; border-color: #22C55E; }
+.settings-switch__knob {
+  position: absolute; top: 2px; left: 2px;
+  width: 18px; height: 18px; background: #fff;
+  transition: transform 200ms cubic-bezier(0.16,1,0.3,1);
+}
+.settings-switch--on .settings-switch__knob { transform: translateX(20px); }
+
+
+
+/* ── Barra de resumo do dia (segmentada) ── */
+.statusbar {
+  margin-top: 18px;
+  border: 1px solid var(--color-border-subtle);
+  background: linear-gradient(180deg, var(--color-bg-surface-1), rgba(255,255,255,0.012));
+  padding: 18px 20px 16px;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 24px -16px rgba(0,0,0,0.6);
+}
+.statusbar__top {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 13px;
+}
+.statusbar__heading {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--color-text-quaternary);
+}
+.statusbar__total {
+  font-family: var(--font-mono); font-size: 11px; color: var(--color-text-tertiary);
+}
+.statusbar__total b { color: var(--color-text-primary); font-weight: 600; }
+.statusbar__track {
+  display: flex; height: 7px; gap: 2px;
+  padding: 2px;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 1px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.3) inset;
+}
+.statusbar__seg {
+  transition: flex-grow 600ms cubic-bezier(0.16,1,0.3,1);
+  min-width: 8px; position: relative; border-radius: 1px;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.25);
+}
+/* Brilho sutil no topo de cada segmento, como os botões/cards do site */
+.statusbar__seg::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0) 60%);
+  border-radius: 1px;
+}
+.statusbar__seg--pend  { background: var(--color-neutral-mid); }
+.statusbar__seg--prog  { background: #c98a2b; }
+.statusbar__seg--feito { background: var(--color-neutral-strong); }
+.statusbar__seg--falha { background: var(--color-critical); }
+.statusbar__legend {
+  display: flex; align-items: center; gap: 0; flex-wrap: wrap;
+  margin-top: 15px;
+}
+.statusbar__item {
+  display: flex; align-items: center; gap: 9px;
+  padding-right: 20px; margin-right: 20px;
+  border-right: 1px solid var(--color-border-subtle);
+}
+.statusbar__item:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+.statusbar__num {
+  font-family: var(--font-display); font-size: 18px; font-weight: 700;
+  color: var(--color-text-primary); letter-spacing: -0.01em; line-height: 1;
+}
+.statusbar__meta { display: flex; flex-direction: column; gap: 2px; }
+.statusbar__label {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--color-text-quaternary); line-height: 1;
+}
+.statusbar__dot {
+  width: 6px; height: 6px; flex-shrink: 0;
+  box-shadow: 0 0 8px -1px currentColor;
+}
+.statusbar__dot--pend  { background: var(--color-neutral-mid); color: var(--color-neutral-mid); }
+.statusbar__dot--prog  { background: #c98a2b; color: #c98a2b; }
+.statusbar__dot--feito { background: var(--color-neutral-strong); color: var(--color-neutral-strong); }
+.statusbar__dot--falha { background: var(--color-critical); color: var(--color-critical); }
+
+/* ── Popup de ação rápida (vindo da notificação do navegador) ── */
+.qa-backdrop {
+  position: fixed; inset: 0; z-index: 1200;
+  background: rgba(0,0,0,0.55); backdrop-filter: blur(3px);
+  display: flex; align-items: flex-start; justify-content: center;
+  padding-top: 14vh;
+  animation: fadeIn 160ms ease both;
+}
+.qa-popup {
+  width: 380px; max-width: calc(100vw - 32px);
+  background: var(--color-bg-surface-1);
+  border: 1px solid var(--color-border-default);
+  box-shadow: 0 28px 72px -16px rgba(0,0,0,0.8);
+  padding: 18px 20px 16px;
+  animation: modalIn 240ms cubic-bezier(0.16,1,0.3,1) both;
+  position: relative;
+}
+.qa-popup::before {
+  content: ''; position: absolute; left: 0; top: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--color-critical), transparent 70%);
+}
+.qa-popup__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.qa-popup__kicker {
+  font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--color-text-quaternary);
+}
+.qa-popup__close {
+  width: 26px; height: 26px; display: flex; align-items: center; justify-content: center;
+  background: transparent; border: none; cursor: pointer; color: var(--color-text-tertiary);
+  transition: color 140ms;
+}
+.qa-popup__close:hover { color: var(--color-text-primary); }
+.qa-popup__title {
+  font-family: var(--font-display); font-size: 18px; font-weight: 600;
+  color: var(--color-text-primary); line-height: 1.3; margin-bottom: 5px;
+}
+.qa-popup__desc { font-size: 12.5px; color: var(--color-text-tertiary); line-height: 1.5; margin-bottom: 16px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.qa-popup__label {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--color-text-quaternary); margin-bottom: 9px;
+}
+.qa-popup__actions { display: flex; flex-direction: column; gap: 7px; }
+.qa-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 13px; width: 100%;
+  background: var(--color-bg-surface-2); border: 1px solid var(--color-border-subtle);
+  border-left-width: 2px;
+  color: var(--color-text-secondary); cursor: pointer;
+  font-family: var(--font-sans); font-size: 13.5px; font-weight: 500;
+  transition: background 140ms, border-color 140ms, color 140ms, transform 120ms;
+}
+.qa-btn:hover { background: var(--color-bg-surface-3); color: var(--color-text-primary); transform: translateX(2px); }
+.qa-btn--done { border-left-color: var(--color-neutral-strong); }
+.qa-btn--prog { border-left-color: #c98a2b; }
+.qa-btn--fail { border-left-color: var(--color-critical); }
+.qa-btn--done:hover { border-color: var(--color-neutral-strong); }
+.qa-btn--prog:hover { border-color: #c98a2b; }
+.qa-btn--fail:hover { border-color: var(--color-critical); }
+.qa-popup__open {
+  margin-top: 14px; width: 100%;
+  background: transparent; border: none; cursor: pointer;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em;
+  color: var(--color-text-tertiary); padding: 6px;
+  transition: color 140ms;
+}
+.qa-popup__open:hover { color: var(--color-text-primary); }
+
+/* ═══════════════════════════════════════════════════════════
+   v3.0 — transições de view, mobile drawer, workspaces, foco
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Transição ao trocar de view (key=view remonta) ── */
+@keyframes viewIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.view-stage { animation: viewIn 340ms cubic-bezier(0.16,1,0.3,1) both; }
+
+/* Hamburger — só no mobile */
+.topbar__burger {
+  display: none;
+  width: 34px; height: 34px; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid var(--color-border-subtle);
+  color: var(--color-text-secondary); cursor: pointer; flex-shrink: 0;
+  transition: color 140ms, border-color 140ms;
+}
+.topbar__burger:hover { color: var(--color-text-primary); border-color: var(--color-border-strong); }
+
+/* ── Workspace switcher (topbar) ── */
+.ws-switch { position: relative; flex-shrink: 0; }
+.ws-switch__btn {
+  display: flex; align-items: center; gap: 8px;
+  height: 32px; padding: 0 12px;
+  background: var(--color-bg-surface-1); border: 1px solid var(--color-border-default);
+  color: var(--color-text-secondary); cursor: pointer;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em;
+  transition: border-color 140ms, color 140ms;
+}
+.ws-switch__btn:hover { border-color: var(--color-border-strong); color: var(--color-text-primary); }
+.ws-switch__dot { width: 7px; height: 7px; background: var(--color-neutral-strong); flex-shrink: 0; }
+.ws-switch__label { white-space: nowrap; }
+.ws-switch__menu {
+  position: absolute; top: calc(100% + 6px); left: 0; z-index: 100;
+  width: 220px;
+  background: var(--color-bg-surface-1); border: 1px solid var(--color-border-default);
+  box-shadow: 0 16px 44px -12px rgba(0,0,0,0.7);
+  animation: menuIn 160ms cubic-bezier(0.16,1,0.3,1) both;
+}
+.ws-switch__item {
+  display: flex; flex-direction: column; gap: 2px; width: 100%;
+  padding: 11px 14px; text-align: left;
+  background: transparent; border: none; border-bottom: 1px solid var(--color-border-subtle);
+  cursor: pointer; transition: background 120ms;
+}
+.ws-switch__item:last-child { border-bottom: none; }
+.ws-switch__item:hover { background: var(--color-bg-surface-2); }
+.ws-switch__item--active { background: var(--color-bg-surface-2); }
+.ws-switch__item--active .ws-switch__item-name { color: var(--color-text-primary); }
+.ws-switch__item-name { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); }
+.ws-switch__item-sub { font-family: var(--font-mono); font-size: 9.5px; color: var(--color-text-quaternary); letter-spacing: 0.04em; }
+
+/* ── Mobile drawer ── */
+.drawer-backdrop {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(2px);
+  opacity: 0; pointer-events: none; transition: opacity 240ms ease;
+}
+.drawer-backdrop--open { opacity: 1; pointer-events: auto; }
+.drawer {
+  position: fixed; top: 0; left: 0; bottom: 0; z-index: 101;
+  width: 280px; max-width: 84vw;
+  background: var(--color-bg-sidebar);
+  border-right: 1px solid var(--color-border-default);
+  display: flex; flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 300ms cubic-bezier(0.16,1,0.3,1);
+}
+.drawer--open { transform: translateX(0); }
+.drawer__head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 18px 16px; border-bottom: 1px solid var(--color-border-subtle);
+}
+.drawer__brand { font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: 0.04em; }
+.drawer__brand-sep { color: var(--color-critical); }
+.drawer__close { background: transparent; border: none; color: var(--color-text-tertiary); cursor: pointer; }
+.drawer__ws { padding: 16px 14px; border-bottom: 1px solid var(--color-border-subtle); }
+.drawer__ws-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-text-quaternary); margin-bottom: 10px; padding: 0 4px; }
+.drawer__ws-btn {
+  display: flex; flex-direction: column; gap: 2px; width: 100%;
+  padding: 10px 12px; margin-bottom: 4px; text-align: left;
+  background: transparent; border: 1px solid transparent; cursor: pointer;
+  transition: background 120ms, border-color 120ms;
+}
+.drawer__ws-btn:hover { background: var(--color-bg-surface-2); }
+.drawer__ws-btn--active { background: var(--color-bg-surface-2); border-color: var(--color-border-default); }
+.drawer__ws-name { font-size: 13.5px; font-weight: 500; color: var(--color-text-primary); }
+.drawer__ws-sub { font-family: var(--font-mono); font-size: 9.5px; color: var(--color-text-quaternary); }
+.drawer__nav { flex: 1; padding: 12px 10px; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
+.drawer__item {
+  display: flex; align-items: center; gap: 13px;
+  padding: 12px 14px; width: 100%; text-align: left;
+  background: transparent; border: none; cursor: pointer;
+  color: var(--color-text-tertiary); font-family: var(--font-sans); font-size: 14px;
+  transition: background 120ms, color 120ms;
+}
+.drawer__item:hover { background: var(--color-bg-surface-2); color: var(--color-text-primary); }
+.drawer__item--active { background: var(--color-bg-surface-2); color: var(--color-text-primary); box-shadow: inset 2px 0 0 var(--color-neutral-strong); }
+.drawer__footer { padding: 12px 10px; border-top: 1px solid var(--color-border-subtle); display: flex; flex-direction: column; gap: 2px; }
+
+/* ── Focus view ── */
+.focus { max-width: 820px; margin: 18px auto 0; }
+.focus__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
+.focus__kicker { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-text-quaternary); margin-bottom: 6px; }
+.focus__heading { font-family: var(--font-display); font-size: 28px; font-weight: 700; letter-spacing: -0.01em; }
+.focus__stats { display: flex; gap: 16px; }
+.focus__stat { font-family: var(--font-mono); font-size: 11px; color: var(--color-text-tertiary); }
+.focus__stat b { font-family: var(--font-display); font-size: 16px; color: var(--color-text-primary); margin-right: 4px; }
+.focus__stat--done b { color: var(--color-neutral-strong); }
+.focus__stat--late b { color: var(--color-critical); }
+
+.focus__now {
+  border: 1px solid var(--color-border-default);
+  background: linear-gradient(180deg, var(--color-bg-surface-2), var(--color-bg-surface-1));
+  padding: 26px 28px; position: relative; overflow: hidden;
+  box-shadow: 0 12px 40px -16px rgba(0,0,0,0.6);
+}
+.focus__now::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--color-neutral-strong); }
+.focus__now--late::before { background: var(--color-critical); }
+.focus__now-tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+.focus__now--late .focus__now-tag { color: #ff6b6b; }
+.focus__now-title { font-family: var(--font-display); font-size: 24px; font-weight: 600; line-height: 1.25; cursor: pointer; margin-bottom: 8px; }
+.focus__now-title:hover { color: var(--color-text-primary); text-decoration: underline; text-underline-offset: 3px; }
+.focus__now-desc { font-size: 14px; color: var(--color-text-tertiary); line-height: 1.6; margin-bottom: 16px; }
+.focus__now-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+.focus__chip { font-family: var(--font-mono); font-size: 10px; padding: 4px 9px; background: var(--color-bg-surface-3); color: var(--color-text-secondary); }
+.focus__chip--prio.prio-crítica { background: rgba(220,34,34,0.16); color: #ff6b6b; }
+.focus__chip--prio.prio-alta { background: rgba(224,146,43,0.16); color: #e0922b; }
+.focus__now-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.focus__act {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 16px; cursor: pointer;
+  background: var(--color-bg-surface-3); border: 1px solid var(--color-border-default);
+  color: var(--color-text-secondary); font-family: var(--font-sans); font-size: 13px; font-weight: 500;
+  transition: background 140ms, color 140ms, transform 120ms;
+}
+.focus__act:hover { color: var(--color-text-primary); transform: translateY(-1px); }
+.focus__act--done { background: var(--color-neutral-strong); color: var(--color-bg-base); border-color: var(--color-neutral-strong); }
+.focus__act--done:hover { opacity: 0.9; }
+.focus__act--ghost { background: transparent; }
+
+.focus__empty { text-align: center; padding: 64px 24px; border: 1px dashed var(--color-border-default); }
+.focus__empty-mark { width: 52px; height: 52px; margin: 0 auto 18px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--color-neutral-strong); color: var(--color-neutral-strong); font-size: 24px; }
+.focus__empty-title { font-family: var(--font-display); font-size: 20px; font-weight: 600; margin-bottom: 6px; }
+.focus__empty-sub { font-size: 13.5px; color: var(--color-text-tertiary); max-width: 420px; margin: 0 auto; line-height: 1.6; }
+
+.focus__queue { margin-top: 26px; }
+.focus__queue-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text-quaternary); margin-bottom: 10px; }
+.focus__row {
+  display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
+  padding: 13px 16px; background: var(--color-bg-surface-1);
+  border: 1px solid var(--color-border-subtle); border-bottom: none;
+  cursor: pointer; transition: background 120ms;
+}
+.focus__row:last-child { border-bottom: 1px solid var(--color-border-subtle); }
+.focus__row:hover { background: var(--color-bg-surface-2); }
+.focus__row-num { font-family: var(--font-mono); font-size: 10px; color: var(--color-text-quaternary); flex-shrink: 0; }
+.focus__row-hora { font-family: var(--font-mono); font-size: 12px; color: var(--color-text-tertiary); width: 44px; flex-shrink: 0; }
+.focus__row-title { flex: 1; font-size: 14px; color: var(--color-text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.focus__row-prio { font-family: var(--font-mono); font-size: 9px; padding: 2px 7px; text-transform: uppercase; letter-spacing: 0.05em; flex-shrink: 0; }
+.focus__row-prio.prio-crítica { background: rgba(220,34,34,0.16); color: #ff6b6b; }
+.focus__row-prio.prio-alta { background: rgba(224,146,43,0.16); color: #e0922b; }
+.focus__row-prio.prio-média { background: var(--color-bg-surface-3); color: var(--color-text-tertiary); }
+.focus__row-prio.prio-baixa { background: var(--color-bg-surface-3); color: var(--color-text-quaternary); }
+.focus__row-check {
+  width: 26px; height: 26px; flex-shrink: 0;
+  background: transparent; border: 1px solid var(--color-border-strong); color: var(--color-bg-base);
+  cursor: pointer; font-size: 12px; transition: all 140ms;
+}
+.focus__row-check:hover { background: var(--color-neutral-strong); border-color: var(--color-neutral-strong); }
+
+/* ── Mobile: ativa hamburger, esconde sidebar, ajusta tudo ── */
+@media (max-width: 860px) {
+  .sidebar { display: none; }
+  .topbar__burger { display: flex; }
+  .topbar { padding: 0 12px; gap: 8px; }
+  .topbar__title { display: none; }
+  .ws-switch__label { display: none; }
+  .ws-switch__btn { padding: 0 9px; }
+  .topbar__date .date-nav__today { display: none; }
+  .topbar__updated { display: none; }
+  .page { padding: 18px 14px; }
+  .focus__heading { font-size: 23px; }
+  .focus__now-title { font-size: 20px; }
+  .todo2__cols { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .ws-switch { display: none; }
+  .topbar__cta span { display: none; }
 }
 
 </style>
@@ -2392,18 +3099,50 @@ body {
 // Cada item, independente da origem (Projeto/Rotina/Pedido), implementa Item.
 // ============================================================================
 
-const CATEGORIAS = [
-  "Operações Diárias",
-  "Relatórios / KPIs",
-  "Análise de Dados",
-  "Reuniões",
-  "Projetos",
-  "Transportadoras",
-  "Estoque / Armazém",
-  "Melhoria de Processo",
-  "Administrativo",
-  "Pessoal / Desenvolvimento",
-];
+const WORKSPACES = {
+  logistica: {
+    label: 'Logística',
+    sub: 'Operações & Supply Chain',
+    icon: 'truck',
+    categorias: [
+      "Operações Diárias", "Relatórios / KPIs", "Análise de Dados", "Reuniões",
+      "Projetos", "Transportadoras", "Estoque / Armazém", "Melhoria de Processo",
+      "Administrativo", "Pessoal / Desenvolvimento",
+    ],
+  },
+  escritorio: {
+    label: 'Escritório',
+    sub: 'Administrativo & Gestão',
+    icon: 'briefcase',
+    categorias: [
+      "Reuniões", "E-mails & Comunicação", "Documentos", "Financeiro",
+      "Relatórios / KPIs", "Planejamento", "RH & Pessoas", "Compras",
+      "Clientes", "Administrativo",
+    ],
+  },
+  desenvolvimento: {
+    label: 'Desenvolvimento',
+    sub: 'Produto & Engenharia',
+    icon: 'code',
+    categorias: [
+      "Feature", "Bug / Correção", "Refatoração", "Code Review",
+      "Deploy / Infra", "Documentação", "Testes", "Reuniões",
+      "Pesquisa / Spike", "Débito Técnico",
+    ],
+  },
+};
+
+// CATEGORIAS dinâmica: lê o workspace ativo do localStorage (com fallback)
+const getWorkspace = () => {
+  try { return localStorage.getItem('villares_workspace') || 'logistica'; } catch { return 'logistica'; }
+};
+const getCategorias = () => (WORKSPACES[getWorkspace()] || WORKSPACES.logistica).categorias;
+
+// União de todas as categorias de todos os modos (para filtros não quebrarem ao trocar)
+const TODAS_CATEGORIAS = [...new Set(Object.values(WORKSPACES).flatMap(w => w.categorias))];
+
+// CATEGORIAS = do workspace atual (compat com todo o código existente)
+const CATEGORIAS = getCategorias();
 
 // Helper: criar Date relativa a hoje
 const today = new Date();
@@ -2635,6 +3374,7 @@ const STATUS_BUCKET = {
   "Pausado":      "aberto",
   "Concluído":    "feito",
   "Cancelado":    "feito",
+  "Falha":        "falha",
   // Rotina (já tratado acima)
   // Pedidos
   "Recebido":     "aberto",
@@ -2707,6 +3447,8 @@ const isFeito = (item) => {
   return STATUS_BUCKET[item.status] === "feito" && item.status !== "Cancelado" && item.status !== "Recusado";
 };
 
+const isFalha = (item) => !temDias(item) && item.status === "Falha";
+
 const isAtrasado = (item) => {
   if (temDias(item)) return false; // rotina recorrente nunca "atrasa": reaparece no próximo dia
   if (!isAtivo(item) || !item.prazo) return false;
@@ -2717,6 +3459,27 @@ const isHoje = (item) => {
   if (temDias(item)) return rotinaNoDia(item, new Date()) && isAtivo(item);
   if (!isAtivo(item) || !item.prazo) return false;
   return diasAteHoje(item.prazo) === 0;
+};
+
+// ── Estado relativo a uma DATA específica (selecionada no topo) ──
+const mesmoDia = (a, b) => {
+  const x = parseLocalDate(a), y = b instanceof Date ? b : parseLocalDate(b);
+  return x.getFullYear() === y.getFullYear() && x.getMonth() === y.getMonth() && x.getDate() === y.getDate();
+};
+// Pertence ao dia? (rotina programada no dia, ou item com prazo naquele dia)
+const noDia = (item, d) => {
+  if (temDias(item)) return rotinaNoDia(item, d);
+  return !!item.prazo && mesmoDia(item.prazo, d);
+};
+// Concluído NAQUELE dia?
+const feitoNoDia = (item, d) => {
+  if (temDias(item)) return rotinaFeitaNoDia(item, d);
+  return isFeito(item);
+};
+// Ativo (pendente/andamento) NAQUELE dia?
+const ativoNoDia = (item, d) => {
+  if (temDias(item)) return rotinaNoDia(item, d) && !rotinaFeitaNoDia(item, d);
+  return isAtivo(item) && !!item.prazo && mesmoDia(item.prazo, d);
 };
 
 const isProximos48h = (item) => {
@@ -2769,12 +3532,14 @@ const hasCat = (item, cat) => splitCats(item.categoria).includes(cat);
 window.PLANNER_DATA = {
   MOCK_ITEMS,
   CATEGORIAS,
+  WORKSPACES, TODAS_CATEGORIAS, getWorkspace, getCategorias,
   STATUS_BUCKET,
   isAtivo, isFeito, isAtrasado, isHoje, isProximos48h, isEstaSemana, isConcluidoRecente,
   diasAteHoje, formatDate, formatRelative,
   parseLocalDate, localISO,
   splitCats, hasCat,
   DIAS_SEMANA, splitDias, diasEfetivos, temDias, rotinaNoDia, rotinaFeitaHoje, rotinaFeitaNoDia,
+  mesmoDia, noDia, feitoNoDia, ativoNoDia, isFalha,
 };
 
 </script>
@@ -2785,7 +3550,34 @@ window.PLANNER_DATA = {
 // Disposição Mercado Livre (sidebar fixa + tabs + listas horizontais densas)
 // ============================================================================
 
-const { useState, useEffect, useMemo } = React;
+const { useState, useEffect, useMemo, useRef } = React;
+
+// ── Sons de UI (Web Audio) — sutis, desativáveis ──
+let __audioCtx = null;
+const uiSoundOn = () => { try { return localStorage.getItem('villares_sound') !== 'off'; } catch { return true; } };
+const playTone = (freqs, { dur = 0.12, gain = 0.12, type = 'sine' } = {}) => {
+  if (!uiSoundOn()) return;
+  try {
+    __audioCtx = __audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = __audioCtx;
+    (Array.isArray(freqs) ? freqs : [freqs]).forEach((f, i) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = type; o.frequency.value = f;
+      o.connect(g); g.connect(ctx.destination);
+      const t = ctx.currentTime + i * 0.06;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(gain, t + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.start(t); o.stop(t + dur + 0.02);
+    });
+  } catch {}
+};
+const sfx = {
+  complete: () => playTone([660, 880, 1175], { dur: 0.14, gain: 0.10 }),
+  add:      () => playTone([523, 784], { dur: 0.09, gain: 0.08 }),
+  tick:     () => playTone(440, { dur: 0.05, gain: 0.05 }),
+  remove:   () => playTone([392, 294], { dur: 0.08, gain: 0.06 }),
+};
 const D = window.PLANNER_DATA;
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -2814,6 +3606,11 @@ const Inbox = (p) => <Icon {...p}><polyline points="22 12 16 12 14 15 10 15 8 12
 const Cal = (p) => <Icon {...p}><rect x="3" y="4" width="18" height="18"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></Icon>;
 const Stats = (p) => <Icon {...p}><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></Icon>;
 const Users = (p) => <Icon {...p}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></Icon>;
+const Target = (p) => <Icon {...p}><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/></Icon>;
+const Menu = (p) => <Icon {...p}><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></Icon>;
+const Truck = (p) => <Icon {...p}><rect x="1" y="6" width="13" height="11"/><path d="M14 9h4l3 3v5h-7z"/><circle cx="5" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></Icon>;
+const Briefcase = (p) => <Icon {...p}><rect x="2" y="7" width="20" height="13"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></Icon>;
+const Code = (p) => <Icon {...p}><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></Icon>;
 const Cog = (p) => <Icon {...p}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></Icon>;
 const LogOut = (p) => <Icon {...p}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></Icon>;
 const Activity = (p) => <Icon {...p}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></Icon>;
@@ -2879,22 +3676,24 @@ function Donut({ pct, size, stroke }) {
 // ────────────────────────────────────────────────────────────────────────────
 // SIDEBAR (dark sempre)
 // ────────────────────────────────────────────────────────────────────────────
+const NAV_ITEMS = [
+  { key: 'dashboard',  title: 'Dashboard',  icon: Dashboard },
+  { key: 'foco',       title: 'Foco',       icon: Target },
+  { key: 'kanban',     title: 'Kanban',     icon: Columns },
+  { key: 'notas',      title: 'Notas',      icon: Note },
+  { key: 'calendario', title: 'Calendário', icon: Cal },
+  { key: 'relatorios', title: 'Relatórios', icon: Stats },
+  { key: 'equipe',     title: 'Equipe',     icon: Users },
+];
+
 function Sidebar({ theme, view, onNavigate, onToggleTheme, onOpenSettings }) {
-  const navItems = [
-    { key: 'dashboard',  title: 'Dashboard',  icon: Dashboard },
-    { key: 'kanban',     title: 'Kanban',     icon: Columns },
-    { key: 'notas',      title: 'Notas',      icon: Note },
-    { key: 'calendario', title: 'Calendário', icon: Cal },
-    { key: 'relatorios', title: 'Relatórios', icon: Stats },
-    { key: 'equipe',     title: 'Equipe',     icon: Users },
-  ];
   return (
     <aside className="sidebar">
       <div className="sidebar__logo">
         <Icon size={15}><path d="m12 2 9 5-9 5-9-5 9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></Icon>
       </div>
       <nav className="sidebar__nav">
-        {navItems.map(({ key, title, icon: IconC }) => (
+        {NAV_ITEMS.map(({ key, title, icon: IconC }) => (
           <button key={key}
                   className={`sidebar__item ${view === key ? 'sidebar__item--active' : ''}`}
                   title={title}
@@ -2916,14 +3715,68 @@ function Sidebar({ theme, view, onNavigate, onToggleTheme, onOpenSettings }) {
   );
 }
 
+// Drawer mobile — menu lateral completo com rótulos + troca de workspace
+function MobileDrawer({ open, view, workspace, onNavigate, onChangeWorkspace, onToggleTheme, theme, onOpenSettings, onClose }) {
+  return (
+    <>
+      <div className={`drawer-backdrop ${open ? 'drawer-backdrop--open' : ''}`} onClick={onClose}/>
+      <aside className={`drawer ${open ? 'drawer--open' : ''}`}>
+        <div className="drawer__head">
+          <span className="drawer__brand">VILLARES<span className="drawer__brand-sep"> | </span>PLANNER</span>
+          <button className="drawer__close" onClick={onClose}><X size={18}/></button>
+        </div>
+
+        <div className="drawer__ws">
+          <div className="drawer__ws-label">Modo de trabalho</div>
+          {Object.entries(D.WORKSPACES).map(([key, w]) => (
+            <button key={key}
+                    className={`drawer__ws-btn ${workspace === key ? 'drawer__ws-btn--active' : ''}`}
+                    onClick={() => onChangeWorkspace(key)}>
+              <span className="drawer__ws-name">{w.label}</span>
+              <span className="drawer__ws-sub">{w.sub}</span>
+            </button>
+          ))}
+        </div>
+
+        <nav className="drawer__nav">
+          {NAV_ITEMS.map(({ key, title, icon: IconC }) => (
+            <button key={key}
+                    className={`drawer__item ${view === key ? 'drawer__item--active' : ''}`}
+                    onClick={() => onNavigate(key)}>
+              <IconC size={18}/> {title}
+            </button>
+          ))}
+        </nav>
+
+        <div className="drawer__footer">
+          <button className="drawer__item" onClick={onToggleTheme}>
+            {theme === 'dark' ? <Sun size={18}/> : <Moon size={18}/>} {theme === 'dark' ? 'Tema claro' : 'Tema escuro'}
+          </button>
+          <button className="drawer__item" onClick={onOpenSettings}>
+            <Cog size={18}/> Configurações
+          </button>
+        </div>
+      </aside>
+    </>
+  );
+}
+
 // ────────────────────────────────────────────────────────────────────────────
 // TOPBAR
 // ────────────────────────────────────────────────────────────────────────────
-function Topbar({ query, onQueryChange, onNew,
+function Topbar({ query, onQueryChange, onNew, onOpenDrawer, workspace, onChangeWorkspace,
                   syncStatus, syncLabels, syncTitles, lastUpdate, onRefresh, onOpenSettings,
                   selDate, onDateShift, onDateToday, onDateSet,
                   notifOpen, setNotifOpen, notifCount, items, notifRead, saveRead, handleEdit,
-                  notifDismissed, dismissNotif }) {
+                  notifDismissed, dismissNotif,
+                  alarmEnabled, onEnableAlarm, onDisableAlarm }) {
+  const [wsOpen, setWsOpen] = useState(false);
+  useEffect(() => {
+    if (!wsOpen) return;
+    const close = (e) => { if (!e.target.closest('.ws-switch')) setWsOpen(false); };
+    const t = setTimeout(() => document.addEventListener('click', close), 0);
+    return () => { clearTimeout(t); document.removeEventListener('click', close); };
+  }, [wsOpen]);
   const [refreshing, setRefreshing] = useState(false);
   const handleRefresh = () => {
     setRefreshing(true); onRefresh();
@@ -2936,11 +3789,35 @@ function Topbar({ query, onQueryChange, onNew,
     const t = setTimeout(() => document.addEventListener('click', close), 0);
     return () => { clearTimeout(t); document.removeEventListener('click', close); };
   }, [notifOpen]);
+  const ws = D.WORKSPACES[workspace] || D.WORKSPACES.logistica;
   return (
     <header className="topbar">
+      <button className="topbar__burger" onClick={onOpenDrawer} title="Menu"><Menu size={18}/></button>
       <div className="topbar__title">
         VILLARES<span className="topbar__title-accent"> | </span>PLANNER
       </div>
+
+      {/* Switcher de modo de trabalho */}
+      <div className="ws-switch">
+        <button className="ws-switch__btn" onClick={() => setWsOpen(v => !v)} title="Modo de trabalho">
+          <span className="ws-switch__dot"/>
+          <span className="ws-switch__label">{ws.label}</span>
+          <Chevron size={12}/>
+        </button>
+        {wsOpen && (
+          <div className="ws-switch__menu">
+            {Object.entries(D.WORKSPACES).map(([key, w]) => (
+              <button key={key}
+                      className={`ws-switch__item ${workspace === key ? 'ws-switch__item--active' : ''}`}
+                      onClick={() => { onChangeWorkspace(key); setWsOpen(false); }}>
+                <span className="ws-switch__item-name">{w.label}</span>
+                <span className="ws-switch__item-sub">{w.sub}</span>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
       <div className="topbar__search">
         <Search size={14} className="topbar__search-icon"/>
         <input type="text" placeholder="Buscar item..."
@@ -2989,7 +3866,10 @@ function Topbar({ query, onQueryChange, onNew,
                         onClose={() => setNotifOpen(false)}
                         onEditItem={handleEdit}
                         dismissedIds={notifDismissed}
-                        onDismiss={dismissNotif}/>
+                        onDismiss={dismissNotif}
+                        alarmEnabled={alarmEnabled}
+                        onEnableAlarm={onEnableAlarm}
+                        onDisableAlarm={onDisableAlarm}/>
           )}
         </div>
         <button className="topbar__cta" onClick={onNew}>
@@ -3003,12 +3883,12 @@ function Topbar({ query, onQueryChange, onNew,
 // ────────────────────────────────────────────────────────────────────────────
 // PAGE HEADER
 // ────────────────────────────────────────────────────────────────────────────
-function PageHeader({ today }) {
+function PageHeader({ today, headerDate }) {
   return (
     <div className="page__header">
       <div>
         <h1 className="page__header-title">Dashboard Operacional</h1>
-        <div className="page__header-sub">Logística · {today}</div>
+        <div className="page__header-sub">Logística · {headerDate}</div>
       </div>
 
 {/* sync, data e refresh movidos para a Topbar */}
@@ -3021,7 +3901,7 @@ function PageHeader({ today }) {
 // ────────────────────────────────────────────────────────────────────────────
 function KPI({ label, value, sub, icon: IconC, variant }) {
   return (
-    <div className={`kpi kpi--${variant} fade-up`}>
+    <div className={`kpi kpi--${variant} fade-up`} data-zero={value === 0}>
       <div className="kpi__label">
         <span>{label}</span>
         {IconC && <IconC size={11}/>}
@@ -3137,6 +4017,7 @@ function Tabs({ active, onChange, counts, selDate }) {
 // ────────────────────────────────────────────────────────────────────────────
 const SORT_OPTIONS = [
   { key: null,         label: 'Urgência' },
+  { key: 'hora',       label: 'Hora' },
   { key: 'prazo',      label: 'Prazo' },
   { key: 'titulo',     label: 'Título' },
   { key: 'prioridade', label: 'Prioridade' },
@@ -3162,7 +4043,7 @@ function ToolbarDropdown({ icon: IconC, label, value, open, onToggle, children }
   );
 }
 
-function Toolbar({ count, sortBy, onSortSelect, prio, onPrio, cat, onCat, density, onToggleDensity }) {
+function Toolbar({ count, sortBy, onSortSelect, prio, onPrio, cat, onCat, density, onToggleDensity, catList = D.CATEGORIAS }) {
   const [openMenu, setOpenMenu] = useState(null); // 'sort' | 'prio' | 'cat' | null
 
   useEffect(() => {
@@ -3211,7 +4092,7 @@ function Toolbar({ count, sortBy, onSortSelect, prio, onPrio, cat, onCat, densit
 
       <ToolbarDropdown icon={Layers} label="Categoria" value={cat}
                        open={openMenu === 'cat'} onToggle={() => toggle('cat')}>
-        {['Todas', ...D.CATEGORIAS].map(c => (
+        {['Todas', ...catList].map(c => (
           <button key={c}
                   className={`dropdown__item ${cat === c ? 'dropdown__item--active' : ''}`}
                   onClick={() => { onCat(c); setOpenMenu(null); }}>
@@ -3235,6 +4116,7 @@ function Toolbar({ count, sortBy, onSortSelect, prio, onPrio, cat, onCat, densit
 // LIST ROW
 // ────────────────────────────────────────────────────────────────────────────
 function statusKey(status) {
+  if (status === 'Falha') return 'falha';
   return {
     'Pendente': 'pendente', 'Recebido': 'pendente',
     'Em Andamento': 'andamento',
@@ -3261,7 +4143,7 @@ function RowDesc({ text }) {
   );
 }
 
-function ListRow({ item, occDate, menuOpen, onMenuToggle, onEdit, onToggleComplete, onDuplicate, onDelete }) {
+function ListRow({ item, occDate, menuOpen, onMenuToggle, onEdit, onToggleComplete, onDuplicate, onDelete, onMarkFalha, onClearFalha, onSetAndamento }) {
   const origemClass = item.origem === 'Projeto' ? 'projeto'
                     : item.origem === 'Rotina'  ? 'rotina' : 'pedido';
   const origemLetter = item.origem === 'Projeto' ? 'PJ'
@@ -3310,12 +4192,20 @@ function ListRow({ item, occDate, menuOpen, onMenuToggle, onEdit, onToggleComple
     <div className={`list-row fade-up ${menuOpen ? 'list-row--menu-open' : ''}`}>
       <div className={`list-row__origem list-row__origem--${origemClass}`}>{origemLetter}</div>
 
+      <div className="list-row__hora-cell">
+        {item.hora ? item.hora : <span className="list-row__hora-none">—</span>}
+      </div>
+
       <div className="list-row__main">
         <div className="list-row__title">
-          {item.hora && <span className="list-row__hora">{item.hora}<span className="list-row__hora-sep">|</span></span>}
           {item.titulo}
         </div>
         {item.descricao && <RowDesc text={item.descricao}/>}
+        {item.status === 'Falha' && item.falhaMotivo && (
+          <div className="list-row__falha-motivo" title={item.falhaMotivo}>
+            {item.falhaCategoria ? `${item.falhaCategoria}: ` : ''}{item.falhaMotivo}
+          </div>
+        )}
         <div className="list-row__sub">
           <span>{item.origem}</span>
           {item.solicitante && (
@@ -3397,6 +4287,20 @@ function ListRow({ item, occDate, menuOpen, onMenuToggle, onEdit, onToggleComple
                 : (isFeito ? <><Undo size={14}/> Reabrir</> : <><CheckDouble size={14}/> Marcar Concluído</>)}
             </button>
             )}
+            {!recorrente && item.status !== 'Em Andamento' && !isFeito && item.status !== 'Falha' && (
+              <button className="dropdown__item dropdown__item--andamento" onClick={() => { onSetAndamento(item); onMenuToggle(null); }}>
+                <Loader size={14}/> Marcar em andamento
+              </button>
+            )}
+            {!recorrente && (
+              item.status === 'Falha'
+                ? <button className="dropdown__item" onClick={() => { onClearFalha(item); onMenuToggle(null); }}>
+                    <Undo size={14}/> Desfazer falha
+                  </button>
+                : <button className="dropdown__item dropdown__item--warn" onClick={() => { onMarkFalha(item); onMenuToggle(null); }}>
+                    <Warning size={14}/> Marcar falha
+                  </button>
+            )}
             <button className="dropdown__item" onClick={() => { onDuplicate(item); onMenuToggle(null); }}>
               <Copy size={14}/> Duplicar
             </button>
@@ -3414,6 +4318,65 @@ function ListRow({ item, occDate, menuOpen, onMenuToggle, onEdit, onToggleComple
 // Ícone seta pra sort
 const SortArrow = (p) => <Icon {...p}><path d="M12 5v14M5 12l7 7 7-7"/></Icon>;
 
+function StatusBar({ items, selDate, onJump }) {
+  // Distribuição dos itens visíveis por estado (relativo à data)
+  const buckets = useMemo(() => {
+    let pend = 0, prog = 0, feito = 0, falha = 0;
+    items.forEach(it => {
+      if (D.temDias(it)) {
+        if (!D.rotinaNoDia(it, selDate)) return;
+        if (D.rotinaFeitaNoDia(it, selDate)) feito++;
+        else if (it.status === 'Em Andamento') prog++;
+        else pend++;
+      } else {
+        if (it.status === 'Falha') falha++;
+        else if (D.isFeito(it)) feito++;
+        else if (it.status === 'Em Andamento') prog++;
+        else pend++;
+      }
+    });
+    return { pend, prog, feito, falha };
+  }, [items, selDate]);
+
+  const total = buckets.pend + buckets.prog + buckets.feito + buckets.falha;
+  if (total === 0) return null;
+
+  const segs = [
+    { key: 'pend',  label: 'Pendentes',    val: buckets.pend,  cls: 'statusbar__seg--pend' },
+    { key: 'prog',  label: 'Em andamento', val: buckets.prog,  cls: 'statusbar__seg--prog' },
+    { key: 'feito', label: 'Concluídos',   val: buckets.feito, cls: 'statusbar__seg--feito' },
+    { key: 'falha', label: 'Falhas',       val: buckets.falha, cls: 'statusbar__seg--falha' },
+  ].filter(s => s.val > 0);
+
+  const pctFeito = Math.round((buckets.feito / total) * 100);
+  return (
+    <div className="statusbar fade-up">
+      <div className="statusbar__top">
+        <span className="statusbar__heading">Resumo do dia</span>
+        <span className="statusbar__total"><b>{pctFeito}%</b> concluído · {total} {total === 1 ? 'item' : 'itens'}</span>
+      </div>
+      <div className="statusbar__track">
+        {segs.map(s => (
+          <div key={s.key} className={`statusbar__seg ${s.cls}`}
+               style={{ flexGrow: s.val }}
+               title={`${s.val} ${s.label}`}/>
+        ))}
+      </div>
+      <div className="statusbar__legend">
+        {segs.map(s => (
+          <span key={s.key} className="statusbar__item">
+            <span className={`statusbar__dot statusbar__dot--${s.key}`}/>
+            <span className="statusbar__num">{s.val}</span>
+            <span className="statusbar__meta">
+              <span className="statusbar__label">{s.label}</span>
+            </span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function ListHeader({ sortBy, sortDir, onSort }) {
   const cell = (key, label) => {
     const active = sortBy === key;
@@ -3428,6 +4391,7 @@ function ListHeader({ sortBy, sortDir, onSort }) {
   return (
     <div className="list-header">
       <div/>
+      {cell('hora', 'Hora')}
       {cell('titulo', 'Item')}
       {cell('categoria', 'Categoria')}
       {cell('prioridade', 'Prioridade')}
@@ -3536,7 +4500,8 @@ function ItemModal({ open, item, onClose, onSave }) {
   const [origem, setOrigem] = useState('Projeto');
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
-  const [categorias, setCategorias] = useState([D.CATEGORIAS[0]]);
+  const wsCats = D.getCategorias();
+  const [categorias, setCategorias] = useState([wsCats[0]]);
   const [prioridade, setPrioridade] = useState('Média');
   const [status, setStatus] = useState('Pendente');
   const [prazo, setPrazo] = useState('');
@@ -3553,7 +4518,7 @@ function ItemModal({ open, item, onClose, onSave }) {
     setTitulo(item?.titulo || '');
     setDescricao(item?.descricao || '');
     const cats = D.splitCats(item?.categoria);
-    setCategorias(cats.length > 0 ? cats : [D.CATEGORIAS[0]]);
+    setCategorias(cats.length > 0 ? cats : [wsCats[0]]);
     setPrioridade(item?.prioridade || 'Média');
     setStatus(item?.status || (item?.origem === 'Pedido' ? 'Recebido' : 'Pendente'));
     setPrazo(item?.prazo ? String(item.prazo).slice(0, 10) : '');
@@ -3623,10 +4588,10 @@ function ItemModal({ open, item, onClose, onSave }) {
   };
 
   const statusOpts = origem === 'Pedido'
-    ? ['Recebido', 'Em Andamento', 'Concluído', 'Recusado']
+    ? ['Recebido', 'Em Andamento', 'Concluído', 'Falha', 'Recusado']
     : origem === 'Rotina'
-      ? ['Pendente', 'Concluído']
-      : ['Pendente', 'Em Andamento', 'Pausado', 'Bloqueado', 'Concluído', 'Cancelado'];
+      ? ['Pendente', 'Em Andamento', 'Concluído', 'Falha']
+      : ['Pendente', 'Em Andamento', 'Pausado', 'Bloqueado', 'Concluído', 'Falha', 'Cancelado'];
 
   return (
     <div className="modal-backdrop" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
@@ -3684,7 +4649,7 @@ function ItemModal({ open, item, onClose, onSave }) {
                 Categorias <span style={{ color: 'var(--color-text-quaternary)', fontWeight: 400 }}>· Selecione uma ou mais</span>
               </label>
               <div className="form-chips">
-                {D.CATEGORIAS.map(c => {
+                {wsCats.map(c => {
                   const active = categorias.includes(c);
                   return (
                     <button key={c} type="button"
@@ -3813,86 +4778,168 @@ function ItemModal({ open, item, onClose, onSave }) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
+// MODAL DE FALHA — registrar o motivo quando algo não pôde ser concluído
+// ────────────────────────────────────────────────────────────────────────────
+function QuickActionPopup({ item, selDate, onClose, onConcluir, onAndamento, onFalha, onAbrir }) {
+  useEffect(() => {
+    if (!item) return;
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [item]);
+
+  if (!item) return null;
+  const recorrente = D.temDias(item);
+
+  return (
+    <div className="qa-backdrop" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+      <div className="qa-popup">
+        <div className="qa-popup__head">
+          <span className="qa-popup__kicker">Lembrete{item.hora ? ` · ${item.hora}` : ''}</span>
+          <button className="qa-popup__close" onClick={onClose} title="Fechar"><X size={15}/></button>
+        </div>
+        <div className="qa-popup__title">{item.titulo}</div>
+        {item.descricao && <div className="qa-popup__desc">{String(item.descricao).split('\n')[0]}</div>}
+        <div className="qa-popup__label">Atualizar status</div>
+        <div className="qa-popup__actions">
+          <button className="qa-btn qa-btn--done" onClick={() => onConcluir(item)}>
+            <CheckDouble size={15}/> Concluir
+          </button>
+          {!recorrente && (
+            <button className="qa-btn qa-btn--prog" onClick={() => onAndamento(item)}>
+              <Loader size={15}/> Em andamento
+            </button>
+          )}
+          {!recorrente && (
+            <button className="qa-btn qa-btn--fail" onClick={() => onFalha(item)}>
+              <Warning size={15}/> Falha
+            </button>
+          )}
+        </div>
+        <button className="qa-popup__open" onClick={() => onAbrir(item)}>Abrir item completo →</button>
+      </div>
+    </div>
+  );
+}
+
+function FalhaModal({ open, item, onConfirm, onCancel }) {
+  const [motivo, setMotivo] = useState('');
+  const [categoria, setCategoria] = useState('Bloqueio externo');
+
+  useEffect(() => {
+    if (open) { setMotivo(item?.falhaMotivo || ''); setCategoria(item?.falhaCategoria || 'Bloqueio externo'); }
+  }, [open, item]);
+
+  if (!open) return null;
+
+  const CATEGORIAS_FALHA = [
+    'Bloqueio externo', 'Falta de tempo', 'Dependência não entregue',
+    'Erro técnico', 'Falta de informação', 'Repriorizado', 'Outro',
+  ];
+
+  return (
+    <div className="modal-backdrop" onClick={(e) => { if (e.target === e.currentTarget) onCancel(); }}>
+      <div className="modal" style={{ width: 480 }}>
+        <header className="modal__header">
+          <div className="modal__title">Registrar falha</div>
+          <button type="button" className="modal__close" onClick={onCancel} title="Fechar"><X size={16}/></button>
+        </header>
+        <div className="modal__body" style={{ padding: '22px 26px' }}>
+          <div className="help-block" style={{ marginBottom: 18 }}>
+            Marcando <b>{item?.titulo}</b> como falha. Registre o motivo para
+            acompanhar o que impediu a conclusão — fica no histórico do item.
+          </div>
+          <div className="form-group">
+            <label className="form-group__label">Tipo de falha</label>
+            <select className="form-select" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+              {CATEGORIAS_FALHA.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
+          <div className="form-group">
+            <label className="form-group__label">O que aconteceu? <span style={{ color: 'var(--color-critical)' }}>*</span></label>
+            <textarea className="form-textarea" rows={4}
+                      placeholder="Ex: A transportadora não enviou os dados a tempo; reagendado para amanhã."
+                      value={motivo} onChange={(e) => setMotivo(e.target.value)}/>
+          </div>
+        </div>
+        <footer className="modal__footer">
+          <button className="btn" onClick={onCancel}>Cancelar</button>
+          <button className="btn btn--primary"
+                  disabled={!motivo.trim()}
+                  style={!motivo.trim() ? { opacity: 0.4, cursor: 'not-allowed' } : null}
+                  onClick={() => onConfirm({ falhaCategoria: categoria, falhaMotivo: motivo.trim() })}>
+            Registrar falha
+          </button>
+        </footer>
+      </div>
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
 // PAINEL DE NOTIFICAÇÕES — vencimentos, atrasados, rotinas pendentes
 // ────────────────────────────────────────────────────────────────────────────
 function buildNotifs(items) {
   const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const nowMin = new Date().getHours() * 60 + new Date().getMinutes();
   const notifs = [];
+  const horaMin = (h) => { if (!h) return null; const [hh, mm] = String(h).split(':').map(Number); return hh*60+mm; };
 
   items.forEach(it => {
-    // ── Atrasados ──
+    // ── Atrasados (mais antigo = mais urgente) ──
     if (!D.temDias(it) && D.isAtivo(it) && D.isAtrasado(it)) {
       const dias = Math.abs(D.diasAteHoje(it.prazo));
-      notifs.push({
-        id: 'late-' + it.id, type: 'late', prio: 0,
-        titulo: it.titulo,
-        sub: `Atrasado há ${dias} ${dias === 1 ? 'dia' : 'dias'}`,
-        dotClass: 'notif-item__dot',
-        subClass: 'notif-item__sub--critical',
-        item: it,
-      });
+      notifs.push({ id: 'late-' + it.id, type: 'late', prio: 0, sort: -dias,
+        titulo: it.titulo, sub: `Atrasado há ${dias} ${dias === 1 ? 'dia' : 'dias'}`,
+        subClass: 'notif-item__sub--critical', item: it });
     }
-    // ── Vence hoje ──
+    // ── Vence hoje (por hora) ──
     else if (!D.temDias(it) && D.isAtivo(it) && D.isHoje(it)) {
-      notifs.push({
-        id: 'today-' + it.id, type: 'today', prio: 1,
-        titulo: it.titulo,
-        sub: 'Vence hoje' + (it.hora ? ` às ${it.hora}` : ''),
-        dotClass: 'notif-item__dot--warn',
-        subClass: 'notif-item__sub--warn',
-        item: it,
-      });
+      const hm = horaMin(it.hora);
+      notifs.push({ id: 'today-' + it.id, type: 'today', prio: 1, sort: hm ?? 9999,
+        titulo: it.titulo, sub: it.hora ? `Vence hoje às ${it.hora}` : 'Vence hoje',
+        subClass: 'notif-item__sub--warn', item: it });
     }
-    // ── Vence em 1–3 dias ──
+    // ── Próximos dias (mais próximo primeiro) ──
     else if (!D.temDias(it) && D.isAtivo(it) && it.prazo) {
       const d = D.diasAteHoje(it.prazo);
-      if (d > 0 && d <= 3) {
-        notifs.push({
-          id: 'soon-' + it.id, type: 'soon', prio: 2,
+      if (d > 0 && d <= 7) {
+        notifs.push({ id: 'soon-' + it.id, type: 'soon', prio: 2, sort: d,
           titulo: it.titulo,
-          sub: `Vence em ${d} ${d === 1 ? 'dia' : 'dias'} — ${D.formatDate(it.prazo)}`,
-          dotClass: 'notif-item__dot--warn',
-          subClass: '',
-          item: it,
-        });
+          sub: `${d === 1 ? 'Vence amanhã' : `Vence em ${d} dias`} — ${D.formatDate(it.prazo)}`,
+          subClass: '', item: it });
       }
     }
-    // ── Prioridade Crítica sem prazo ──
+    // ── Crítica sem prazo ──
     if (!D.temDias(it) && D.isAtivo(it) && it.prioridade === 'Crítica' && !it.prazo) {
-      notifs.push({
-        id: 'critica-' + it.id, type: 'critica', prio: 3,
-        titulo: it.titulo,
-        sub: 'Crítica · sem prazo definido',
-        dotClass: 'notif-item__dot--warn',
-        subClass: '',
-        item: it,
-      });
+      notifs.push({ id: 'critica-' + it.id, type: 'critica', prio: 3, sort: 0,
+        titulo: it.titulo, sub: 'Crítica · sem prazo definido', subClass: '', item: it });
     }
-    // ── Rotina pendente de hoje ──
+    // ── Rotina de hoje (por hora; já passou da hora = mais urgente) ──
     if (D.temDias(it) && D.rotinaNoDia(it, hoje) && !D.rotinaFeitaHoje(it)) {
-      notifs.push({
-        id: 'rotina-' + it.id, type: 'rotina', prio: 4,
+      const hm = horaMin(it.hora);
+      const atrasada = hm !== null && hm < nowMin;
+      notifs.push({ id: 'rotina-' + it.id, type: 'rotina', prio: 4, sort: hm ?? 9999,
         titulo: it.titulo,
-        sub: 'Rotina de hoje' + (it.hora ? ` · ${it.hora}` : ''),
-        dotClass: 'notif-item__dot--info',
-        subClass: '',
-        item: it,
-      });
+        sub: it.hora ? (atrasada ? `Pendente desde ${it.hora}` : `Programada para ${it.hora}`) : 'Rotina de hoje',
+        subClass: atrasada ? 'notif-item__sub--warn' : '', item: it });
     }
   });
 
-  return notifs.sort((a, b) => a.prio - b.prio);
+  // Ordenação orgânica: por grupo de urgência, depois por proximidade no tempo
+  return notifs.sort((a, b) => a.prio - b.prio || a.sort - b.sort);
 }
 
-const NOTIF_GROUP_LABELS = {
-  late:    '⚠ Atrasados',
-  today:   '📅 Vencem hoje',
-  soon:    '⏳ Próximos 3 dias',
-  critica: '🔴 Críticos sem prazo',
-  rotina:  '🔁 Rotinas de hoje',
+const NOTIF_GROUPS = {
+  late:    { label: 'Atrasados',         accent: 'var(--color-critical)' },
+  today:   { label: 'Vencem hoje',       accent: '#e0922b' },
+  soon:    { label: 'Próximos dias',     accent: '#c98a2b' },
+  critica: { label: 'Crítico sem prazo', accent: 'var(--color-critical)' },
+  rotina:  { label: 'Rotinas de hoje',   accent: 'var(--color-neutral-strong)' },
 };
 
-function NotifPanel({ items, readIds, onMarkAll, onClose, onEditItem, dismissedIds, onDismiss }) {
+function NotifPanel({ items, readIds, onMarkAll, onClose, onEditItem, dismissedIds, onDismiss,
+                     alarmEnabled, onEnableAlarm, onDisableAlarm }) {
   const notifs = useMemo(() => buildNotifs(items), [items]);
   const dismissed = dismissedIds || new Set();
   const visible = useMemo(() => notifs.filter(n => !dismissed.has(n.id)), [notifs, dismissed]);
@@ -3915,32 +4962,53 @@ function NotifPanel({ items, readIds, onMarkAll, onClose, onEditItem, dismissedI
           {unread.length > 0 && `${unread.length} nova${unread.length > 1 ? 's' : ''}`}
         </span>
         {unread.length > 0 && (
-          <button className="notif-panel__mark" onClick={onMarkAll}>Marcar todas lidas</button>
+          <button className="notif-panel__mark" onClick={onMarkAll}>Marcar lidas</button>
         )}
       </div>
+      <button className={`notif-alarm ${alarmEnabled ? 'notif-alarm--on' : ''}`}
+              onClick={alarmEnabled ? onDisableAlarm : onEnableAlarm}>
+        <span className="notif-alarm__icon">{alarmEnabled ? '🔔' : '🔕'}</span>
+        <span className="notif-alarm__text">
+          {alarmEnabled ? 'Alarme ativo — toca perto do horário' : 'Ativar alarme de vencimentos'}
+        </span>
+        <span className="notif-alarm__switch" aria-label={alarmEnabled ? 'Ativado' : 'Desativado'}/>
+      </button>
       <div className="notif-panel__body">
-        {notifs.length === 0 ? (
-          <div className="notif-panel__empty">Nenhuma notificação.<br/>Tudo em dia ✓</div>
-        ) : groups.map(([type, list]) => (
-          <div key={type}>
-            <div className="notif-group__label">{NOTIF_GROUP_LABELS[type]}</div>
-            {list.map(n => (
-              <div key={n.id}
-                   className={`notif-item ${!readIds.has(n.id) ? 'notif-item--unread' : 'notif-item--seen'}`}
-                   data-type={n.type}>
-                <span className={`notif-item__dot ${n.dotClass}`}/>
-                <button style={{ background:'transparent',border:'none',cursor:'pointer',textAlign:'left',padding:0,flex:1,minWidth:0,display:'flex',flexDirection:'column',gap:2 }}
-                        onClick={() => { onEditItem(n.item); onClose(); }}>
-                  <span className="notif-item__title">{n.titulo}</span>
-                  <span className={`notif-item__sub ${n.subClass}`}>{n.sub}</span>
-                </button>
-                <button className="notif-item__dismiss"
-                        title="Dispensar"
-                        onClick={(e) => { e.stopPropagation(); onDismiss && onDismiss(n.id); }}>×</button>
-              </div>
-            ))}
+        {visible.length === 0 ? (
+          <div className="notif-panel__empty">
+            <div className="notif-panel__empty-mark">✓</div>
+            <div className="notif-panel__empty-title">Tudo em dia</div>
+            <div className="notif-panel__empty-sub">Nenhum vencimento ou pendência no radar.</div>
           </div>
-        ))}
+        ) : groups.map(([type, list]) => {
+          const g = NOTIF_GROUPS[type] || { label: type, accent: 'var(--color-neutral-mid)' };
+          return (
+            <div key={type} className="notif-group">
+              <div className="notif-group__label">
+                <span className="notif-group__bar" style={{ background: g.accent }}/>
+                {g.label}
+                <span className="notif-group__count">{list.length}</span>
+              </div>
+              {list.map(n => (
+                <div key={n.id}
+                     className={`notif-item ${!readIds.has(n.id) ? 'notif-item--unread' : ''}`}
+                     data-type={n.type}>
+                  <button className="notif-item__main"
+                          onClick={() => { onEditItem(n.item); onClose(); }}>
+                    <span className="notif-item__bar" style={{ background: g.accent }}/>
+                    <span className="notif-item__content">
+                      <span className="notif-item__title">{n.titulo}</span>
+                      <span className={`notif-item__sub ${n.subClass}`}>{n.sub}</span>
+                    </span>
+                  </button>
+                  <button className="notif-item__dismiss"
+                          title="Dispensar"
+                          onClick={(e) => { e.stopPropagation(); onDismiss && onDismiss(n.id); }}>×</button>
+                </div>
+              ))}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -3983,15 +5051,17 @@ const KANBAN_COLS = [
   { status: 'Concluído',    extra: [],           mod: 'kanban__col--done' },
 ];
 
-function KanbanView({ items, onEdit, onSetStatus, onToggle }) {
+function KanbanView({ items, onEdit, onSetStatus, onToggle, selDate }) {
   const [draggingId, setDraggingId] = useState(null);
   const [overCol, setOverCol] = useState(null);
+  const dia = selDate || new Date();
 
   const colItems = (col) =>
     items.filter(it => {
       if (D.temDias(it)) {
-        // Rotina recorrente no Kanban: coluna pelo estado de HOJE
-        const alvo = D.rotinaFeitaHoje(it) ? 'Concluído' : 'Pendente';
+        // Rotina: só aparece nos dias em que está programada; coluna pelo estado do dia
+        if (!D.rotinaNoDia(it, dia)) return false;
+        const alvo = D.rotinaFeitaNoDia(it, dia) ? 'Concluído' : 'Pendente';
         return col.status === alvo;
       }
       return it.status === col.status || col.extra.includes(it.status);
@@ -4005,10 +5075,10 @@ function KanbanView({ items, onEdit, onSetStatus, onToggle }) {
     const item = items.find(it => it.id === id);
     if (!item) return;
     if (D.temDias(item)) {
-      // Rotina: arrastar para Concluído = concluir HOJE; sair de lá = reabrir HOJE
-      const feitaHoje = D.rotinaFeitaHoje(item);
-      if (col.status === 'Concluído' && !feitaHoje) onToggle(item);
-      else if (col.status !== 'Concluído' && feitaHoje) onToggle(item);
+      // Rotina: arrastar para Concluído = concluir o DIA selecionado; sair = reabrir
+      const feita = D.rotinaFeitaNoDia(item, dia);
+      if (col.status === 'Concluído' && !feita) onToggle(item, dia);
+      else if (col.status !== 'Concluído' && feita) onToggle(item, dia);
       return;
     }
     onSetStatus(item, col.status);
@@ -4076,93 +5146,207 @@ function KanbanView({ items, onEdit, onSetStatus, onToggle }) {
 // NOTAS — anotações rápidas, salvas localmente no navegador
 // ────────────────────────────────────────────────────────────────────────────
 function NotesView() {
-  const [notas, setNotas] = useState(() => {
-    try {
-      const saved = localStorage.getItem('villares_planner_notas');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) return parsed;
-      }
-    } catch {}
+  const [sub, setSub] = useState('todo'); // todo | notas
+
+  // ── To-do list ──
+  const [todos, setTodos] = useState(() => {
+    try { const s = localStorage.getItem('villares_planner_todos'); if (s) { const p = JSON.parse(s); if (Array.isArray(p)) return p; } } catch {}
     return [];
   });
+  const [todoInput, setTodoInput] = useState('');
+  useEffect(() => { try { localStorage.setItem('villares_planner_todos', JSON.stringify(todos)); } catch {} }, [todos]);
 
-  useEffect(() => {
-    try { localStorage.setItem('villares_planner_notas', JSON.stringify(notas)); } catch {}
-  }, [notas]);
+  // status: 'afazer' | 'andamento' | 'feito' (compat: t.feito antigo → feito)
+  const todoStatus = (t) => t.status || (t.feito ? 'feito' : 'afazer');
 
-  const criar = () => {
-    const nota = {
-      id: 'N-' + Date.now().toString(36),
-      titulo: '',
-      texto: '',
-      fixada: false,
-      criadoEm: new Date().toISOString(),
-    };
-    setNotas(prev => [nota, ...prev]);
+  const addTodo = () => {
+    const t = todoInput.trim(); if (!t) return;
+    setTodos(prev => [{ id: 'T-' + Date.now().toString(36), texto: t, status: 'afazer', criadoEm: D.localISO() }, ...prev]);
+    setTodoInput(''); sfx.add();
   };
+  const setTodoSt = (id, st) => setTodos(prev => prev.map(t => {
+    if (t.id !== id) return t;
+    if (st === 'feito') sfx.complete(); else if (st === 'andamento') sfx.add(); else sfx.tick();
+    const { feito, ...rest } = t;
+    return { ...rest, status: st };
+  }));
+  // Avança no ciclo: afazer → andamento → feito → afazer
+  const cycleTodo = (id) => {
+    const t = todos.find(x => x.id === id); if (!t) return;
+    const cur = todoStatus(t);
+    setTodoSt(id, cur === 'afazer' ? 'andamento' : cur === 'andamento' ? 'feito' : 'afazer');
+  };
+  const delTodo = (id) => { sfx.remove(); setTodos(prev => prev.filter(t => t.id !== id)); };
+  const clearDone = () => setTodos(prev => prev.filter(t => todoStatus(t) !== 'feito'));
 
-  const atualizar = (id, patch) =>
-    setNotas(prev => prev.map(n => n.id === id ? { ...n, ...patch } : n));
+  const pendentes  = todos.filter(t => todoStatus(t) === 'afazer');
+  const andamento  = todos.filter(t => todoStatus(t) === 'andamento');
+  const concluidos = todos.filter(t => todoStatus(t) === 'feito');
 
-  const excluir = (nota) => {
+  // ── Notas ──
+  const [notas, setNotas] = useState(() => {
+    try { const s = localStorage.getItem('villares_planner_notas'); if (s) { const p = JSON.parse(s); if (Array.isArray(p)) return p; } } catch {}
+    return [];
+  });
+  useEffect(() => { try { localStorage.setItem('villares_planner_notas', JSON.stringify(notas)); } catch {} }, [notas]);
+
+  const criarNota = () => setNotas(prev => [{ id: 'N-' + Date.now().toString(36), titulo: '', texto: '', fixada: false, criadoEm: new Date().toISOString() }, ...prev]);
+  const atualizarNota = (id, patch) => setNotas(prev => prev.map(n => n.id === id ? { ...n, ...patch } : n));
+  const excluirNota = (nota) => {
     const vazia = !nota.titulo.trim() && !nota.texto.trim();
     if (!vazia && !window.confirm('Excluir esta nota? Esta ação não pode ser desfeita.')) return;
     setNotas(prev => prev.filter(n => n.id !== nota.id));
   };
-
-  const ordenadas = useMemo(() =>
-    [...notas].sort((a, b) =>
-      (b.fixada ? 1 : 0) - (a.fixada ? 1 : 0) ||
-      new Date(b.criadoEm) - new Date(a.criadoEm)
-    )
+  const notasOrdenadas = useMemo(() =>
+    [...notas].sort((a, b) => (b.fixada ? 1 : 0) - (a.fixada ? 1 : 0) || new Date(b.criadoEm) - new Date(a.criadoEm))
   , [notas]);
 
   return (
     <>
       <div className="view-head">
-        <div className="view-head__title">Notas</div>
-        <div className="view-head__meta">
-          {notas.length} {notas.length === 1 ? 'Nota' : 'Notas'} · Salvas localmente neste navegador
+        <div className="view-head__title">Anotações</div>
+        <div className="cal-modes">
+          <button className={`cal-mode ${sub === 'todo' ? 'cal-mode--active' : ''}`} onClick={() => setSub('todo')}>To-do list</button>
+          <button className={`cal-mode ${sub === 'notas' ? 'cal-mode--active' : ''}`} onClick={() => setSub('notas')}>Notas</button>
         </div>
       </div>
-      <div className="notes-toolbar">
-        <button className="topbar__cta" onClick={criar}>
-          <Plus size={14}/> Nova nota
-        </button>
-      </div>
-      {ordenadas.length === 0 ? (
-        <div className="empty-view fade-up">
-          Nenhuma nota ainda. Clique em "Nova nota" para registrar lembretes,<br/>
-          ideias e pendências rápidas que não precisam virar um item do Planner.
+
+      {sub === 'todo' ? (
+        <div className="todo2 fade-up">
+          {/* Cabeçalho com progresso */}
+          <div className="todo2__progress">
+            <div className="todo2__progress-info">
+              <span className="todo2__progress-pct">{todos.length === 0 ? 0 : Math.round(((concluidos.length + andamento.length * 0.5) / todos.length) * 100)}%</span>
+              <span className="todo2__progress-label">
+                {concluidos.length} concluídas · {andamento.length} em curso · {pendentes.length} a fazer
+              </span>
+            </div>
+            <div className="todo2__progress-bar">
+              <div className="todo2__progress-fill"
+                   style={{ width: `${todos.length === 0 ? 0 : ((concluidos.length + andamento.length * 0.5) / todos.length) * 100}%` }}/>
+            </div>
+          </div>
+
+          {/* Campo de adição em destaque */}
+          <div className="todo2__add">
+            <span className="todo2__add-icon">+</span>
+            <input className="todo2__input" placeholder="O que precisa ser feito?"
+                   value={todoInput}
+                   onChange={(e) => setTodoInput(e.target.value)}
+                   onKeyDown={(e) => { if (e.key === 'Enter') addTodo(); }}/>
+            <button className="todo2__add-btn" onClick={addTodo} disabled={!todoInput.trim()}>
+              Adicionar
+            </button>
+          </div>
+
+          {todos.length === 0 ? (
+            <div className="todo2__empty">
+              <div className="todo2__empty-mark">✓</div>
+              <div className="todo2__empty-title">Lista limpa</div>
+              <div className="todo2__empty-sub">Adicione tarefas rápidas — ideias e pendências que não precisam de prazo nem categoria.</div>
+            </div>
+          ) : (
+            <div className="todo2__cols">
+              {/* A FAZER */}
+              <div className="todo2__col">
+                <div className="todo2__col-head">
+                  <span className="todo2__col-dot"/> A fazer
+                  <span className="todo2__col-count">{pendentes.length}</span>
+                </div>
+                <div className="todo2__list">
+                  {pendentes.length === 0 ? (
+                    <div className="todo2__col-empty">Vazio</div>
+                  ) : pendentes.map(t => (
+                    <div key={t.id} className="todo2__card">
+                      <button className="todo2__check" onClick={() => cycleTodo(t.id)} title="Iniciar"/>
+                      <span className="todo2__text">{t.texto}</span>
+                      <button className="todo2__move" onClick={() => setTodoSt(t.id, 'andamento')} title="Mover para Em andamento">→</button>
+                      <button className="todo2__del" onClick={() => delTodo(t.id)} title="Remover">×</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* EM ANDAMENTO */}
+              <div className="todo2__col">
+                <div className="todo2__col-head todo2__col-head--prog">
+                  <span className="todo2__col-dot todo2__col-dot--prog"/> Em andamento
+                  <span className="todo2__col-count">{andamento.length}</span>
+                </div>
+                <div className="todo2__list">
+                  {andamento.length === 0 ? (
+                    <div className="todo2__col-empty">Nada em curso</div>
+                  ) : andamento.map(t => (
+                    <div key={t.id} className="todo2__card todo2__card--prog">
+                      <button className="todo2__check todo2__check--prog" onClick={() => cycleTodo(t.id)} title="Concluir">◐</button>
+                      <span className="todo2__text">{t.texto}</span>
+                      <button className="todo2__move" onClick={() => setTodoSt(t.id, 'afazer')} title="Voltar para A fazer">←</button>
+                      <button className="todo2__del" onClick={() => delTodo(t.id)} title="Remover">×</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* CONCLUÍDO */}
+              <div className="todo2__col">
+                <div className="todo2__col-head todo2__col-head--done">
+                  <span className="todo2__col-dot todo2__col-dot--done"/> Concluído
+                  <span className="todo2__col-count">{concluidos.length}</span>
+                  {concluidos.length > 0 && (
+                    <button className="todo2__clear" onClick={clearDone} title="Limpar concluídos">Limpar</button>
+                  )}
+                </div>
+                <div className="todo2__list">
+                  {concluidos.length === 0 ? (
+                    <div className="todo2__col-empty">Nada concluído</div>
+                  ) : concluidos.map(t => (
+                    <div key={t.id} className="todo2__card todo2__card--done">
+                      <button className="todo2__check todo2__check--on" onClick={() => setTodoSt(t.id, 'afazer')} title="Reabrir">✓</button>
+                      <span className="todo2__text">{t.texto}</span>
+                      <button className="todo2__del" onClick={() => delTodo(t.id)} title="Remover">×</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       ) : (
-        <div className="notes-grid">
-          {ordenadas.map(n => (
-            <div key={n.id} className={`note fade-up ${n.fixada ? 'note--pinned' : ''}`}>
-              <div className="note__bar">
-                <span className="note__date">
-                  {new Date(n.criadoEm).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).replace('.', '')}
-                </span>
-                <button className={`note__btn ${n.fixada ? 'note__btn--on' : ''}`}
-                        title={n.fixada ? 'Desafixar' : 'Fixar no topo'}
-                        onClick={() => atualizar(n.id, { fixada: !n.fixada })}>
-                  <Pin size={13}/>
-                </button>
-                <button className="note__btn note__btn--danger" title="Excluir nota"
-                        onClick={() => excluir(n)}>
-                  <Trash size={13}/>
-                </button>
-              </div>
-              <input className="note__title" placeholder="Título"
-                     value={n.titulo}
-                     onChange={(e) => atualizar(n.id, { titulo: e.target.value })}/>
-              <textarea className="note__text" placeholder="Escreva sua nota..."
-                        value={n.texto}
-                        onChange={(e) => atualizar(n.id, { texto: e.target.value })}/>
+        <>
+          <div className="notes-toolbar">
+            <button className="topbar__cta" onClick={criarNota}><Plus size={14}/> Nova nota</button>
+          </div>
+          {notasOrdenadas.length === 0 ? (
+            <div className="empty-view fade-up">
+              Nenhuma nota ainda. Clique em "Nova nota" para registrar lembretes,<br/>
+              ideias e pendências que não precisam virar um item do Planner.
             </div>
-          ))}
-        </div>
+          ) : (
+            <div className="notes-grid">
+              {notasOrdenadas.map(n => (
+                <div key={n.id} className={`note fade-up ${n.fixada ? 'note--pinned' : ''}`}>
+                  <div className="note__bar">
+                    <span className="note__date">
+                      {new Date(n.criadoEm).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).replace('.', '')}
+                    </span>
+                    <button className={`note__btn ${n.fixada ? 'note__btn--on' : ''}`}
+                            title={n.fixada ? 'Desafixar' : 'Fixar no topo'}
+                            onClick={() => atualizarNota(n.id, { fixada: !n.fixada })}>
+                      <Pin size={13}/>
+                    </button>
+                    <button className="note__btn note__btn--danger" title="Excluir nota" onClick={() => excluirNota(n)}>
+                      <Trash size={13}/>
+                    </button>
+                  </div>
+                  <input className="note__title" placeholder="Título" value={n.titulo}
+                         onChange={(e) => atualizarNota(n.id, { titulo: e.target.value })}/>
+                  <textarea className="note__text" placeholder="Escreva sua nota..." value={n.texto}
+                            onChange={(e) => atualizarNota(n.id, { texto: e.target.value })}/>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
       )}
     </>
   );
@@ -4248,7 +5432,7 @@ function CalFilters({ filters, onChange }) {
           Todas
           {filters.cats.length === 0 && <span className="dropdown__check">■</span>}
         </button>
-        {D.CATEGORIAS.map(c => {
+        {D.getCategorias().map(c => {
           const on = filters.cats.includes(c);
           return (
             <button key={c}
@@ -4272,12 +5456,15 @@ function CalFilters({ filters, onChange }) {
   );
 }
 
-function CalendarView({ items, onEdit }) {
-  const now = new Date();
+function CalendarView({ items, onEdit, selDate, onSelDate }) {
   const [mode, setMode] = useState('mes'); // agenda | semana | mes | timeline
-  const [ym, setYm] = useState({ y: now.getFullYear(), m: now.getMonth() });
-  const [selected, setSelected] = useState(() => { const d = new Date(); d.setHours(12,0,0,0); return d; });
+  const selected = selDate;
+  const setSelected = onSelDate;
+  const [ym, setYm] = useState({ y: selected.getFullYear(), m: selected.getMonth() });
   const [filters, setFilters] = useState({ ...CAL_FILTROS_DEFAULT });
+
+  // Mantém o mês visível sincronizado quando a data global muda
+  useEffect(() => { setYm({ y: selected.getFullYear(), m: selected.getMonth() }); }, [selected]);
 
   const today = new Date(); today.setHours(12, 0, 0, 0);
 
@@ -4610,6 +5797,95 @@ function ReportsView({ items, allCats, metrics }) {
 // ────────────────────────────────────────────────────────────────────────────
 // EQUIPE — solicitantes dos pedidos
 // ────────────────────────────────────────────────────────────────────────────
+function FocusView({ items, selDate, onEdit, onToggle, onAndamento }) {
+  const ehHoje = D.diasAteHoje(selDate) === 0;
+
+  // Ocorrências ativas do dia, ordenadas: por hora, depois prioridade
+  const PRIO_RANK = { 'Crítica': 0, 'Alta': 1, 'Média': 2, 'Baixa': 3 };
+  const horaMin = (h) => { if (!h) return 9999; const [hh, mm] = String(h).split(':').map(Number); return hh*60+mm; };
+
+  const ativos = useMemo(() => {
+    return items
+      .filter(it => D.ativoNoDia(it, selDate))
+      .sort((a, b) => horaMin(a.hora) - horaMin(b.hora)
+        || (PRIO_RANK[a.prioridade] ?? 9) - (PRIO_RANK[b.prioridade] ?? 9));
+  }, [items, selDate]);
+
+  const atrasados = useMemo(() => items.filter(D.isAtrasado), [items]);
+  const feitosHoje = useMemo(() => items.filter(it => D.feitoNoDia(it, selDate)), [items, selDate]);
+
+  // O "agora": primeiro atrasado, senão o próximo do dia
+  const agora = atrasados[0] || ativos[0] || null;
+  const resto = ativos.filter(it => it.id !== agora?.id).slice(0, 6);
+
+  const nowMin = new Date().getHours() * 60 + new Date().getMinutes();
+
+  return (
+    <div className="focus">
+      <div className="focus__head">
+        <div>
+          <div className="focus__kicker">Modo foco {ehHoje ? '· Hoje' : ''}</div>
+          <h2 className="focus__heading">O que fazer agora</h2>
+        </div>
+        <div className="focus__stats">
+          <span className="focus__stat"><b>{ativos.length}</b> pendentes</span>
+          <span className="focus__stat focus__stat--done"><b>{feitosHoje.length}</b> feitas</span>
+          {atrasados.length > 0 && <span className="focus__stat focus__stat--late"><b>{atrasados.length}</b> atrasadas</span>}
+        </div>
+      </div>
+
+      {agora ? (
+        <div className={`focus__now ${atrasados[0] ? 'focus__now--late' : ''}`}>
+          <div className="focus__now-tag">{atrasados[0] ? 'Prioridade · atrasado' : (agora.hora ? `Próximo · ${agora.hora}` : 'Comece por aqui')}</div>
+          <div className="focus__now-title" onClick={() => onEdit(agora)}>{agora.titulo}</div>
+          {agora.descricao && <div className="focus__now-desc">{String(agora.descricao).split('\n')[0]}</div>}
+          <div className="focus__now-meta">
+            {agora.categoria && <span className="focus__chip">{D.splitCats(agora.categoria)[0]}</span>}
+            {agora.prioridade && <span className={`focus__chip focus__chip--prio prio-${(agora.prioridade||'').toLowerCase()}`}>{agora.prioridade}</span>}
+            {agora.prazo && <span className="focus__chip">{D.formatRelative(agora.prazo)}</span>}
+          </div>
+          <div className="focus__now-actions">
+            <button className="focus__act focus__act--done" onClick={() => onToggle(agora, selDate)}>
+              <CheckDouble size={15}/> Concluir
+            </button>
+            {!D.temDias(agora) && (
+              <button className="focus__act" onClick={() => onAndamento(agora)}>
+                <Loader size={15}/> Em andamento
+              </button>
+            )}
+            <button className="focus__act focus__act--ghost" onClick={() => onEdit(agora)}>Abrir</button>
+          </div>
+        </div>
+      ) : (
+        <div className="focus__empty">
+          <div className="focus__empty-mark">✓</div>
+          <div className="focus__empty-title">Dia tranquilo</div>
+          <div className="focus__empty-sub">Nenhuma tarefa pendente {ehHoje ? 'para hoje' : 'nesta data'}. Aproveite ou adiante algo de amanhã.</div>
+        </div>
+      )}
+
+      {resto.length > 0 && (
+        <div className="focus__queue">
+          <div className="focus__queue-label">Na fila</div>
+          {resto.map((it, i) => {
+            const atrasadaHora = it.hora && horaMin(it.hora) < nowMin && ehHoje;
+            return (
+              <div key={it.id} className="focus__row" onClick={() => onEdit(it)} role="button" tabIndex={0}>
+                <span className="focus__row-num">{String(i + 1).padStart(2, '0')}</span>
+                <span className="focus__row-hora">{it.hora || '—'}</span>
+                <span className="focus__row-title">{it.titulo}</span>
+                {it.prioridade && <span className={`focus__row-prio prio-${(it.prioridade||'').toLowerCase()}`}>{it.prioridade}</span>}
+                <button className="focus__row-check" title="Concluir"
+                        onClick={(e) => { e.stopPropagation(); onToggle(it, selDate); }}>✓</button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function TeamView({ items }) {
   const pessoas = useMemo(() => {
     const map = new Map();
@@ -4759,6 +6035,7 @@ function createApi(url, token) {
 const cleanCred = (s) => String(s || '').replace(/[\u200B-\u200D\uFEFF\u00A0]/g, '').trim();
 
 function SettingsModal({ open, config, items, onClose, onSave, onUploaded }) {
+  const [soundOn, setSoundOn] = useState(() => { try { return localStorage.getItem('villares_sound') !== 'off'; } catch { return true; } });
   const [url, setUrl] = useState(config?.url || '');
   const [token, setToken] = useState(config?.token || '');
   const [testing, setTesting] = useState(false);
@@ -4834,6 +6111,17 @@ function SettingsModal({ open, config, items, onClose, onSave, onUploaded }) {
         </header>
 
         <div className="modal__body">
+          <div className="settings-toggle">
+            <div>
+              <div className="settings-toggle__title">Sons de interface</div>
+              <div className="settings-toggle__sub">Feedback sonoro ao concluir tarefas e alarmes</div>
+            </div>
+            <button className={`settings-switch ${soundOn ? 'settings-switch--on' : ''}`}
+                    onClick={() => { const v = !soundOn; setSoundOn(v); try { localStorage.setItem('villares_sound', v ? 'on' : 'off'); } catch {} if (v) sfx.complete(); }}>
+              <span className="settings-switch__knob"/>
+            </button>
+          </div>
+
           <div className="help-block" style={{ marginBottom: 14 }}>
             Conecte uma planilha do Google Sheets como banco de dados.
             Você precisará da <b>URL do Web App</b> (terminada em <code>/exec</code>)
@@ -4959,7 +6247,16 @@ function App() {
   const [theme, toggleTheme] = useTheme();
   const [query, setQuery] = useState('');
   const [activeTab, setActiveTab] = useState('Hoje');
-  const [view, setView] = useState('dashboard'); // dashboard | kanban | notas | calendario | relatorios | equipe
+  const [view, setView] = useState('dashboard'); // dashboard | kanban | notas | calendario | relatorios | equipe | foco
+  const [drawerOpen, setDrawerOpen] = useState(false); // menu mobile
+  const [viewAnim, setViewAnim] = useState(false); // dispara animação ao trocar de view
+  const [workspace, setWorkspace] = useState(() => {
+    try { return localStorage.getItem('villares_workspace') || 'logistica'; } catch { return 'logistica'; }
+  });
+  const changeWorkspace = (w) => {
+    setWorkspace(w);
+    try { localStorage.setItem('villares_workspace', w); } catch {}
+  };
   const [selDate, setSelDate] = useState(() => { const d = new Date(); d.setHours(12, 0, 0, 0); return d; });
   const shiftSelDate = (delta) => {
     setSelDate(prev => { const d = new Date(prev); d.setDate(d.getDate() + delta); return d; });
@@ -5068,6 +6365,8 @@ function App() {
   // Modal item + menu
   const [modalOpen, setModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
+  const [falhaTarget, setFalhaTarget] = useState(null); // item aguardando motivo de falha
+  const [quickActionItem, setQuickActionItem] = useState(null); // item da notificação para ação rápida
   const [openMenuId, setOpenMenuId] = useState(null);
 
   // Click outside fecha menu
@@ -5088,7 +6387,12 @@ function App() {
     };
   }, [openMenuId]);
 
-  const handleNavigate = (v) => setView(v);
+  const handleNavigate = (v) => {
+    setView(v);
+    setDrawerOpen(false);
+    setViewAnim(true);
+    setTimeout(() => setViewAnim(false), 360);
+  };
 
   const SYNC_LABELS = {
     'idle':    'Pronto', 'syncing': 'Sincronizando…', 'synced':  'Sincronizado',
@@ -5114,9 +6418,28 @@ function App() {
   const canSync = () => !!api;
 
   // Operações: otimistas (atualiza UI primeiro) + sincroniza com API
+  const persistItem = async (merged) => {
+    setItems(prev => prev.map(it => it.id === merged.id ? merged : it));
+    if (canSync()) {
+      setSyncStatus('syncing');
+      try { await api.update(merged); await loadFromApi(); }
+      catch (err) { setSyncStatus('error'); setSyncError(err.message); }
+    }
+  };
+
   const handleModalSave = async (data) => {
     if (editingItem) {
       const merged = { ...editingItem, ...data };
+      // Virou Falha agora? Pede o motivo antes de salvar.
+      if (data.status === 'Falha' && !data.falhaMotivo) {
+        handleModalClose();
+        setFalhaTarget(merged);
+        return;
+      }
+      // Saiu de Falha → limpa o motivo
+      if (data.status !== 'Falha' && merged.falhaMotivo) {
+        merged.falhaMotivo = ''; merged.falhaCategoria = '';
+      }
       setItems(prev => prev.map(it => it.id === editingItem.id ? merged : it));
       handleModalClose();
       if (canSync()) {
@@ -5129,7 +6452,8 @@ function App() {
         }
       }
     } else {
-      const newItem = { id: generateId(data.origem), ...data };
+      const { conclusoes, ultimaConclusao, ...cleanData } = data;
+      const newItem = { id: generateId(data.origem), ...cleanData };
       setItems(prev => [newItem, ...prev]);
       handleModalClose();
       if (canSync()) {
@@ -5161,6 +6485,8 @@ function App() {
   // afeta exclusivamente aquele dia.
   const handleToggleComplete = async (item, occDate) => {
     const dia = occDate ? new Date(occDate) : new Date();
+    const jaFeito = D.temDias(item) ? D.rotinaFeitaNoDia(item, dia) : D.isFeito(item);
+    if (!jaFeito) sfx.complete(); else sfx.tick();
     if (D.temDias(item)) {
       const iso = D.localISO(dia);
       const feitaNoDia = D.rotinaFeitaNoDia(item, dia);
@@ -5203,18 +6529,26 @@ function App() {
   };
 
   const handleDuplicate = async (item) => {
+    // Remove campos efêmeros que não devem ir para a planilha
+    const { conclusoes, ultimaConclusao, falhaMotivo, falhaCategoria, ...base } = item;
     const copy = {
-      ...item,
+      ...base,
       id: generateId(item.origem),
       titulo: `${item.titulo} (cópia)`,
-      criadoEm: new Date().toISOString().slice(0, 10),
+      criadoEm: D.localISO(),
       status: 'Pendente',
     };
     setItems(prev => [copy, ...prev]);
     if (canSync()) {
       setSyncStatus('syncing');
-      try { await api.create(copy); await loadFromApi(); }
-      catch (err) { setSyncStatus('error'); setSyncError(err.message); }
+      try {
+        await api.create(copy);
+        await loadFromApi();
+      } catch (err) {
+        // Em caso de falha, mantém a cópia local mas avisa
+        setSyncStatus('error');
+        setSyncError('Não foi possível salvar a cópia na planilha: ' + err.message);
+      }
     }
   };
 
@@ -5265,6 +6599,82 @@ function App() {
     return () => clearInterval(id);
   }, [api]);
 
+  // ── Alarme: pede permissão e dispara notificação real perto do horário ──
+  const [alarmEnabled, setAlarmEnabled] = useState(() => {
+    try { return localStorage.getItem('villares_alarm') === 'on'; } catch { return false; }
+  });
+  const alarmedRef = useRef(new Set()); // ids já alarmados nesta sessão
+
+  const beep = () => {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const notes = [880, 1175, 1568]; // lá, ré, sol — três toques curtos
+      notes.forEach((f, i) => {
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = 'sine'; o.frequency.value = f;
+        o.connect(g); g.connect(ctx.destination);
+        const t = ctx.currentTime + i * 0.18;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.25, t + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
+        o.start(t); o.stop(t + 0.18);
+      });
+    } catch {}
+  };
+
+  const enableAlarm = async () => {
+    if (!('Notification' in window)) { alert('Seu navegador não suporta notificações.'); return; }
+    const perm = await Notification.requestPermission();
+    if (perm === 'granted') {
+      setAlarmEnabled(true);
+      try { localStorage.setItem('villares_alarm', 'on'); } catch {}
+      beep();
+      new Notification('Villares Planner', { body: 'Alarme de vencimentos ativado ✓', silent: true });
+    } else {
+      alert('Permissão de notificação negada. Ative nas configurações do navegador para usar o alarme.');
+    }
+  };
+  const disableAlarm = () => {
+    setAlarmEnabled(false);
+    try { localStorage.setItem('villares_alarm', 'off'); } catch {}
+  };
+
+  // Verifica a cada 30s itens com hora chegando (janela: agora .. +10min)
+  useEffect(() => {
+    if (!alarmEnabled) return;
+    const check = () => {
+      const now = new Date();
+      const nowMin = now.getHours() * 60 + now.getMinutes();
+      items.forEach(it => {
+        if (!it.hora) return;
+        // só itens do dia de hoje (rotina programada hoje, ou prazo hoje)
+        const relevante = D.temDias(it)
+          ? (D.rotinaNoDia(it, now) && !D.rotinaFeitaHoje(it))
+          : (D.isAtivo(it) && it.prazo && D.diasAteHoje(it.prazo) === 0);
+        if (!relevante) return;
+        const [h, m] = String(it.hora).split(':').map(Number);
+        const alvo = h * 60 + m;
+        const faltam = alvo - nowMin;
+        const key = it.id + ':' + D.localISO(now);
+        if (faltam >= 0 && faltam <= 10 && !alarmedRef.current.has(key)) {
+          alarmedRef.current.add(key);
+          beep();
+          try {
+            const n = new Notification(`⏰ ${it.hora} · ${it.titulo}`, {
+              body: faltam === 0 ? 'Começa agora' : `Começa em ${faltam} min` + (it.descricao ? ` — ${String(it.descricao).split('\n')[0]}` : ''),
+              tag: it.id,
+              requireInteraction: false,
+            });
+            n.onclick = () => { window.focus(); setQuickActionItem(it); n.close(); };
+          } catch {}
+        }
+      });
+    };
+    check();
+    const id = setInterval(check, 30000);
+    return () => clearInterval(id);
+  }, [alarmEnabled, items]);
+
   // ── filtros ──
   const queryFiltered = useMemo(() => {
     let arr = items;
@@ -5301,7 +6711,7 @@ function App() {
         return isTodaySel
           ? viewFiltered.filter(it => D.isAtivo(it) && (D.isHoje(it) || D.isAtrasado(it)))
           : occurrencesForDay(viewFiltered, selDate);
-      case 'Todos':     return viewFiltered.filter(ativoNoDia);
+      case 'Todos':     return viewFiltered.filter(it => ativoNoDia(it) || D.isFalha(it));
       case 'Projeto':   return viewFiltered.filter(it => it.origem === 'Projeto' && D.isAtivo(it));
       // Rotina: TODAS as rotinas (visão de gestão); o status mostrado é o do dia selecionado
       case 'Rotina':    return viewFiltered.filter(it => it.origem === 'Rotina');
@@ -5316,7 +6726,7 @@ function App() {
     Hoje:       isTodaySel
                   ? viewFiltered.filter(it => D.isAtivo(it) && (D.isHoje(it) || D.isAtrasado(it))).length
                   : occurrencesForDay(viewFiltered, selDate).length,
-    Todos:      viewFiltered.filter(ativoNoDia).length,
+    Todos:      viewFiltered.filter(it => ativoNoDia(it) || D.isFalha(it)).length,
     Projeto:    viewFiltered.filter(it => it.origem === 'Projeto' && D.isAtivo(it)).length,
     Rotina:     viewFiltered.filter(it => it.origem === 'Rotina').length,
     Pedido:     viewFiltered.filter(it => it.origem === 'Pedido'  && D.isAtivo(it)).length,
@@ -5372,6 +6782,11 @@ function App() {
           av = a.prazo ? new Date(a.prazo).getTime() : Number.POSITIVE_INFINITY;
           bv = b.prazo ? new Date(b.prazo).getTime() : Number.POSITIVE_INFINITY;
           break;
+        case 'hora':
+          // Itens sem hora vão para o fim
+          av = a.hora ? a.hora : '99:99';
+          bv = b.hora ? b.hora : '99:99';
+          break;
         case 'status':
           av = statusRank[a.status] ?? 99;
           bv = statusRank[b.status] ?? 99;
@@ -5388,15 +6803,21 @@ function App() {
 
   // ── métricas globais (sobre TODOS os items, não só do tab) ──
   const metrics = useMemo(() => {
-    const ativos    = items.filter(D.isAtivo);
-    const feitos    = items.filter(D.isFeito);
+    const ehHoje = D.diasAteHoje(selDate) === 0;
+    // Itens que "acontecem" na data selecionada
+    const doDia = items.filter(it => D.noDia(it, selDate));
+    const feitos = doDia.filter(it => D.feitoNoDia(it, selDate));
+    const ativos = doDia.filter(it => D.ativoNoDia(it, selDate));
+    // Em andamento: status andamento (rotinas não têm "andamento", então só não-rotina)
+    const andamento = doDia.filter(it => !D.temDias(it) && D.STATUS_BUCKET[it.status] === 'andamento');
+    // Vencimentos do dia selecionado (não-rotina com prazo nesse dia, ainda ativos)
+    const hoje = items.filter(it => !D.temDias(it) && D.isAtivo(it) && it.prazo && D.mesmoDia(it.prazo, selDate));
+    // Atrasados: sempre relativo a hoje real (faz sentido independente da data vista)
     const atrasados = items.filter(D.isAtrasado);
-    const hoje      = items.filter(D.isHoje);
-    const andamento = items.filter(it => D.STATUS_BUCKET[it.status] === 'andamento');
-    const total     = ativos.length + feitos.length;
-    const pct       = total === 0 ? 0 : (feitos.length / total) * 100;
-    return { ativos, feitos, atrasados, hoje, andamento, total, pct };
-  }, [items]);
+    const total = doDia.length;
+    const pct   = total === 0 ? 0 : (feitos.length / total) * 100;
+    return { ativos, feitos, atrasados, hoje, andamento, total, pct, ehHoje };
+  }, [items, selDate]);
 
   // ── aside ──
   const upcoming = useMemo(() =>
@@ -5406,13 +6827,13 @@ function App() {
   , [items]);
 
   const allCats = useMemo(() =>
-    D.CATEGORIAS.map(cat => {
-      const cs = items.filter(it => D.hasCat(it, cat));
-      const feitos = cs.filter(D.isFeito).length;
+    D.getCategorias().map(cat => {
+      const cs = items.filter(it => D.hasCat(it, cat) && D.noDia(it, selDate));
+      const feitos = cs.filter(it => D.feitoNoDia(it, selDate)).length;
       const total = cs.length;
       return { nome: cat, feitos, total, pct: total === 0 ? 0 : (feitos / total) * 100 };
     }).filter(r => r.total > 0).sort((a, b) => b.total - a.total)
-  , [items]);
+  , [items, selDate]);
 
   return (
     <div className="app">
@@ -5420,8 +6841,17 @@ function App() {
       <Sidebar theme={theme} view={view} onNavigate={handleNavigate}
                onToggleTheme={toggleTheme} onOpenSettings={() => setSettingsOpen(true)}/>
 
+      <MobileDrawer open={drawerOpen} view={view} workspace={workspace}
+                    onNavigate={handleNavigate}
+                    onChangeWorkspace={(w) => { changeWorkspace(w); setDrawerOpen(false); }}
+                    onToggleTheme={toggleTheme} theme={theme}
+                    onOpenSettings={() => { setSettingsOpen(true); setDrawerOpen(false); }}
+                    onClose={() => setDrawerOpen(false)}/>
+
       <div className="main">
         <Topbar query={query} onQueryChange={setQuery} onNew={handleNew}
+                onOpenDrawer={() => setDrawerOpen(true)}
+                workspace={workspace} onChangeWorkspace={changeWorkspace}
                 syncStatus={syncStatus} syncLabels={SYNC_LABELS} syncTitles={SYNC_TITLES}
                 lastUpdate={lastUpdate} onRefresh={refresh}
                 onOpenSettings={() => setSettingsOpen(true)}
@@ -5432,10 +6862,16 @@ function App() {
                 notifOpen={notifOpen} setNotifOpen={setNotifOpen}
                 notifCount={notifCount} items={items} notifRead={notifRead}
                 saveRead={saveRead} handleEdit={handleEdit}
-                notifDismissed={notifDismissed} dismissNotif={dismissNotif}/>
+                notifDismissed={notifDismissed} dismissNotif={dismissNotif}
+                alarmEnabled={alarmEnabled} onEnableAlarm={enableAlarm} onDisableAlarm={disableAlarm}/>
 
         <div className="page">
-          <PageHeader today={today}/>
+          <PageHeader today={today}
+            headerDate={D.diasAteHoje(selDate) === 0
+              ? today
+              : selDate.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).replace('.', '')}/>
+
+          <div className="view-stage" key={view}>
 
           {syncStatus === 'error' && syncError && (
             <div className="banner banner--error">
@@ -5481,9 +6917,9 @@ function App() {
                  sub={`${Math.round(metrics.pct)}% de taxa de conclusão`}
                  icon={Check} variant="positive"/>
             <KPI label="Em andamento"  value={metrics.andamento.length}
-                 sub={`De ${metrics.ativos.length} Ativos`} icon={Loader} variant="info"/>
-            <KPI label="Vencimentos hoje"  value={metrics.hoje.length}
-                 sub={metrics.hoje.length === 0 ? 'Nenhum vencimento hoje' : 'Concluir no dia'}
+                 sub={`De ${metrics.total} no dia`} icon={Loader} variant="info"/>
+            <KPI label={metrics.ehHoje ? 'Vencimentos hoje' : 'Vencimentos do dia'}  value={metrics.hoje.length}
+                 sub={metrics.hoje.length === 0 ? 'Nenhum vencimento' : 'Concluir no dia'}
                  icon={Clock} variant="warning"/>
             <KPI label="Atrasados"  value={metrics.atrasados.length}
                  sub={metrics.atrasados.length === 0 ? 'Sem atrasos' : 'Requer atenção'}
@@ -5497,7 +6933,7 @@ function App() {
               ativos={metrics.ativos.length}
               total={metrics.total}
               categorias={allCats}
-              rotinasHoje={items.filter(it => D.temDias(it) && D.rotinaNoDia(it, new Date())).length}
+              rotinasHoje={items.filter(it => D.temDias(it) && D.rotinaNoDia(it, selDate)).length}
             />
           </section>
           </>)}
@@ -5508,11 +6944,14 @@ function App() {
                 selDate={selDate}/>
 
           {/* Toolbar */}
+          <StatusBar items={tabFiltered} selDate={selDate}/>
+
           <Toolbar count={sorted.length}
                    sortBy={sortBy}
                    onSortSelect={(key) => { setSortBy(key); setSortDir('asc'); }}
                    prio={filterPrio} onPrio={setFilterPrio}
                    cat={filterCat} onCat={setFilterCat}
+                   catList={D.WORKSPACES[workspace].categorias}
                    density={density} onToggleDensity={toggleDensity}/>
 
           {/* List header + list */}
@@ -5533,7 +6972,10 @@ function App() {
                          onEdit={handleEdit}
                          onToggleComplete={handleToggleComplete}
                          onDuplicate={handleDuplicate}
-                         onDelete={handleDelete}/>
+                         onDelete={handleDelete}
+                         onMarkFalha={(it) => setFalhaTarget(it)}
+                         onClearFalha={(it) => persistItem({ ...it, status: 'Pendente', falhaMotivo: '', falhaCategoria: '' })}
+                         onSetAndamento={(it) => persistItem({ ...it, status: 'Em Andamento' })}/>
               ))}
             </div>
           )}
@@ -5550,15 +6992,21 @@ function App() {
 
           {view === 'kanban' && (
             <KanbanView items={queryFiltered} onEdit={handleEdit} onSetStatus={handleSetStatus}
-                        onToggle={handleToggleComplete}/>
+                        onToggle={handleToggleComplete} selDate={selDate}/>
           )}
           {view === 'notas' && <NotesView/>}
-          {view === 'calendario' && <CalendarView items={queryFiltered} onEdit={handleEdit}/>}
-          {view === 'relatorios' && <ReportsView items={items} allCats={allCats} metrics={metrics}/>}
+          {view === 'calendario' && <CalendarView items={queryFiltered} onEdit={handleEdit}
+                                                   selDate={selDate} onSelDate={setSelDate}/>}
+          {view === 'relatorios' && <ReportsView items={items} allCats={allCats} metrics={metrics} selDate={selDate}/>}
           {view === 'equipe' && <TeamView items={items}/>}
 
+          {view === 'foco' && <FocusView items={items} selDate={selDate} onEdit={handleEdit}
+                                          onToggle={handleToggleComplete}
+                                          onAndamento={(it) => persistItem({ ...it, status: 'Em Andamento' })}/>}
+          </div>{/* view-stage */}
+
           <footer className="footer">
-            <span>Villares · Planner v1.6</span>
+            <span>Villares · Planner v3.0</span>
             <span>
               {items.length} {items.length === 1 ? 'Item total' : 'Itens totais'} · {Math.round(metrics.pct)}% de taxa de conclusão{view === 'dashboard' ? ` · Aba ativa: ${activeTab}` : ''}
             </span>
@@ -5580,6 +7028,36 @@ function App() {
         onClose={() => setSettingsOpen(false)}
         onSave={handleSettingsSave}
         onUploaded={loadFromApi}
+      />
+
+      <FalhaModal
+        open={!!falhaTarget}
+        item={falhaTarget}
+        onCancel={() => setFalhaTarget(null)}
+        onConfirm={(info) => {
+          const merged = { ...falhaTarget, status: 'Falha', ...info };
+          setFalhaTarget(null);
+          persistItem(merged);
+        }}
+      />
+
+      <QuickActionPopup
+        item={quickActionItem}
+        selDate={selDate}
+        onClose={() => setQuickActionItem(null)}
+        onConcluir={(it) => {
+          setQuickActionItem(null);
+          if (D.temDias(it)) {
+            const d = new Date(); d.setHours(12,0,0,0);
+            if (!D.rotinaFeitaNoDia(it, d)) handleToggleComplete(it, d);
+          } else {
+            persistItem({ ...it, status: 'Concluído' });
+            sfx.complete();
+          }
+        }}
+        onAndamento={(it) => { setQuickActionItem(null); persistItem({ ...it, status: 'Em Andamento' }); }}
+        onFalha={(it) => { setQuickActionItem(null); setFalhaTarget(it); }}
+        onAbrir={(it) => { setQuickActionItem(null); handleEdit(it); }}
       />
     </div>
   );
