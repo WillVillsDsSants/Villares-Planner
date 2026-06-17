@@ -160,6 +160,15 @@ html, body {
   background: var(--color-bg-base);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+}
+/* Números sempre alinhados (tabular) — dá precisão a métricas e horários */
+.kpi__value, .focus__summary-pct, .week__summary-pct, .statusbar__num,
+.focus__ring-pct, .week__col-date, .list-row__hora-cell, .date-cell__primary,
+.tab__count, .week__col-ratio, .statusbar__total {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
 }
 
 /* Ambience radial gradient (Villares hallmark) */
@@ -203,7 +212,10 @@ html.light .ambience { display: none; }
   display: flex; align-items: center; justify-content: center;
   margin-bottom: 24px;
   flex-shrink: 0;
+  box-shadow: 0 0 0 0 rgba(255,255,255,0.4);
+  transition: box-shadow 320ms ease, transform 320ms cubic-bezier(0.16,1,0.3,1);
 }
+.sidebar__logo:hover { transform: rotate(-6deg) scale(1.06); box-shadow: 0 0 24px -4px rgba(255,255,255,0.35); }
 .sidebar__nav {
   display: flex; flex-direction: column;
   gap: 4px;
@@ -217,11 +229,16 @@ html.light .ambience { display: none; }
   border: none;
   cursor: pointer;
   position: relative;
+  transition: color 200ms ease, background 200ms ease, transform 200ms cubic-bezier(0.16,1,0.3,1);
 }
 .sidebar__item:hover {
   color: rgba(255, 255, 255, 0.95);
   background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-1px);
 }
+.sidebar__item:active { transform: translateY(0) scale(0.92); }
+.sidebar__item svg { transition: transform 200ms cubic-bezier(0.16,1,0.3,1); }
+.sidebar__item--active svg { transform: scale(1.08); }
 .sidebar__item--active {
   color: rgba(255, 255, 255, 0.95);
   background: rgba(255, 255, 255, 0.08);
@@ -251,7 +268,8 @@ html.light .ambience { display: none; }
    TOPBAR (preta sólida estilo Villares header)
    ========================================================================= */
 .topbar {
-  background: var(--color-bg-sidebar);
+  background: linear-gradient(180deg, var(--color-bg-sidebar), color-mix(in srgb, var(--color-bg-sidebar) 92%, transparent));
+  backdrop-filter: blur(12px) saturate(1.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   padding: 0 24px;
   height: 56px;
@@ -259,6 +277,7 @@ html.light .ambience { display: none; }
   gap: 16px;
   position: sticky; top: 0;
   z-index: 30;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 6px 24px -18px rgba(0,0,0,0.5);
 }
 .topbar__title {
   font-family: var(--font-display);
@@ -329,16 +348,27 @@ html.light .ambience { display: none; }
 .topbar__cta {
   display: inline-flex; align-items: center; gap: 6px;
   height: 34px;
-  padding: 0 14px;
+  padding: 0 16px;
   background: white;
   color: var(--color-bg-sidebar);
   border: none;
   cursor: pointer;
   font-family: var(--font-sans);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  position: relative; overflow: hidden;
+  transition: transform 180ms cubic-bezier(0.16,1,0.3,1), box-shadow 180ms ease;
+  box-shadow: 0 2px 8px -2px rgba(0,0,0,0.4);
 }
-.topbar__cta:hover { background: #e5e5ea; }
+.topbar__cta::before {
+  content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  transition: left 520ms cubic-bezier(0.16,1,0.3,1);
+}
+.topbar__cta:hover { background: #fff; transform: translateY(-1px); box-shadow: 0 6px 18px -4px rgba(0,0,0,0.5); }
+.topbar__cta:hover::before { left: 120%; }
+.topbar__cta:active { transform: translateY(0); }
 
 /* ============================================================================
    PAGE BODY + HEADER
@@ -1530,26 +1560,49 @@ html.light .dropdown__menu {
   .aside-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
-  .topbar__search { width: auto; flex: 1; }
-  .topbar__breadcrumb { display: none; }
-  .hero { grid-template-columns: 1fr; }
+  .hero { grid-template-columns: 1fr 1fr; }
   .cat-breakdown__grid { grid-template-columns: repeat(2, 1fr); }
 }
+/* ── Mobile coeso (≤640) ── */
 @media (max-width: 640px) {
-  .page { padding: 18px 14px; }
-  .page__header-title { font-size: 22px; }
-  .sidebar { display: none; }
-  .list-row {
-    grid-template-columns: 36px 56px 1fr 110px;
-    gap: 10px;
-    padding: 12px 14px;
-  }
-  .list-row > :nth-child(3),
-  .list-row > :nth-child(4),
-  .list-row > :nth-child(5),
-  .list-row > :nth-child(6),
-  .list-row > :nth-child(8) { display: none; }
+  .page { padding: 16px 14px; }
+  .page__header { margin-bottom: 18px; }
+  .page__header-title { font-size: 21px; }
+  .hero { grid-template-columns: 1fr 1fr; gap: 1px; }
+  .kpi { min-height: 96px; padding: 13px 14px; }
+  .kpi__value { font-size: 30px; }
+  .cat-breakdown__grid { grid-template-columns: 1fr; }
+  /* Lista vira cards empilhados em flex */
   .list-header { display: none; }
+  .list-row {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 8px 10px;
+    padding: 14px 14px;
+  }
+  .list-row__origem { order: 1; align-self: flex-start; margin-top: 2px; }
+  .list-row__hora-cell { order: 2; font-size: 12px; }
+  .list-row__main { order: 3; flex: 1 1 100%; padding-left: 46px; margin-top: -26px; }
+  .list-row > :nth-child(4) { order: 4; }   /* categoria */
+  .list-row > :nth-child(5) { order: 5; }   /* prioridade */
+  .list-row > :nth-child(7) { order: 6; }   /* prazo */
+  .list-row > :nth-child(8) { order: 7; }   /* status */
+  .list-row > :nth-child(9) { order: 8; margin-left: auto; }  /* ações */
+  .list-row > :nth-child(6) { display: none; }  /* recebido em */
+  .list-row .tag-cat { font-size: 10px; padding: 3px 8px; }
+  /* Toolbar mais compacta */
+  .toolbar { gap: 7px; padding: 13px 0; }
+  .toolbar__select { flex: 0 0 auto; font-size: 11px; }
+  /* StatusBar legenda quebra melhor */
+  .statusbar__item { padding-right: 14px; margin-right: 14px; }
+  /* Modais ocupam quase a tela */
+  .modal { width: calc(100vw - 24px) !important; max-width: 100%; }
+  .notif-panel { width: calc(100vw - 24px); right: -6px; }
+  /* Focus view */
+  .focus__head { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .focus__now { padding: 20px 18px; }
+}
+@media (max-width: 400px) {
+  .hero { grid-template-columns: 1fr; }
 }
 
 
@@ -2053,25 +2106,6 @@ html.light .date-nav__input { color-scheme: light; }
 }
 .agenda__day-count { font-family: var(--font-mono); font-size: 10.5px; color: var(--color-text-quaternary); }
 
-/* ── Semana ── */
-.week {
-  display: grid; grid-template-columns: repeat(7, minmax(0, 1fr));
-  border: 1px solid var(--color-border-subtle); background: var(--color-bg-surface-1);
-  margin-top: 14px;
-}
-.week__col { border-right: 1px solid var(--color-border-subtle); min-height: 300px; min-width: 0; }
-.week__col:last-child { border-right: none; }
-.week__col--today { background: var(--color-bg-surface-2); box-shadow: inset 0 2px 0 var(--color-neutral-strong); }
-.week__col-head {
-  display: flex; align-items: baseline; gap: 7px;
-  padding: 11px 12px; border-bottom: 1px solid var(--color-border-subtle);
-}
-.week__col-dow { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-quaternary); }
-.week__col-num { font-family: var(--font-display); font-size: 15px; font-weight: 700; }
-.week__col--today .week__col-dow { color: var(--color-text-primary); }
-.week__col-list { padding: 8px; display: flex; flex-direction: column; gap: 4px; }
-.week__empty { text-align: center; color: var(--color-text-quaternary); font-family: var(--font-mono); font-size: 11px; padding: 14px 0; }
-
 /* ── Timeline ── */
 .timeline { margin-top: 18px; position: relative; padding-left: 18px; }
 .timeline::before {
@@ -2105,7 +2139,6 @@ html.light .date-nav__input { color-scheme: light; }
 .hero { margin-top: 22px; }
 .page__header { gap: 16px; flex-wrap: wrap; }
 @media (max-width: 1000px) {
-  .week { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
   .date-nav { order: 3; width: 100%; }
 }
 
@@ -2424,14 +2457,14 @@ body {
 .list-row:nth-child(n+9) { animation-delay: 220ms; }
 
 /* KPI: leve elevação no hover + brilho sutil */
-.kpi { position: relative; overflow: hidden; }
+.kpi { position: relative; overflow: hidden; transition: transform 280ms cubic-bezier(0.16,1,0.3,1), box-shadow 280ms ease; }
 .kpi::after {
   content: ''; position: absolute; inset: 0;
-  background: radial-gradient(120% 100% at 0% 0%, rgba(255,255,255,0.04), transparent 60%);
-  opacity: 0; transition: opacity 220ms ease; pointer-events: none;
+  background: radial-gradient(120% 100% at 0% 0%, rgba(255,255,255,0.05), transparent 60%);
+  opacity: 0; transition: opacity 280ms ease; pointer-events: none;
 }
 .kpi:hover::after { opacity: 1; }
-.kpi:hover { transform: translateY(-2px); }
+.kpi:hover { transform: translateY(-3px); box-shadow: 0 16px 40px -20px rgba(0,0,0,0.7); }
 
 /* KPI value — animação de contagem visual (pulse on mount) */
 @keyframes kpiPop {
@@ -2531,6 +2564,10 @@ body {
 .topbar__btn--bell .notif-badge { animation: badgePulse 2.4s ease-in-out infinite; }
 
 /* Scrollbar global discreta */
+::selection { background: rgba(255,255,255,0.16); color: #fff; }
+html.light ::selection { background: rgba(0,0,0,0.12); color: #000; }
+/* Foco de teclado elegante (acessibilidade sem poluir o mouse) */
+:focus-visible { outline: 1px solid var(--color-border-strong); outline-offset: 2px; }
 * { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.14) transparent; }
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -2550,7 +2587,17 @@ html.light .page__header-title {
 
 /* Respeitar quem prefere menos movimento */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-fill-mode: none !important;
+    transition-duration: 0.01ms !important;
+  }
+  /* Garante que elementos animados terminem VISÍVEIS, nunca presos no estado inicial */
+  .view-stage, .view-stage > *, .kpi, .tabs .tab, .onb, .onb__left-body,
+  .tpick, .tpick__card, .sidebar, .topbar, .app, .list-row {
+    opacity: 1 !important; filter: none !important; transform: none !important;
+  }
 }
 
 /* ════ TO-DO BOARD v2 ════ */
@@ -2861,10 +2908,35 @@ html.light .page__header-title {
 
 /* ── Transição ao trocar de view (key=view remonta) ── */
 @keyframes viewIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(12px) scale(0.995); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.view-stage { animation: viewIn 380ms cubic-bezier(0.16,1,0.3,1) both; }
+@keyframes appBootIn { from { opacity: 0; } to { opacity: 1; } }
+.app { animation: appBootIn 600ms ease both; }
+.sidebar { animation: sidebarIn 600ms cubic-bezier(0.16,1,0.3,1) both; }
+@keyframes sidebarIn { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: none; } }
+.topbar { animation: topbarIn 560ms cubic-bezier(0.16,1,0.3,1) both; }
+@keyframes topbarIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
+/* Filhos diretos da view entram em cascata (efeito premium de "montagem") */
+@keyframes viewChildIn {
+  from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.view-stage { animation: viewIn 340ms cubic-bezier(0.16,1,0.3,1) both; }
+.view-stage > * { animation: viewChildIn 480ms cubic-bezier(0.16,1,0.3,1) both; }
+.view-stage > *:nth-child(1) { animation-delay: 40ms; }
+.view-stage > *:nth-child(2) { animation-delay: 100ms; }
+.view-stage > *:nth-child(3) { animation-delay: 160ms; }
+.view-stage > *:nth-child(4) { animation-delay: 220ms; }
+.view-stage > *:nth-child(n+5) { animation-delay: 280ms; }
+
+/* Transição ao trocar de WORKSPACE — o app inteiro pisca suavemente */
+@keyframes wsSwap {
+  0%   { opacity: 1; }
+  35%  { opacity: 0.55; transform: scale(0.997); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.main--ws-swap { animation: wsSwap 460ms cubic-bezier(0.16,1,0.3,1); }
 
 /* Hamburger — só no mobile */
 .topbar__burger {
@@ -2957,76 +3029,89 @@ html.light .page__header-title {
 .drawer__item--active { background: var(--color-bg-surface-2); color: var(--color-text-primary); box-shadow: inset 2px 0 0 var(--color-neutral-strong); }
 .drawer__footer { padding: 12px 10px; border-top: 1px solid var(--color-border-subtle); display: flex; flex-direction: column; gap: 2px; }
 
-/* ── Focus view ── */
-.focus { max-width: 820px; margin: 18px auto 0; }
-.focus__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
-.focus__kicker { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-text-quaternary); margin-bottom: 6px; }
-.focus__heading { font-family: var(--font-display); font-size: 28px; font-weight: 700; letter-spacing: -0.01em; }
-.focus__stats { display: flex; gap: 16px; }
-.focus__stat { font-family: var(--font-mono); font-size: 11px; color: var(--color-text-tertiary); }
-.focus__stat b { font-family: var(--font-display); font-size: 16px; color: var(--color-text-primary); margin-right: 4px; }
-.focus__stat--done b { color: var(--color-neutral-strong); }
-.focus__stat--late b { color: var(--color-critical); }
+/* ── Week view ── */
+.week { max-width: 1180px; margin: 20px auto 0; min-width: 0; }
+.view-stage { min-width: 0; max-width: 100%; overflow-x: hidden; }
+.page { overflow-x: hidden; }
+.week__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
+.week__kicker { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-text-quaternary); margin-bottom: 6px; }
+.week__heading { font-family: var(--font-display); font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
+.week__summary { display: flex; align-items: baseline; gap: 10px; }
+.week__summary-pct { font-family: var(--font-display); font-size: 30px; font-weight: 700; color: var(--color-text-primary); }
+.week__summary-label { font-family: var(--font-mono); font-size: 11px; color: var(--color-text-tertiary); }
 
-.focus__now {
-  border: 1px solid var(--color-border-default);
-  background: linear-gradient(180deg, var(--color-bg-surface-2), var(--color-bg-surface-1));
-  padding: 26px 28px; position: relative; overflow: hidden;
-  box-shadow: 0 12px 40px -16px rgba(0,0,0,0.6);
+/* Gráfico de carga */
+.week__chart {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;
+  padding: 18px; margin-bottom: 18px;
+  border: 1px solid var(--color-border-subtle); background: var(--color-bg-surface-1);
 }
-.focus__now::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--color-neutral-strong); }
-.focus__now--late::before { background: var(--color-critical); }
-.focus__now-tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
-.focus__now--late .focus__now-tag { color: #ff6b6b; }
-.focus__now-title { font-family: var(--font-display); font-size: 24px; font-weight: 600; line-height: 1.25; cursor: pointer; margin-bottom: 8px; }
-.focus__now-title:hover { color: var(--color-text-primary); text-decoration: underline; text-underline-offset: 3px; }
-.focus__now-desc { font-size: 14px; color: var(--color-text-tertiary); line-height: 1.6; margin-bottom: 16px; }
-.focus__now-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
-.focus__chip { font-family: var(--font-mono); font-size: 10px; padding: 4px 9px; background: var(--color-bg-surface-3); color: var(--color-text-secondary); }
-.focus__chip--prio.prio-crítica { background: rgba(220,34,34,0.16); color: #ff6b6b; }
-.focus__chip--prio.prio-alta { background: rgba(224,146,43,0.16); color: #e0922b; }
-.focus__now-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.focus__act {
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 16px; cursor: pointer;
-  background: var(--color-bg-surface-3); border: 1px solid var(--color-border-default);
-  color: var(--color-text-secondary); font-family: var(--font-sans); font-size: 13px; font-weight: 500;
-  transition: background 140ms, color 140ms, transform 120ms;
+.week__bar-wrap {
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
+  background: transparent; border: none; cursor: pointer; padding: 6px 0;
+  transition: background 140ms;
 }
-.focus__act:hover { color: var(--color-text-primary); transform: translateY(-1px); }
-.focus__act--done { background: var(--color-neutral-strong); color: var(--color-bg-base); border-color: var(--color-neutral-strong); }
-.focus__act--done:hover { opacity: 0.9; }
-.focus__act--ghost { background: transparent; }
+.week__bar-wrap--sel { background: var(--color-bg-surface-2); }
+.week__bar-track { width: 100%; display: flex; align-items: flex-end; justify-content: center; }
+.week__bar {
+  width: 60%; max-width: 38px; background: var(--color-bg-surface-3); position: relative;
+  display: flex; align-items: flex-end; transition: height 520ms cubic-bezier(0.16,1,0.3,1);
+}
+.week__bar-done { width: 100%; background: var(--color-neutral-strong); transition: height 520ms cubic-bezier(0.16,1,0.3,1); }
+.week__bar-day { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.06em; color: var(--color-text-quaternary); }
+.week__bar-day--today { color: var(--color-text-primary); font-weight: 700; }
+.week__bar-num { font-family: var(--font-mono); font-size: 11px; color: var(--color-text-tertiary); min-height: 14px; }
 
-.focus__empty { text-align: center; padding: 64px 24px; border: 1px dashed var(--color-border-default); }
-.focus__empty-mark { width: 52px; height: 52px; margin: 0 auto 18px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--color-neutral-strong); color: var(--color-neutral-strong); font-size: 24px; }
-.focus__empty-title { font-family: var(--font-display); font-size: 20px; font-weight: 600; margin-bottom: 6px; }
-.focus__empty-sub { font-size: 13.5px; color: var(--color-text-tertiary); max-width: 420px; margin: 0 auto; line-height: 1.6; }
+/* Grade de colunas */
+.week__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; background: var(--color-border-subtle); border: 1px solid var(--color-border-subtle); }
+.week__col { background: var(--color-bg-base); display: flex; flex-direction: column; min-height: 220px; min-width: 0; overflow: hidden; }
+.week__col--today { background: var(--color-bg-surface-1); }
+.week__col--sel { box-shadow: inset 0 2px 0 var(--color-neutral-strong); }
+.week__col-head {
+  display: flex; align-items: center; gap: 6px; padding: 10px 11px;
+  background: transparent; border: none; border-bottom: 1px solid var(--color-border-subtle);
+  cursor: pointer; width: 100%; transition: background 120ms;
+}
+.week__col-head:hover { background: var(--color-bg-surface-2); }
+.week__col-name { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.08em; color: var(--color-text-quaternary); }
+.week__col-date { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--color-text-primary); }
+.week__col--today .week__col-date { color: var(--color-text-primary); }
+.week__col-ratio { margin-left: auto; font-family: var(--font-mono); font-size: 9px; color: var(--color-text-tertiary); background: var(--color-bg-surface-3); padding: 1px 6px; }
+.week__col-body { flex: 1; padding: 6px; display: flex; flex-direction: column; gap: 4px; }
+.week__col-empty { text-align: center; color: var(--color-text-quaternary); font-size: 16px; padding: 16px 0; opacity: 0.4; }
+.week__task {
+  display: flex; align-items: center; gap: 6px; padding: 6px 7px; cursor: pointer;
+  background: var(--color-bg-surface-1); border: 1px solid var(--color-border-subtle);
+  border-left: 2px solid var(--color-neutral-mid);
+  transition: background 120ms, transform 120ms;
+}
+.week__task:hover { background: var(--color-bg-surface-2); transform: translateX(1px); }
+.week__task--done { opacity: 0.5; border-left-color: var(--color-neutral-strong); }
+.week__task--done .week__task-title { text-decoration: line-through; }
+.week__task-check {
+  width: 15px; height: 15px; flex-shrink: 0; padding: 0;
+  background: transparent; border: 1px solid var(--color-border-strong); cursor: pointer;
+  font-size: 9px; color: var(--color-neutral-strong); display: flex; align-items: center; justify-content: center;
+}
+.week__task-check:hover { border-color: var(--color-neutral-strong); }
+.week__task-hora { font-family: var(--font-mono); font-size: 9px; color: var(--color-text-tertiary); flex-shrink: 0; }
+.week__task { min-width: 0; }
+.week__task-title { font-size: 11px; color: var(--color-text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.3; min-width: 0; flex: 1; }
+.week__col-more { font-family: var(--font-mono); font-size: 9.5px; color: var(--color-text-tertiary); text-align: center; padding: 6px 4px; cursor: pointer; width: 100%; background: transparent; border: none; border-top: 1px solid var(--color-border-subtle); margin-top: 2px; transition: color 120ms, background 120ms; }
+.week__col-more:hover { color: var(--color-text-primary); background: var(--color-bg-surface-2); }
 
-.focus__queue { margin-top: 26px; }
-.focus__queue-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text-quaternary); margin-bottom: 10px; }
-.focus__row {
-  display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
-  padding: 13px 16px; background: var(--color-bg-surface-1);
-  border: 1px solid var(--color-border-subtle); border-bottom: none;
-  cursor: pointer; transition: background 120ms;
+/* Mobile: semana vira scroll horizontal */
+@media (max-width: 860px) {
+  .week__grid {
+    grid-template-columns: repeat(7, minmax(128px, 1fr));
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+  }
+  .week__chart {
+    grid-template-columns: repeat(7, minmax(34px, 1fr));
+    overflow-x: auto; max-width: 100%;
+  }
 }
-.focus__row:last-child { border-bottom: 1px solid var(--color-border-subtle); }
-.focus__row:hover { background: var(--color-bg-surface-2); }
-.focus__row-num { font-family: var(--font-mono); font-size: 10px; color: var(--color-text-quaternary); flex-shrink: 0; }
-.focus__row-hora { font-family: var(--font-mono); font-size: 12px; color: var(--color-text-tertiary); width: 44px; flex-shrink: 0; }
-.focus__row-title { flex: 1; font-size: 14px; color: var(--color-text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.focus__row-prio { font-family: var(--font-mono); font-size: 9px; padding: 2px 7px; text-transform: uppercase; letter-spacing: 0.05em; flex-shrink: 0; }
-.focus__row-prio.prio-crítica { background: rgba(220,34,34,0.16); color: #ff6b6b; }
-.focus__row-prio.prio-alta { background: rgba(224,146,43,0.16); color: #e0922b; }
-.focus__row-prio.prio-média { background: var(--color-bg-surface-3); color: var(--color-text-tertiary); }
-.focus__row-prio.prio-baixa { background: var(--color-bg-surface-3); color: var(--color-text-quaternary); }
-.focus__row-check {
-  width: 26px; height: 26px; flex-shrink: 0;
-  background: transparent; border: 1px solid var(--color-border-strong); color: var(--color-bg-base);
-  cursor: pointer; font-size: 12px; transition: all 140ms;
-}
-.focus__row-check:hover { background: var(--color-neutral-strong); border-color: var(--color-neutral-strong); }
 
 /* ── Mobile: ativa hamburger, esconde sidebar, ajusta tudo ── */
 @media (max-width: 860px) {
@@ -3043,9 +3128,339 @@ html.light .page__header-title {
   .focus__now-title { font-size: 20px; }
   .todo2__cols { grid-template-columns: 1fr; }
 }
+@media (max-width: 640px) {
+  .topbar__search { display: none; }
+  .topbar__date { display: none; }
+  .sync-indicator { display: none; }
+  .topbar__sep { display: none; }
+  .topbar__actions { gap: 6px; margin-left: auto; }
+  .topbar__cta { padding: 0 12px; }
+  .topbar__cta span { display: none; }
+}
 @media (max-width: 560px) {
   .ws-switch { display: none; }
-  .topbar__cta span { display: none; }
+}
+
+/* ════ ONBOARDING — experiência de boas-vindas em tela cheia ════ */
+.onb {
+  position: fixed; inset: 0; z-index: 2000;
+  display: grid; grid-template-columns: 0.9fr 1.1fr;
+  background: var(--color-bg-base);
+  animation: onbFadeIn 480ms ease both;
+}
+@keyframes onbFadeIn { from { opacity: 0; } to { opacity: 1; } }
+.onb--leaving { animation: onbFadeOut 420ms ease both; }
+@keyframes onbFadeOut { from { opacity: 1; } to { opacity: 0; transform: scale(1.01); } }
+
+/* ── Painel esquerdo ── */
+.onb__left {
+  position: relative;
+  display: flex; flex-direction: column;
+  padding: 64px 72px;
+  background:
+    radial-gradient(120% 80% at 0% 0%, rgba(255,255,255,0.03), transparent 55%),
+    var(--color-bg-base);
+  border-right: 1px solid var(--color-border-subtle);
+}
+.onb__brand {
+  display: flex; align-items: center; gap: 11px;
+  font-family: var(--font-display); font-weight: 700; font-size: 15px; letter-spacing: 0.06em;
+  color: var(--color-text-primary);
+}
+.onb__brand-mark {
+  width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+  background: #fff; color: #050505;
+}
+.onb__brand-sep { color: var(--color-critical); }
+
+.onb__left-body {
+  flex: 1; display: flex; flex-direction: column; justify-content: center;
+  min-height: 0;
+  animation: onbBodyIn 560ms cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes onbBodyIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.onb__index {
+  display: flex; align-items: baseline; gap: 6px; margin-bottom: 22px;
+  font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+}
+.onb__index-num { font-size: 15px; color: var(--color-text-primary); font-weight: 600; }
+.onb__index-sep { font-size: 13px; color: var(--color-text-quaternary); }
+.onb__index-total { font-size: 13px; color: var(--color-text-quaternary); }
+.onb__tag {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--color-critical); margin-bottom: 16px;
+}
+.onb__title {
+  font-family: var(--font-display); font-size: 42px; font-weight: 700;
+  letter-spacing: -0.02em; line-height: 1.08; margin: 0 0 20px;
+  background: linear-gradient(180deg, var(--color-text-primary), rgba(255,255,255,0.62));
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+html.light .onb__title { background: linear-gradient(180deg, #0e0e10, #44444c); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.onb__text { font-size: 16px; line-height: 1.7; color: var(--color-text-tertiary); margin: 0; max-width: 480px; }
+
+.onb__footer { margin-top: 36px; width: 100%; }
+.onb__nav {
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  width: 100%;
+}
+.onb__dots { display: flex; gap: 8px; }
+.onb__dot {
+  width: 8px; height: 8px; padding: 0; cursor: pointer;
+  background: var(--color-bg-surface-3); border: 1px solid var(--color-border-default);
+  transition: all 240ms cubic-bezier(0.16,1,0.3,1);
+}
+.onb__dot--done { background: var(--color-text-quaternary); border-color: var(--color-text-quaternary); }
+.onb__dot--active { width: 28px; background: var(--color-critical); border-color: var(--color-critical); }
+.onb__actions { display: flex; gap: 10px; }
+.onb__btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 22px; cursor: pointer;
+  font-family: var(--font-sans); font-size: 14px; font-weight: 500;
+  border: 1px solid var(--color-border-default);
+  transition: all 200ms cubic-bezier(0.16,1,0.3,1);
+}
+.onb__btn--ghost { background: transparent; color: var(--color-text-tertiary); }
+.onb__btn--ghost:hover { color: var(--color-text-primary); border-color: var(--color-border-strong); }
+.onb__btn--primary { background: var(--color-text-primary); color: var(--color-bg-base); border-color: var(--color-text-primary); }
+.onb__btn--primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px -8px rgba(0,0,0,0.5); }
+.onb__btn-arrow { transition: transform 200ms ease; }
+.onb__btn--primary:hover .onb__btn-arrow { transform: translateX(3px); }
+
+.onb__skip {
+  display: inline-block; margin-top: 22px;
+  background: transparent; border: none; cursor: pointer;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--color-text-quaternary); padding: 4px 0; transition: color 160ms;
+}
+.onb__skip:hover { color: var(--color-text-secondary); }
+
+/* ── Painel direito (visual) ── */
+.onb__right {
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  background:
+    radial-gradient(140% 100% at 100% 0%, rgba(220,34,34,0.06), transparent 55%),
+    var(--color-bg-sidebar);
+}
+.onb__stage { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+.onb__grid-bg {
+  position: absolute; inset: 0; opacity: 0.5;
+  background-image:
+    linear-gradient(var(--color-border-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 55% 55% at 50% 50%, black, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse 55% 55% at 50% 50%, black, transparent 72%);
+}
+.onb__rings { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.onb__ring {
+  position: absolute; border: 1px solid var(--color-border-subtle); border-radius: 50%;
+}
+.onb__ring--1 { width: 200px; height: 200px; animation: onbPulse 4s ease-in-out infinite; }
+.onb__ring--2 { width: 320px; height: 320px; animation: onbPulse 4s ease-in-out infinite 0.4s; opacity: 0.7; }
+.onb__ring--3 { width: 460px; height: 460px; animation: onbPulse 4s ease-in-out infinite 0.8s; opacity: 0.4; }
+@keyframes onbPulse { 0%,100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.05); opacity: 0.9; } }
+
+.onb__icon-wrap {
+  position: relative; z-index: 2;
+  animation: onbIconIn 640ms cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes onbIconIn { from { opacity: 0; transform: scale(0.5) rotate(-10deg); } to { opacity: 1; transform: none; } }
+.onb__icon {
+  position: relative; z-index: 2;
+  width: 108px; height: 108px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--color-bg-surface-1); border: 1px solid var(--color-border-default);
+  color: var(--color-text-primary);
+  box-shadow: 0 24px 64px -16px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.07);
+}
+.onb__icon-glow {
+  position: absolute; inset: -30px; z-index: 1;
+  background: radial-gradient(circle, rgba(255,255,255,0.1), transparent 65%);
+  animation: onbGlow 4s ease-in-out infinite;
+}
+@keyframes onbGlow { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+.onb__progress { position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--color-bg-surface-3); z-index: 3; }
+.onb__progress-fill { height: 100%; background: linear-gradient(90deg, var(--color-critical), #ff6b6b); transition: width 520ms cubic-bezier(0.16,1,0.3,1); }
+
+/* ── Mobile: empilha, visual vira topo compacto ── */
+@media (max-width: 820px) {
+  .onb { grid-template-columns: 1fr; grid-template-rows: 200px 1fr; }
+  .onb__right { order: -1; border-bottom: 1px solid var(--color-border-subtle); }
+  .onb__ring--3 { display: none; }
+  .onb__ring--2 { width: 220px; height: 220px; }
+  .onb__icon { width: 76px; height: 76px; }
+  .onb__icon svg { width: 32px; height: 32px; }
+  .onb__left { padding: 28px 24px 32px; }
+  .onb__brand { display: none; }
+  .onb__title { font-size: 30px; }
+  .onb__text { font-size: 14.5px; }
+  .onb__footer { margin-top: 24px; }
+  .onb__nav { flex-direction: column; align-items: stretch; gap: 16px; }
+  .onb__actions { justify-content: flex-end; }
+  .onb__skip { margin-top: 16px; }
+}
+
+.settings-replay {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--color-text-secondary); background: var(--color-bg-surface-3);
+  border: 1px solid var(--color-border-default); padding: 8px 14px; cursor: pointer; flex-shrink: 0;
+  transition: color 140ms, border-color 140ms;
+}
+.settings-replay:hover { color: var(--color-text-primary); border-color: var(--color-border-strong); }
+
+.settings-toggle--col { flex-direction: column; align-items: stretch; gap: 12px; }
+.settings-daystart {
+  width: 100%; height: 38px; padding: 0 12px;
+  background: var(--color-bg-surface-3); border: 1px solid var(--color-border-default);
+  color: var(--color-text-primary); font-family: var(--font-mono); font-size: 12px;
+  cursor: pointer; border-radius: 0;
+}
+.settings-daystart:focus { outline: none; border-color: var(--color-border-strong); box-shadow: 0 0 0 3px rgba(255,255,255,0.06); }
+
+/* ════ TYPE PICKER — escolha do tipo de planner ════ */
+.tpick {
+  position: fixed; inset: 0; z-index: 1990;
+  display: flex; align-items: center; justify-content: center;
+  padding: 32px;
+  background: radial-gradient(ellipse 90% 70% at 50% 0%, rgba(220,34,34,0.05), transparent 55%), var(--color-bg-base);
+  animation: onbFadeIn 460ms ease both;
+}
+.tpick__inner { width: 100%; max-width: 940px; }
+.tpick__head { text-align: center; margin-bottom: 40px; animation: onbBodyIn 520ms cubic-bezier(0.16,1,0.3,1) both; }
+.tpick__kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-critical); margin-bottom: 14px; }
+.tpick__title {
+  font-family: var(--font-display); font-size: 38px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 14px;
+  background: linear-gradient(180deg, var(--color-text-primary), rgba(255,255,255,0.6));
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+html.light .tpick__title { background: linear-gradient(180deg,#0e0e10,#44444c); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.tpick__sub { font-size: 15px; line-height: 1.6; color: var(--color-text-tertiary); max-width: 560px; margin: 0 auto; }
+
+.tpick__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+.tpick__card {
+  position: relative; text-align: left; cursor: pointer;
+  padding: 26px 22px;
+  background: var(--color-bg-surface-1);
+  border: 1px solid var(--color-border-default);
+  transition: transform 320ms cubic-bezier(0.16,1,0.3,1), border-color 240ms ease, box-shadow 320ms ease, background 240ms ease;
+  animation: tpickCardIn 620ms cubic-bezier(0.16,1,0.3,1) both;
+  overflow: hidden;
+}
+.tpick__card:hover { background: var(--color-bg-surface-2); }
+.tpick__card--sel { background: var(--color-bg-surface-2); }
+@keyframes tpickCardIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+.tpick__card::before {
+  content: ''; position: absolute; left: 0; top: 0; right: 0; height: 2px;
+  background: var(--color-critical); transform: scaleX(0); transform-origin: left;
+  transition: transform 320ms cubic-bezier(0.16,1,0.3,1);
+}
+.tpick__card:hover { transform: translateY(-4px); border-color: var(--color-border-strong); box-shadow: 0 20px 50px -20px rgba(0,0,0,0.7); }
+.tpick__card--sel { border-color: var(--color-critical); }
+.tpick__card--sel::before { transform: scaleX(1); }
+.tpick__card-icon {
+  width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;
+  background: var(--color-bg-surface-2); border: 1px solid var(--color-border-default);
+  color: var(--color-text-primary); margin-bottom: 18px;
+  transition: background 220ms, color 220ms;
+}
+.tpick__card--sel .tpick__card-icon { background: var(--color-critical); color: #fff; border-color: var(--color-critical); }
+.tpick__card-kicker { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-critical); margin-bottom: 8px; }
+.tpick__card-name { font-family: var(--font-display); font-size: 21px; font-weight: 700; margin-bottom: 8px; color: var(--color-text-primary); letter-spacing: -0.01em; }
+.tpick__card:hover .tpick__card-name, .tpick__card--sel .tpick__card-name { color: #fff; }
+.tpick__card-desc { font-size: 13px; line-height: 1.55; color: var(--color-text-secondary); margin-bottom: 18px; min-height: 56px; }
+.tpick__card-cats { display: flex; flex-wrap: wrap; gap: 5px; }
+.tpick__tag { font-family: var(--font-mono); font-size: 9.5px; padding: 3px 8px; background: var(--color-bg-surface-3); color: var(--color-text-secondary); letter-spacing: 0.02em; }
+.tpick__tag--more { background: transparent; border: 1px solid var(--color-border-default); color: var(--color-text-quaternary); }
+.tpick__card-check {
+  position: absolute; top: 18px; right: 18px; width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--color-border-default); color: #fff; font-size: 12px;
+  transition: background 220ms, border-color 220ms;
+}
+.tpick__card--sel .tpick__card-check { background: var(--color-critical); border-color: var(--color-critical); }
+
+.tpick__foot { display: flex; justify-content: center; }
+.tpick__btn {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 14px 28px; cursor: pointer;
+  background: var(--color-text-primary); color: var(--color-bg-base); border: 1px solid var(--color-text-primary);
+  font-family: var(--font-sans); font-size: 14.5px; font-weight: 600;
+  transition: transform 200ms cubic-bezier(0.16,1,0.3,1), opacity 200ms, box-shadow 200ms;
+}
+.tpick__btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.tpick__btn:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 12px 30px -8px rgba(0,0,0,0.5); }
+.tpick__btn-arrow { transition: transform 200ms; }
+.tpick__btn:not(:disabled):hover .tpick__btn-arrow { transform: translateX(3px); }
+
+@media (max-width: 760px) {
+  .tpick__grid { grid-template-columns: 1fr; }
+  .tpick__title { font-size: 28px; }
+  .tpick__card-desc { min-height: 0; }
+}
+
+/* ════ v4.1 — camada extra de movimento ════ */
+/* Tabs: leve subida no hover */
+.tab { transition: color 180ms ease, transform 180ms cubic-bezier(0.16,1,0.3,1); }
+.tab:hover { transform: translateY(-1px); }
+.tab__count { transition: background 200ms ease, color 200ms ease; }
+
+/* Botões de data e ações: feedback de clique tátil */
+.date-nav__btn, .date-nav__today, .topbar__btn, .toolbar__select, .topbar__cta,
+.row-action, .btn, .cal-filter, .day-chip {
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms cubic-bezier(0.16,1,0.3,1);
+}
+.date-nav__btn:active, .topbar__btn:active, .toolbar__select:active,
+.cal-filter:active, .day-chip:active { transform: scale(0.93); }
+.date-nav__btn:hover, .topbar__btn:hover { transform: translateY(-1px); }
+
+/* Toolbar selects sobem sutilmente no hover */
+.toolbar__select:hover { transform: translateY(-1px); }
+
+/* Tabs entram em cascata quando a barra monta */
+.tabs .tab { animation: tabIn 460ms cubic-bezier(0.16,1,0.3,1) both; }
+.tabs .tab:nth-child(1) { animation-delay: 30ms; }
+.tabs .tab:nth-child(2) { animation-delay: 75ms; }
+.tabs .tab:nth-child(3) { animation-delay: 120ms; }
+.tabs .tab:nth-child(4) { animation-delay: 165ms; }
+.tabs .tab:nth-child(5) { animation-delay: 210ms; }
+.tabs .tab:nth-child(n+6) { animation-delay: 255ms; }
+@keyframes tabIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* KPIs: cascata de entrada mais marcada */
+.kpi { animation: kpiIn 560ms cubic-bezier(0.16,1,0.3,1) both; }
+.kpi:nth-child(1) { animation-delay: 60ms; }
+.kpi:nth-child(2) { animation-delay: 130ms; }
+.kpi:nth-child(3) { animation-delay: 200ms; }
+.kpi:nth-child(4) { animation-delay: 270ms; }
+@keyframes kpiIn { from { opacity: 0; transform: translateY(18px) scale(0.98); } to { opacity: 1; transform: none; } }
+
+/* Notas, cards do kanban e itens de relatório com leve hover lift */
+.note-card, .report-row, .cat-breakdown__item { transition: transform 200ms cubic-bezier(0.16,1,0.3,1), border-color 200ms ease, box-shadow 200ms ease; }
+.note-card:hover { transform: translateY(-3px); box-shadow: 0 14px 36px -18px rgba(0,0,0,0.65); }
+
+/* Modal backdrop com fade + leve zoom de entrada do conteúdo já existe; reforço no fechar via classe */
+@keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+.modal-overlay, .qa-backdrop, .drawer-backdrop { animation: overlayIn 200ms ease both; }
+
+/* Status pills mudam de cor suavemente */
+.status, .list-row__status, [class*="status--"] { transition: background 240ms ease, color 240ms ease; }
+
+/* Respeita quem prefere menos movimento (acessibilidade) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-fill-mode: none !important;
+    transition-duration: 0.01ms !important;
+  }
+  /* Garante que elementos animados terminem VISÍVEIS, nunca presos no estado inicial */
+  .view-stage, .view-stage > *, .kpi, .tabs .tab, .onb, .onb__left-body,
+  .tpick, .tpick__card, .sidebar, .topbar, .app, .list-row {
+    opacity: 1 !important; filter: none !important; transform: none !important;
+  }
 }
 
 </style>
@@ -3436,6 +3851,29 @@ const rotinaFeitaNoDia = (item, d) => {
 
 const rotinaFeitaHoje = (item) => rotinaFeitaNoDia(item, new Date());
 
+// Rotina EM ANDAMENTO num dia: lista item.andamentos = ['yyyy-mm-dd', ...]
+const rotinaAndamentoNoDia = (item, d) => {
+  const iso = localISO(parseLocalDate(d));
+  return Array.isArray(item.andamentos) && item.andamentos.includes(iso);
+};
+// Rotina em FALHA num dia: lista item.falhas = [{ data, categoria, motivo }, ...]
+const rotinaFalhaNoDia = (item, d) => {
+  const iso = localISO(parseLocalDate(d));
+  return Array.isArray(item.falhas) && item.falhas.some(f => f.data === iso);
+};
+const rotinaFalhaInfo = (item, d) => {
+  const iso = localISO(parseLocalDate(d));
+  return Array.isArray(item.falhas) ? item.falhas.find(f => f.data === iso) : null;
+};
+// Estado da rotina no dia: 'feito' | 'andamento' | 'falha' | 'pendente' | 'naoprog'
+const rotinaEstadoNoDia = (item, d) => {
+  if (!rotinaNoDia(item, d)) return 'naoprog';
+  if (rotinaFeitaNoDia(item, d)) return 'feito';
+  if (rotinaFalhaNoDia(item, d)) return 'falha';
+  if (rotinaAndamentoNoDia(item, d)) return 'andamento';
+  return 'pendente';
+};
+
 const isAtivo = (item) => {
   if (temDias(item)) return !rotinaFeitaHoje(item);
   const b = STATUS_BUCKET[item.status];
@@ -3539,6 +3977,7 @@ window.PLANNER_DATA = {
   parseLocalDate, localISO,
   splitCats, hasCat,
   DIAS_SEMANA, splitDias, diasEfetivos, temDias, rotinaNoDia, rotinaFeitaHoje, rotinaFeitaNoDia,
+  rotinaAndamentoNoDia, rotinaFalhaNoDia, rotinaFalhaInfo, rotinaEstadoNoDia,
   mesmoDia, noDia, feitoNoDia, ativoNoDia, isFalha,
 };
 
@@ -3678,7 +4117,7 @@ function Donut({ pct, size, stroke }) {
 // ────────────────────────────────────────────────────────────────────────────
 const NAV_ITEMS = [
   { key: 'dashboard',  title: 'Dashboard',  icon: Dashboard },
-  { key: 'foco',       title: 'Foco',       icon: Target },
+  { key: 'semana',     title: 'Semana',     icon: Target },
   { key: 'kanban',     title: 'Kanban',     icon: Columns },
   { key: 'notas',      title: 'Notas',      icon: Note },
   { key: 'calendario', title: 'Calendário', icon: Cal },
@@ -4183,8 +4622,16 @@ function ListRow({ item, occDate, menuOpen, onMenuToggle, onEdit, onToggleComple
   const programada = recorrente ? D.rotinaNoDia(item, dia) : true;
   const feitaNoDia = recorrente ? D.rotinaFeitaNoDia(item, dia) : D.isFeito(item);
   const ehHoje = D.diasAteHoje(dia) === 0;
+  // Estado por-dia da rotina: feito | andamento | falha | pendente | naoprog
+  const rotEstado = recorrente ? D.rotinaEstadoNoDia(item, dia) : null;
+  const rotAndamento = recorrente && rotEstado === 'andamento';
+  const rotFalha = recorrente && rotEstado === 'falha';
+  const rotFalhaInfo = rotFalha ? D.rotinaFalhaInfo(item, dia) : null;
   const statusK = recorrente
-    ? (feitaNoDia ? 'feito' : programada ? 'aberto' : 'pausado')
+    ? (rotEstado === 'feito' ? 'feito'
+       : rotEstado === 'andamento' ? 'andamento'
+       : rotEstado === 'falha' ? 'falha'
+       : rotEstado === 'naoprog' ? 'pausado' : 'aberto')
     : statusKey(item.status);
   const isFeito = feitaNoDia;
 
@@ -4201,9 +4648,14 @@ function ListRow({ item, occDate, menuOpen, onMenuToggle, onEdit, onToggleComple
           {item.titulo}
         </div>
         {item.descricao && <RowDesc text={item.descricao}/>}
-        {item.status === 'Falha' && item.falhaMotivo && (
+        {!recorrente && item.status === 'Falha' && item.falhaMotivo && (
           <div className="list-row__falha-motivo" title={item.falhaMotivo}>
             {item.falhaCategoria ? `${item.falhaCategoria}: ` : ''}{item.falhaMotivo}
+          </div>
+        )}
+        {recorrente && rotFalha && rotFalhaInfo && rotFalhaInfo.motivo && (
+          <div className="list-row__falha-motivo" title={rotFalhaInfo.motivo}>
+            {rotFalhaInfo.categoria ? `${rotFalhaInfo.categoria}: ` : ''}{rotFalhaInfo.motivo}
           </div>
         )}
         <div className="list-row__sub">
@@ -4263,7 +4715,10 @@ function ListRow({ item, occDate, menuOpen, onMenuToggle, onEdit, onToggleComple
         <div className={`status status--${statusK}`}>
           <span className="status__dot"/>
           <span>{recorrente
-            ? (feitaNoDia ? 'Concluído' : programada ? 'Pendente' : 'Não programada')
+            ? (rotEstado === 'feito' ? 'Concluído'
+               : rotEstado === 'andamento' ? 'Em Andamento'
+               : rotEstado === 'falha' ? 'Falha'
+               : rotEstado === 'naoprog' ? 'Não programada' : 'Pendente')
             : item.status}</span>
         </div>
       </div>
@@ -4287,20 +4742,40 @@ function ListRow({ item, occDate, menuOpen, onMenuToggle, onEdit, onToggleComple
                 : (isFeito ? <><Undo size={14}/> Reabrir</> : <><CheckDouble size={14}/> Marcar Concluído</>)}
             </button>
             )}
-            {!recorrente && item.status !== 'Em Andamento' && !isFeito && item.status !== 'Falha' && (
-              <button className="dropdown__item dropdown__item--andamento" onClick={() => { onSetAndamento(item); onMenuToggle(null); }}>
-                <Loader size={14}/> Marcar em andamento
-              </button>
-            )}
-            {!recorrente && (
-              item.status === 'Falha'
-                ? <button className="dropdown__item" onClick={() => { onClearFalha(item); onMenuToggle(null); }}>
-                    <Undo size={14}/> Desfazer falha
+            {/* EM ANDAMENTO — tarefas e rotinas (rotina: por dia, só se programada) */}
+            {!recorrente
+              ? (item.status !== 'Em Andamento' && !isFeito && item.status !== 'Falha' && (
+                  <button className="dropdown__item dropdown__item--andamento" onClick={() => { onSetAndamento(item); onMenuToggle(null); }}>
+                    <Loader size={14}/> Marcar em andamento
                   </button>
-                : <button className="dropdown__item dropdown__item--warn" onClick={() => { onMarkFalha(item); onMenuToggle(null); }}>
-                    <Warning size={14}/> Marcar falha
-                  </button>
-            )}
+                ))
+              : (programada && !feitaNoDia && (
+                  rotAndamento
+                    ? <button className="dropdown__item dropdown__item--andamento" onClick={() => { onSetAndamento(item, dia); onMenuToggle(null); }}>
+                        <Undo size={14}/> Tirar de andamento {ehHoje ? '' : `(${D.DIAS_SEMANA[dia.getDay()]})`}
+                      </button>
+                    : <button className="dropdown__item dropdown__item--andamento" onClick={() => { onSetAndamento(item, dia); onMenuToggle(null); }}>
+                        <Loader size={14}/> Em andamento {ehHoje ? 'hoje' : `(${D.DIAS_SEMANA[dia.getDay()]})`}
+                      </button>
+                ))}
+            {/* FALHA — tarefas e rotinas (rotina: por dia) */}
+            {!recorrente
+              ? (item.status === 'Falha'
+                  ? <button className="dropdown__item" onClick={() => { onClearFalha(item); onMenuToggle(null); }}>
+                      <Undo size={14}/> Desfazer falha
+                    </button>
+                  : <button className="dropdown__item dropdown__item--warn" onClick={() => { onMarkFalha(item); onMenuToggle(null); }}>
+                      <Warning size={14}/> Marcar falha
+                    </button>)
+              : (programada && (
+                  rotFalha
+                    ? <button className="dropdown__item" onClick={() => { onClearFalha(item, dia); onMenuToggle(null); }}>
+                        <Undo size={14}/> Desfazer falha {ehHoje ? '' : `(${D.DIAS_SEMANA[dia.getDay()]})`}
+                      </button>
+                    : <button className="dropdown__item dropdown__item--warn" onClick={() => { onMarkFalha(item, dia); onMenuToggle(null); }}>
+                        <Warning size={14}/> Marcar falha {ehHoje ? 'hoje' : `(${D.DIAS_SEMANA[dia.getDay()]})`}
+                      </button>
+                ))}
             <button className="dropdown__item" onClick={() => { onDuplicate(item); onMenuToggle(null); }}>
               <Copy size={14}/> Duplicar
             </button>
@@ -4780,6 +5255,185 @@ function ItemModal({ open, item, onClose, onSave }) {
 // ────────────────────────────────────────────────────────────────────────────
 // MODAL DE FALHA — registrar o motivo quando algo não pôde ser concluído
 // ────────────────────────────────────────────────────────────────────────────
+const ONBOARDING_STEPS = [
+  {
+    icon: 'layers',
+    title: 'Bem-vindo ao Villares Planner',
+    text: 'Seu posto de comando para tarefas, rotinas e pedidos operacionais. Tudo em uma tela, sincronizado com Google Sheets ou direto no navegador.',
+    tag: 'Visão geral',
+  },
+  {
+    icon: 'target',
+    title: 'Planeje pela Semana',
+    text: 'A aba Semana mostra os 7 dias lado a lado com a carga de cada um e um gráfico de distribuição. Veja onde o trabalho se acumula e clique num dia para abri-lo.',
+    tag: 'Semana',
+  },
+  {
+    icon: 'repeat',
+    title: 'Rotinas que se repetem sozinhas',
+    text: 'Crie rotinas por dia da semana. Cada dia tem seu próprio registro: concluir a segunda não afeta a terça. No dia seguinte, voltam como pendentes automaticamente.',
+    tag: 'Rotinas',
+  },
+  {
+    icon: 'columns',
+    title: 'Kanban, Calendário e Relatórios',
+    text: 'Arraste tarefas entre colunas no Kanban, veja a agenda em 4 modos no Calendário e acompanhe sua taxa de conclusão por categoria nos Relatórios.',
+    tag: 'Visualizações',
+  },
+  {
+    icon: 'briefcase',
+    title: 'Três modos de trabalho',
+    text: 'Alterne entre Logística, Escritório e Desenvolvimento no topo. Cada modo traz seu próprio conjunto de categorias, adaptado ao contexto.',
+    tag: 'Modos',
+  },
+  {
+    icon: 'bell',
+    title: 'Alarme e notificações',
+    text: 'Ative o alarme no sino para receber avisos do navegador perto do horário das tarefas — com som e ação rápida de concluir. Nunca perca um vencimento.',
+    tag: 'Alertas',
+  },
+];
+
+const ONB_ICONS = {
+  layers: Layers, target: Target, repeat: Repeat, columns: Columns, briefcase: Briefcase, bell: Bell,
+};
+
+function TypePicker({ onChoose }) {
+  const META = {
+    logistica: { icon: 'truck', kicker: 'Operações & Supply Chain', desc: 'Acompanhe o turno, transportadoras, estoque e os KPIs do dia a dia operacional.', tags: ['Operações Diárias', 'Transportadoras', 'Estoque'] },
+    escritorio: { icon: 'briefcase', kicker: 'Administrativo & Gestão', desc: 'Organize reuniões, documentos, financeiro, clientes e tarefas administrativas.', tags: ['Reuniões', 'Financeiro', 'Clientes'] },
+    desenvolvimento: { icon: 'code', kicker: 'Produto & Engenharia', desc: 'Gerencie features, bugs, code review, deploys e todo o fluxo de engenharia.', tags: ['Feature', 'Bug / Correção', 'Deploy / Infra'] },
+  };
+  const ICONS = { truck: Truck, briefcase: Briefcase, code: Code };
+  const [sel, setSel] = useState(null);
+
+  return (
+    <div className="tpick">
+      <div className="tpick__inner">
+        <div className="tpick__head">
+          <div className="tpick__kicker">Configuração inicial</div>
+          <h1 className="tpick__title">Como você quer começar?</h1>
+          <p className="tpick__sub">Escolha o tipo de planner. Cada um traz suas próprias categorias e mantém suas tarefas separadas — você pode trocar quando quiser.</p>
+        </div>
+
+        <div className="tpick__grid">
+          {Object.entries(D.WORKSPACES).map(([key, w], i) => {
+            const m = META[key]; const IconC = ICONS[m.icon] || Truck;
+            return (
+              <button key={key}
+                      className={`tpick__card ${sel === key ? 'tpick__card--sel' : ''}`}
+                      style={{ animationDelay: `${i * 110}ms` }}
+                      onClick={() => setSel(key)}>
+                <div className="tpick__card-icon"><IconC size={26}/></div>
+                <div className="tpick__card-kicker">{m.kicker}</div>
+                <div className="tpick__card-name">{w.label}</div>
+                <div className="tpick__card-desc">{m.desc}</div>
+                <div className="tpick__card-cats">
+                  {m.tags.map(t => <span key={t} className="tpick__tag">{t}</span>)}
+                  <span className="tpick__tag tpick__tag--more">+{w.categorias.length - m.tags.length} categorias</span>
+                </div>
+                <div className="tpick__card-check">{sel === key ? '✓' : ''}</div>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="tpick__foot">
+          <button className="tpick__btn" disabled={!sel} onClick={() => sel && onChoose(sel)}>
+            Começar com {sel ? D.WORKSPACES[sel].label : '...'} <span className="tpick__btn-arrow">→</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Onboarding({ onFinish }) {
+  const [step, setStep] = useState(0);
+  const [leaving, setLeaving] = useState(false);
+  const total = ONBOARDING_STEPS.length;
+  const s = ONBOARDING_STEPS[step];
+  const IconC = ONB_ICONS[s.icon] || Layers;
+  const last = step === total - 1;
+
+  const go = (n) => { if (n >= 0 && n < total) setStep(n); };
+  const avancar = () => last ? sair() : go(step + 1);
+  const sair = () => { setLeaving(true); setTimeout(onFinish, 420); };
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') sair();
+      else if (e.key === 'ArrowRight' || e.key === 'Enter') avancar();
+      else if (e.key === 'ArrowLeft') go(step - 1);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [step]);
+
+  return (
+    <div className={`onb ${leaving ? 'onb--leaving' : ''}`}>
+      {/* Painel esquerdo — editorial */}
+      <div className="onb__left">
+        <div className="onb__brand">
+          <span className="onb__brand-mark">
+            <Icon size={16}><path d="m12 2 9 5-9 5-9-5 9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></Icon>
+          </span>
+          VILLARES<span className="onb__brand-sep"> | </span>PLANNER
+        </div>
+
+        <div className="onb__left-body" key={step}>
+          <div className="onb__index">
+            <span className="onb__index-num">{String(step + 1).padStart(2, '0')}</span>
+            <span className="onb__index-sep">/</span>
+            <span className="onb__index-total">{String(total).padStart(2, '0')}</span>
+          </div>
+          <div className="onb__tag">{s.tag}</div>
+          <h1 className="onb__title">{s.title}</h1>
+          <p className="onb__text">{s.text}</p>
+        </div>
+
+        <div className="onb__footer">
+          <div className="onb__nav">
+            <div className="onb__dots">
+              {ONBOARDING_STEPS.map((_, i) => (
+                <button key={i}
+                        className={`onb__dot ${i === step ? 'onb__dot--active' : ''} ${i < step ? 'onb__dot--done' : ''}`}
+                        onClick={() => go(i)} aria-label={`Passo ${i + 1}`}/>
+              ))}
+            </div>
+            <div className="onb__actions">
+              {step > 0 && <button className="onb__btn onb__btn--ghost" onClick={() => go(step - 1)}>Voltar</button>}
+              <button className="onb__btn onb__btn--primary" onClick={avancar}>
+                {last ? 'Entrar no Planner' : 'Avançar'}
+                {!last && <span className="onb__btn-arrow">→</span>}
+              </button>
+            </div>
+          </div>
+          <button className="onb__skip" onClick={sair}>Pular apresentação</button>
+        </div>
+      </div>
+
+      {/* Painel direito — visual */}
+      <div className="onb__right" key={'v' + step}>
+        <div className="onb__stage">
+          <div className="onb__rings">
+            <span className="onb__ring onb__ring--1"/>
+            <span className="onb__ring onb__ring--2"/>
+            <span className="onb__ring onb__ring--3"/>
+          </div>
+          <div className="onb__grid-bg"/>
+          <div className="onb__icon-wrap">
+            <div className="onb__icon"><IconC size={44}/></div>
+            <div className="onb__icon-glow"/>
+          </div>
+        </div>
+        <div className="onb__progress"><div className="onb__progress-fill" style={{ width: `${((step + 1) / total) * 100}%` }}/></div>
+      </div>
+    </div>
+  );
+}
+
+
 function QuickActionPopup({ item, selDate, onClose, onConcluir, onAndamento, onFalha, onAbrir }) {
   useEffect(() => {
     if (!item) return;
@@ -5797,91 +6451,114 @@ function ReportsView({ items, allCats, metrics }) {
 // ────────────────────────────────────────────────────────────────────────────
 // EQUIPE — solicitantes dos pedidos
 // ────────────────────────────────────────────────────────────────────────────
-function FocusView({ items, selDate, onEdit, onToggle, onAndamento }) {
-  const ehHoje = D.diasAteHoje(selDate) === 0;
+function WeekView({ items, selDate, onEdit, onToggle, onJumpDay }) {
+  const [expandidos, setExpandidos] = useState({}); // índice do dia -> bool
+  const toggleExpand = (i) => setExpandidos(e => ({ ...e, [i]: !e[i] }));
+  // Semana da data selecionada (domingo a sábado)
+  const base = new Date(selDate); base.setHours(12,0,0,0);
+  const inicioSemana = new Date(base);
+  inicioSemana.setDate(base.getDate() - base.getDay()); // volta ao domingo
 
-  // Ocorrências ativas do dia, ordenadas: por hora, depois prioridade
-  const PRIO_RANK = { 'Crítica': 0, 'Alta': 1, 'Média': 2, 'Baixa': 3 };
-  const horaMin = (h) => { if (!h) return 9999; const [hh, mm] = String(h).split(':').map(Number); return hh*60+mm; };
+  const dias = useMemo(() => {
+    const arr = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(inicioSemana); d.setDate(inicioSemana.getDate() + i); d.setHours(12,0,0,0);
+      const ocorr = items.filter(it => D.noDia(it, d));
+      const feitos = ocorr.filter(it => D.feitoNoDia(it, d));
+      const horaMin = (h) => { if (!h) return 9999; const [hh, mm] = String(h).split(':').map(Number); return hh*60+mm; };
+      ocorr.sort((a,b) => horaMin(a.hora) - horaMin(b.hora));
+      arr.push({ data: d, ocorr, feitos: feitos.length, total: ocorr.length });
+    }
+    return arr;
+  }, [items, inicioSemana.getTime()]);
 
-  const ativos = useMemo(() => {
-    return items
-      .filter(it => D.ativoNoDia(it, selDate))
-      .sort((a, b) => horaMin(a.hora) - horaMin(b.hora)
-        || (PRIO_RANK[a.prioridade] ?? 9) - (PRIO_RANK[b.prioridade] ?? 9));
-  }, [items, selDate]);
+  const hoje = new Date(); hoje.setHours(12,0,0,0);
+  const totalSemana = dias.reduce((s, d) => s + d.total, 0);
+  const feitosSemana = dias.reduce((s, d) => s + d.feitos, 0);
+  const pctSemana = totalSemana === 0 ? 0 : Math.round((feitosSemana / totalSemana) * 100);
+  const maxCarga = Math.max(1, ...dias.map(d => d.total));
 
-  const atrasados = useMemo(() => items.filter(D.isAtrasado), [items]);
-  const feitosHoje = useMemo(() => items.filter(it => D.feitoNoDia(it, selDate)), [items, selDate]);
-
-  // O "agora": primeiro atrasado, senão o próximo do dia
-  const agora = atrasados[0] || ativos[0] || null;
-  const resto = ativos.filter(it => it.id !== agora?.id).slice(0, 6);
-
-  const nowMin = new Date().getHours() * 60 + new Date().getMinutes();
+  const NOMES = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+  const ABREV = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB'];
+  const fmtIntervalo = () => {
+    const fim = new Date(inicioSemana); fim.setDate(inicioSemana.getDate() + 6);
+    const f = (d) => d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).replace('.', '');
+    return `${f(inicioSemana)} – ${f(fim)}`;
+  };
 
   return (
-    <div className="focus">
-      <div className="focus__head">
+    <div className="week">
+      <div className="week__head">
         <div>
-          <div className="focus__kicker">Modo foco {ehHoje ? '· Hoje' : ''}</div>
-          <h2 className="focus__heading">O que fazer agora</h2>
+          <div className="week__kicker">Visão semanal</div>
+          <h2 className="week__heading">{fmtIntervalo()}</h2>
         </div>
-        <div className="focus__stats">
-          <span className="focus__stat"><b>{ativos.length}</b> pendentes</span>
-          <span className="focus__stat focus__stat--done"><b>{feitosHoje.length}</b> feitas</span>
-          {atrasados.length > 0 && <span className="focus__stat focus__stat--late"><b>{atrasados.length}</b> atrasadas</span>}
+        <div className="week__summary">
+          <span className="week__summary-pct">{pctSemana}%</span>
+          <span className="week__summary-label">{feitosSemana} de {totalSemana} concluídas</span>
         </div>
       </div>
 
-      {agora ? (
-        <div className={`focus__now ${atrasados[0] ? 'focus__now--late' : ''}`}>
-          <div className="focus__now-tag">{atrasados[0] ? 'Prioridade · atrasado' : (agora.hora ? `Próximo · ${agora.hora}` : 'Comece por aqui')}</div>
-          <div className="focus__now-title" onClick={() => onEdit(agora)}>{agora.titulo}</div>
-          {agora.descricao && <div className="focus__now-desc">{String(agora.descricao).split('\n')[0]}</div>}
-          <div className="focus__now-meta">
-            {agora.categoria && <span className="focus__chip">{D.splitCats(agora.categoria)[0]}</span>}
-            {agora.prioridade && <span className={`focus__chip focus__chip--prio prio-${(agora.prioridade||'').toLowerCase()}`}>{agora.prioridade}</span>}
-            {agora.prazo && <span className="focus__chip">{D.formatRelative(agora.prazo)}</span>}
-          </div>
-          <div className="focus__now-actions">
-            <button className="focus__act focus__act--done" onClick={() => onToggle(agora, selDate)}>
-              <CheckDouble size={15}/> Concluir
-            </button>
-            {!D.temDias(agora) && (
-              <button className="focus__act" onClick={() => onAndamento(agora)}>
-                <Loader size={15}/> Em andamento
-              </button>
-            )}
-            <button className="focus__act focus__act--ghost" onClick={() => onEdit(agora)}>Abrir</button>
-          </div>
-        </div>
-      ) : (
-        <div className="focus__empty">
-          <div className="focus__empty-mark">✓</div>
-          <div className="focus__empty-title">Dia tranquilo</div>
-          <div className="focus__empty-sub">Nenhuma tarefa pendente {ehHoje ? 'para hoje' : 'nesta data'}. Aproveite ou adiante algo de amanhã.</div>
-        </div>
-      )}
-
-      {resto.length > 0 && (
-        <div className="focus__queue">
-          <div className="focus__queue-label">Na fila</div>
-          {resto.map((it, i) => {
-            const atrasadaHora = it.hora && horaMin(it.hora) < nowMin && ehHoje;
-            return (
-              <div key={it.id} className="focus__row" onClick={() => onEdit(it)} role="button" tabIndex={0}>
-                <span className="focus__row-num">{String(i + 1).padStart(2, '0')}</span>
-                <span className="focus__row-hora">{it.hora || '—'}</span>
-                <span className="focus__row-title">{it.titulo}</span>
-                {it.prioridade && <span className={`focus__row-prio prio-${(it.prioridade||'').toLowerCase()}`}>{it.prioridade}</span>}
-                <button className="focus__row-check" title="Concluir"
-                        onClick={(e) => { e.stopPropagation(); onToggle(it, selDate); }}>✓</button>
+      {/* Mini-gráfico de carga por dia */}
+      <div className="week__chart">
+        {dias.map((d, i) => {
+          const isHoje = D.mesmoDia(d.data, hoje);
+          const isSel = D.mesmoDia(d.data, selDate);
+          const h = d.total === 0 ? 4 : 8 + (d.total / maxCarga) * 52;
+          const pct = d.total === 0 ? 0 : (d.feitos / d.total) * 100;
+          return (
+            <button key={i} className={`week__bar-wrap ${isSel ? 'week__bar-wrap--sel' : ''}`}
+                    onClick={() => onJumpDay(d.data)} title={`${NOMES[i]} · ${d.total} ${d.total === 1 ? 'item' : 'itens'}`}>
+              <div className="week__bar-track" style={{ height: 64 }}>
+                <div className="week__bar" style={{ height: h }}>
+                  <div className="week__bar-done" style={{ height: `${pct}%` }}/>
+                </div>
               </div>
-            );
-          })}
-        </div>
-      )}
+              <span className={`week__bar-day ${isHoje ? 'week__bar-day--today' : ''}`}>{ABREV[i]}</span>
+              <span className="week__bar-num">{d.total || ''}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Colunas dos dias com tarefas */}
+      <div className="week__grid">
+        {dias.map((d, i) => {
+          const isHoje = D.mesmoDia(d.data, hoje);
+          const isSel = D.mesmoDia(d.data, selDate);
+          return (
+            <div key={i} className={`week__col ${isHoje ? 'week__col--today' : ''} ${isSel ? 'week__col--sel' : ''}`}>
+              <button className="week__col-head" onClick={() => onJumpDay(d.data)}>
+                <span className="week__col-name">{ABREV[i]}</span>
+                <span className="week__col-date">{d.data.getDate()}</span>
+                {d.total > 0 && <span className="week__col-ratio">{d.feitos}/{d.total}</span>}
+              </button>
+              <div className="week__col-body">
+                {d.ocorr.length === 0 ? (
+                  <div className="week__col-empty">—</div>
+                ) : (expandidos[i] ? d.ocorr : d.ocorr.slice(0, 6)).map(it => {
+                  const feito = D.feitoNoDia(it, d.data);
+                  return (
+                    <div key={it.id} className={`week__task ${feito ? 'week__task--done' : ''}`}
+                         onClick={() => onEdit(it)} role="button" tabIndex={0}>
+                      <button className="week__task-check" onClick={(e) => { e.stopPropagation(); onToggle(it, d.data); }}>
+                        {feito ? '✓' : ''}
+                      </button>
+                      {it.hora && <span className="week__task-hora">{it.hora}</span>}
+                      <span className="week__task-title">{it.titulo}</span>
+                    </div>
+                  );
+                })}
+                {d.ocorr.length > 6 && (
+                  <button className="week__col-more" onClick={() => toggleExpand(i)}>
+                    {expandidos[i] ? 'Mostrar menos' : `+${d.ocorr.length - 6} mais`}
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -6034,7 +6711,7 @@ function createApi(url, token) {
 // que vêm junto ao copiar/colar e fazem o token parecer certo sem ser
 const cleanCred = (s) => String(s || '').replace(/[\u200B-\u200D\uFEFF\u00A0]/g, '').trim();
 
-function SettingsModal({ open, config, items, onClose, onSave, onUploaded }) {
+function SettingsModal({ open, config, items, onClose, onSave, onUploaded, onReplayTour, dayStart, onChangeDayStart }) {
   const [soundOn, setSoundOn] = useState(() => { try { return localStorage.getItem('villares_sound') !== 'off'; } catch { return true; } });
   const [url, setUrl] = useState(config?.url || '');
   const [token, setToken] = useState(config?.token || '');
@@ -6120,6 +6797,37 @@ function SettingsModal({ open, config, items, onClose, onSave, onUploaded }) {
                     onClick={() => { const v = !soundOn; setSoundOn(v); try { localStorage.setItem('villares_sound', v ? 'on' : 'off'); } catch {} if (v) sfx.complete(); }}>
               <span className="settings-switch__knob"/>
             </button>
+          </div>
+
+          <div className="settings-toggle">
+            <div>
+              <div className="settings-toggle__title">Apresentação inicial</div>
+              <div className="settings-toggle__sub">Rever o tour de boas-vindas do Planner</div>
+            </div>
+            <button className="settings-replay" onClick={onReplayTour}>Rever tour</button>
+          </div>
+
+          <div className="settings-toggle settings-toggle--col">
+            <div>
+              <div className="settings-toggle__title">Início do dia operacional</div>
+              <div className="settings-toggle__sub">
+                Em logística o dia não termina à meia-noite. Defina a hora em que seu
+                dia começa: horários antes disso contam como continuação do turno anterior
+                na ordenação por hora. Ex: às 00h–04h ficam <b>depois</b> das 22h, não antes das 06h.
+              </div>
+            </div>
+            <select className="settings-daystart" value={dayStart}
+                    onChange={(e) => onChangeDayStart(parseInt(e.target.value, 10))}>
+              <option value={0}>Meia-noite (padrão)</option>
+              <option value={4}>04:00</option>
+              <option value={5}>05:00</option>
+              <option value={6}>06:00</option>
+              <option value={17}>17:00</option>
+              <option value={18}>18:00 (turno noturno)</option>
+              <option value={19}>19:00</option>
+              <option value={20}>20:00</option>
+              <option value={22}>22:00</option>
+            </select>
           </div>
 
           <div className="help-block" style={{ marginBottom: 14 }}>
@@ -6253,9 +6961,14 @@ function App() {
   const [workspace, setWorkspace] = useState(() => {
     try { return localStorage.getItem('villares_workspace') || 'logistica'; } catch { return 'logistica'; }
   });
+  const [wsSwapping, setWsSwapping] = useState(false);
   const changeWorkspace = (w) => {
+    if (w === workspace) return;
     setWorkspace(w);
     try { localStorage.setItem('villares_workspace', w); } catch {}
+    setWsSwapping(true);
+    setTimeout(() => setWsSwapping(false), 460);
+    sfx.tick && sfx.tick();
   };
   const [selDate, setSelDate] = useState(() => { const d = new Date(); d.setHours(12, 0, 0, 0); return d; });
   const shiftSelDate = (delta) => {
@@ -6318,6 +7031,23 @@ function App() {
   const [syncStatus, setSyncStatus] = useState(apiConfig ? 'syncing' : 'offline');
   const [syncError, setSyncError] = useState(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(() => {
+    try { return localStorage.getItem('villares_onboarded') !== 'sim'; } catch { return true; }
+  });
+  const [showTypePicker, setShowTypePicker] = useState(false);
+  const finishOnboarding = () => {
+    setShowOnboarding(false);
+    try { localStorage.setItem('villares_onboarded', 'sim'); } catch {}
+    // Após a apresentação na primeira vez, oferece a escolha do tipo de planner
+    let jaEscolheu = true;
+    try { jaEscolheu = localStorage.getItem('villares_type_chosen') === 'sim'; } catch {}
+    if (!jaEscolheu) setShowTypePicker(true);
+  };
+  const chooseType = (w) => {
+    changeWorkspace(w);
+    setShowTypePicker(false);
+    try { localStorage.setItem('villares_type_chosen', 'sim'); } catch {}
+  };
 
   // Items: persistido em localStorage como cache; quando API conectada, sincroniza
   const [items, setItems] = useState(() => {
@@ -6330,22 +7060,55 @@ function App() {
     } catch {}
     return D.MOCK_ITEMS;
   });
+
+  // Items do workspace ativo. Itens antigos sem campo workspace contam como 'logistica'.
+  const wsItems = useMemo(
+    () => items.filter(it => (it.workspace || 'logistica') === workspace),
+    [items, workspace]
+  );
   const notifCount = useMemo(() =>
-    buildNotifs(items).filter(n => !notifRead.has(n.id) && !notifDismissed.has(n.id)).length
-  , [items, notifRead, notifDismissed]);
+    buildNotifs(wsItems).filter(n => !notifRead.has(n.id) && !notifDismissed.has(n.id)).length
+  , [wsItems, notifRead, notifDismissed]);
   useEffect(() => {
     try { localStorage.setItem('villares_planner_items', JSON.stringify(items)); } catch {}
   }, [items]);
 
   // ── Carrega da API quando configurada / muda ──
+  const pendingWritesRef = useRef(new Map()); // id -> timestamp de escrita local recente
+
   const loadFromApi = async () => {
     if (!api) { setSyncStatus('offline'); return; }
     setSyncStatus('syncing');
     setSyncError(null);
     try {
-      const remoteItems = await api.list();
+      let remoteItems = await api.list();
       if (Array.isArray(remoteItems)) {
-        setItems(remoteItems);
+        // Normaliza estados por-dia que vieram serializados como JSON string
+        remoteItems = remoteItems.map(it => {
+          const out = { ...it };
+          if (typeof out.andamentos === 'string' && out.andamentos.trim()) {
+            try { out.andamentos = JSON.parse(out.andamentos); } catch { out.andamentos = []; }
+          }
+          if (typeof out.falhas === 'string' && out.falhas.trim()) {
+            try { out.falhas = JSON.parse(out.falhas); } catch { out.falhas = []; }
+          }
+          return out;
+        });
+        // Reconciliação: a planilha pode ter atraso de indexação após uma escrita.
+        // Mantém itens escritos localmente há <15s que ainda não voltaram do servidor.
+        const remoteIds = new Set(remoteItems.map(r => r.id));
+        const agora = Date.now();
+        setItems(prev => {
+          const pendentesLocais = prev.filter(it => {
+            const ts = pendingWritesRef.current.get(it.id);
+            return ts && (agora - ts) < 15000 && !remoteIds.has(it.id);
+          });
+          // limpa marcas já confirmadas
+          pendingWritesRef.current.forEach((ts, id) => {
+            if (remoteIds.has(id) || (agora - ts) >= 15000) pendingWritesRef.current.delete(id);
+          });
+          return [...pendentesLocais, ...remoteItems];
+        });
         setSyncStatus('synced');
         setLastUpdate('agora');
       }
@@ -6355,6 +7118,8 @@ function App() {
       setSyncError(err.message);
     }
   };
+  // Marca um id como escrito localmente (para a reconciliação preservá-lo)
+  const markPending = (id) => { pendingWritesRef.current.set(id, Date.now()); };
 
   useEffect(() => {
     if (api) loadFromApi();
@@ -6409,17 +7174,30 @@ function App() {
   const handleEdit = (item) => { setEditingItem(item); setModalOpen(true); };
   const handleModalClose = () => { setModalOpen(false); setEditingItem(null); };
 
+  const idCounterRef = useRef(0);
   const generateId = (origem) => {
     const prefix = origem === 'Projeto' ? 'P' : origem === 'Rotina' ? 'R' : 'D';
-    return `${prefix}-${Date.now().toString(36)}`;
+    idCounterRef.current += 1;
+    const rand = Math.random().toString(36).slice(2, 6);
+    return `${prefix}-${Date.now().toString(36)}-${idCounterRef.current}${rand}`;
   };
 
   // Sync funciona em http:// e também em file:// (JSONP + POST text/plain)
   const canSync = () => !!api;
 
+  // Prepara um item de rotina para envio: serializa estados por-dia em JSON
+  // (a planilha guarda como texto; ao ler de volta, parseamos em loadFromApi)
+  const stripEffemeral = (item) => {
+    const out = { ...item };
+    if (Array.isArray(out.andamentos)) out.andamentos = JSON.stringify(out.andamentos);
+    if (Array.isArray(out.falhas)) out.falhas = JSON.stringify(out.falhas);
+    return out;
+  };
+
   // Operações: otimistas (atualiza UI primeiro) + sincroniza com API
   const persistItem = async (merged) => {
     setItems(prev => prev.map(it => it.id === merged.id ? merged : it));
+    markPending(merged.id);
     if (canSync()) {
       setSyncStatus('syncing');
       try { await api.update(merged); await loadFromApi(); }
@@ -6453,8 +7231,9 @@ function App() {
       }
     } else {
       const { conclusoes, ultimaConclusao, ...cleanData } = data;
-      const newItem = { id: generateId(data.origem), ...cleanData };
+      const newItem = { id: generateId(data.origem), workspace, ...cleanData };
       setItems(prev => [newItem, ...prev]);
+      markPending(newItem.id);
       handleModalClose();
       if (canSync()) {
         setSyncStatus('syncing');
@@ -6465,6 +7244,61 @@ function App() {
           setSyncStatus('error'); setSyncError(err.message);
         }
       }
+    }
+  };
+
+  // Rotina: marcar/desmarcar EM ANDAMENTO no dia (exclusivo com feito/falha)
+  const handleRotinaAndamento = async (item, occDate) => {
+    const dia = occDate ? new Date(occDate) : new Date();
+    const iso = D.localISO(dia);
+    const jaAnd = D.rotinaAndamentoNoDia(item, dia);
+    const andamentos = jaAnd
+      ? (item.andamentos || []).filter(x => x !== iso)
+      : [...(item.andamentos || []), iso];
+    // andamento remove conclusão e falha do dia
+    const conclusoes = (item.conclusoes || []).filter(x => x !== iso);
+    const falhas = (item.falhas || []).filter(f => f.data !== iso);
+    const updated = { ...item, andamentos, conclusoes, falhas };
+    setItems(prev => prev.map(it => it.id === item.id ? updated : it));
+    markPending(item.id);
+    if (!jaAnd) sfx.add();
+    if (canSync()) {
+      setSyncStatus('syncing');
+      try { await api.update(stripEffemeral(updated)); await loadFromApi(); }
+      catch (err) { setSyncStatus('error'); setSyncError(err.message); }
+    }
+  };
+
+  // Rotina: marcar FALHA no dia com motivo (exclusivo)
+  const handleRotinaFalha = async (item, occDate, info) => {
+    const dia = occDate ? new Date(occDate) : new Date();
+    const iso = D.localISO(dia);
+    const falhasSemDia = (item.falhas || []).filter(f => f.data !== iso);
+    const falhas = [...falhasSemDia, { data: iso, categoria: info.falhaCategoria, motivo: info.falhaMotivo }];
+    const conclusoes = (item.conclusoes || []).filter(x => x !== iso);
+    const andamentos = (item.andamentos || []).filter(x => x !== iso);
+    const updated = { ...item, falhas, conclusoes, andamentos };
+    setItems(prev => prev.map(it => it.id === item.id ? updated : it));
+    markPending(item.id);
+    if (canSync()) {
+      setSyncStatus('syncing');
+      try { await api.update(stripEffemeral(updated)); await loadFromApi(); }
+      catch (err) { setSyncStatus('error'); setSyncError(err.message); }
+    }
+  };
+
+  // Rotina: desfazer falha do dia
+  const handleRotinaClearFalha = async (item, occDate) => {
+    const dia = occDate ? new Date(occDate) : new Date();
+    const iso = D.localISO(dia);
+    const falhas = (item.falhas || []).filter(f => f.data !== iso);
+    const updated = { ...item, falhas };
+    setItems(prev => prev.map(it => it.id === item.id ? updated : it));
+    markPending(item.id);
+    if (canSync()) {
+      setSyncStatus('syncing');
+      try { await api.update(stripEffemeral(updated)); await loadFromApi(); }
+      catch (err) { setSyncStatus('error'); setSyncError(err.message); }
     }
   };
 
@@ -6495,9 +7329,13 @@ function App() {
       // legado: só limpa "Última Conclusão" se ela apontar para ESTE dia
       const legadoBate = item.ultimaConclusao &&
         D.localISO(D.parseLocalDate(item.ultimaConclusao)) === iso;
-      const updated = { ...item, conclusoes,
+      // ao concluir, limpa andamento e falha do mesmo dia (exclusivos)
+      const andamentos = (Array.isArray(item.andamentos) ? item.andamentos : []).filter(x => x !== iso);
+      const falhas = (Array.isArray(item.falhas) ? item.falhas : []).filter(f => f.data !== iso);
+      const updated = { ...item, conclusoes, andamentos, falhas,
         ultimaConclusao: legadoBate ? '' : (item.ultimaConclusao || '') };
       setItems(prev => prev.map(it => it.id === item.id ? updated : it));
+      markPending(item.id);
       if (canSync()) {
         setSyncStatus('syncing');
         try {
@@ -6539,6 +7377,7 @@ function App() {
       status: 'Pendente',
     };
     setItems(prev => [copy, ...prev]);
+    markPending(copy.id);
     if (canSync()) {
       setSyncStatus('syncing');
       try {
@@ -6570,6 +7409,15 @@ function App() {
   // Ordenação por header
   const [sortBy, setSortBy] = useState(null);
   const [sortDir, setSortDir] = useState('asc');
+  // "Dia logístico": hora em que o dia começa (0 = meia-noite normal; 18 = turno noturno).
+  // Com 18, horários 00:00–17:59 contam como continuação do dia anterior na ordenação.
+  const [dayStart, setDayStart] = useState(() => {
+    try { return parseInt(localStorage.getItem('villares_day_start') || '0', 10) || 0; } catch { return 0; }
+  });
+  const changeDayStart = (h) => {
+    setDayStart(h);
+    try { localStorage.setItem('villares_day_start', String(h)); } catch {}
+  };
   const handleSort = (key) => {
     if (sortBy === key) {
       if (sortDir === 'asc') setSortDir('desc');
@@ -6639,45 +7487,64 @@ function App() {
     try { localStorage.setItem('villares_alarm', 'off'); } catch {}
   };
 
-  // Verifica a cada 30s itens com hora chegando (janela: agora .. +10min)
+  // Dispara o alarme (som + notificação), com fallback se a notificação falhar
+  const dispararAlarme = (it, momento) => {
+    beep();
+    const corpo = momento === 'agora'
+      ? 'Está na hora' + (it.descricao ? ` — ${String(it.descricao).split('\n')[0]}` : '')
+      : `Em 10 minutos` + (it.descricao ? ` — ${String(it.descricao).split('\n')[0]}` : '');
+    let mostrou = false;
+    try {
+      if ('Notification' in window && Notification.permission === 'granted') {
+        const n = new Notification(`${momento === 'agora' ? '⏰' : '🔔'} ${it.hora} · ${it.titulo}`, {
+          body: corpo, tag: it.id + '-' + momento, requireInteraction: momento === 'agora',
+        });
+        n.onclick = () => { window.focus(); setQuickActionItem(it); n.close(); };
+        mostrou = true;
+      }
+    } catch {}
+    // Fallback in-app: se a notificação do navegador não aparecer, mostra o popup de ação
+    if (!mostrou && momento === 'agora') setQuickActionItem(it);
+  };
+
+  // Verifica a cada 20s: avisa 10min antes E na hora exata (eventos independentes)
   useEffect(() => {
     if (!alarmEnabled) return;
     const check = () => {
       const now = new Date();
       const nowMin = now.getHours() * 60 + now.getMinutes();
+      const iso = D.localISO(now);
       items.forEach(it => {
-        if (!it.hora) return;
-        // só itens do dia de hoje (rotina programada hoje, ou prazo hoje)
+        if (!it.hora || !/^\d{1,2}:\d{2}$/.test(it.hora)) return;
         const relevante = D.temDias(it)
-          ? (D.rotinaNoDia(it, now) && !D.rotinaFeitaHoje(it))
+          ? (D.rotinaNoDia(it, now) && !D.rotinaFeitaNoDia(it, now))
           : (D.isAtivo(it) && it.prazo && D.diasAteHoje(it.prazo) === 0);
         if (!relevante) return;
         const [h, m] = String(it.hora).split(':').map(Number);
-        const alvo = h * 60 + m;
-        const faltam = alvo - nowMin;
-        const key = it.id + ':' + D.localISO(now);
-        if (faltam >= 0 && faltam <= 10 && !alarmedRef.current.has(key)) {
-          alarmedRef.current.add(key);
-          beep();
-          try {
-            const n = new Notification(`⏰ ${it.hora} · ${it.titulo}`, {
-              body: faltam === 0 ? 'Começa agora' : `Começa em ${faltam} min` + (it.descricao ? ` — ${String(it.descricao).split('\n')[0]}` : ''),
-              tag: it.id,
-              requireInteraction: false,
-            });
-            n.onclick = () => { window.focus(); setQuickActionItem(it); n.close(); };
-          } catch {}
+        const faltam = (h * 60 + m) - nowMin;
+
+        // Aviso antecipado: janela 8–10 min antes (uma vez)
+        const kPre = it.id + ':' + iso + ':pre';
+        if (faltam >= 8 && faltam <= 10 && !alarmedRef.current.has(kPre)) {
+          alarmedRef.current.add(kPre);
+          dispararAlarme(it, 'breve');
+        }
+        // Alarme na hora: janela 0 a -1 min (uma vez) — ESTE é o principal
+        const kNow = it.id + ':' + iso + ':now';
+        if (faltam <= 0 && faltam >= -1 && !alarmedRef.current.has(kNow)) {
+          alarmedRef.current.add(kNow);
+          dispararAlarme(it, 'agora');
         }
       });
     };
     check();
-    const id = setInterval(check, 30000);
+    const id = setInterval(check, 20000);
     return () => clearInterval(id);
   }, [alarmEnabled, items]);
 
   // ── filtros ──
   const queryFiltered = useMemo(() => {
-    let arr = items;
+    let arr = wsItems;
     if (query.trim()) {
       const q = query.toLowerCase();
       arr = arr.filter(it => {
@@ -6688,7 +7555,7 @@ function App() {
     if (filterPrio !== 'Todas') arr = arr.filter(it => it.prioridade === filterPrio);
     if (filterCat !== 'Todas') arr = arr.filter(it => D.hasCat(it, filterCat));
     return arr;
-  }, [items, query, filterPrio, filterCat]);
+  }, [wsItems, query, filterPrio, filterCat]);
 
   const viewFiltered = queryFiltered;
 
@@ -6782,11 +7649,27 @@ function App() {
           av = a.prazo ? new Date(a.prazo).getTime() : Number.POSITIVE_INFINITY;
           bv = b.prazo ? new Date(b.prazo).getTime() : Number.POSITIVE_INFINITY;
           break;
-        case 'hora':
-          // Itens sem hora vão para o fim
-          av = a.hora ? a.hora : '99:99';
-          bv = b.hora ? b.hora : '99:99';
+        case 'hora': {
+          // Itens sem hora NUNCA entram no comparador normal — são tratados
+          // depois (sempre no fim, independente da direção). Aqui só comparamos
+          // os que têm hora, aplicando o offset do "dia logístico".
+          const temHora = (h) => h && /^\d{1,2}:\d{2}$/.test(String(h).trim());
+          const toMin = (h) => {
+            const [hh, mm] = String(h).trim().split(':').map(Number);
+            let min = hh * 60 + mm;
+            // Dia logístico: horas antes do início do dia "rolam" para o fim.
+            // Ex: início 18h → 02:00 vira 26:00, sortando depois de 23:00.
+            if (dayStart > 0 && min < dayStart * 60) min += 1440;
+            return min;
+          };
+          const aTem = temHora(a.hora), bTem = temHora(b.hora);
+          if (!aTem && !bTem) return 0;
+          if (!aTem) return 1;   // a sem hora → fim (sempre, ignora dir)
+          if (!bTem) return -1;  // b sem hora → fim
+          av = toMin(a.hora);
+          bv = toMin(b.hora);
           break;
+        }
         case 'status':
           av = statusRank[a.status] ?? 99;
           bv = statusRank[b.status] ?? 99;
@@ -6798,42 +7681,48 @@ function App() {
       if (av > bv) return 1 * dir;
       return 0;
     });
-    return arr;
+    // Dedupe por id (proteção contra key duplicada → crash de render)
+    const seen = new Set();
+    return arr.filter(it => {
+      const id = it && it.id;
+      if (!id || seen.has(id)) return false;
+      seen.add(id); return true;
+    });
   }, [tabFiltered, sortBy, sortDir]);
 
   // ── métricas globais (sobre TODOS os items, não só do tab) ──
   const metrics = useMemo(() => {
     const ehHoje = D.diasAteHoje(selDate) === 0;
     // Itens que "acontecem" na data selecionada
-    const doDia = items.filter(it => D.noDia(it, selDate));
+    const doDia = wsItems.filter(it => D.noDia(it, selDate));
     const feitos = doDia.filter(it => D.feitoNoDia(it, selDate));
     const ativos = doDia.filter(it => D.ativoNoDia(it, selDate));
     // Em andamento: status andamento (rotinas não têm "andamento", então só não-rotina)
     const andamento = doDia.filter(it => !D.temDias(it) && D.STATUS_BUCKET[it.status] === 'andamento');
     // Vencimentos do dia selecionado (não-rotina com prazo nesse dia, ainda ativos)
-    const hoje = items.filter(it => !D.temDias(it) && D.isAtivo(it) && it.prazo && D.mesmoDia(it.prazo, selDate));
+    const hoje = wsItems.filter(it => !D.temDias(it) && D.isAtivo(it) && it.prazo && D.mesmoDia(it.prazo, selDate));
     // Atrasados: sempre relativo a hoje real (faz sentido independente da data vista)
-    const atrasados = items.filter(D.isAtrasado);
+    const atrasados = wsItems.filter(D.isAtrasado);
     const total = doDia.length;
     const pct   = total === 0 ? 0 : (feitos.length / total) * 100;
     return { ativos, feitos, atrasados, hoje, andamento, total, pct, ehHoje };
-  }, [items, selDate]);
+  }, [wsItems, selDate]);
 
   // ── aside ──
   const upcoming = useMemo(() =>
-    items.filter(it => D.isAtivo(it) && it.prazo && D.diasAteHoje(it.prazo) <= 7)
+    wsItems.filter(it => D.isAtivo(it) && it.prazo && D.diasAteHoje(it.prazo) <= 7)
          .sort((a,b) => new Date(a.prazo) - new Date(b.prazo))
          .slice(0, 6)
-  , [items]);
+  , [wsItems]);
 
   const allCats = useMemo(() =>
     D.getCategorias().map(cat => {
-      const cs = items.filter(it => D.hasCat(it, cat) && D.noDia(it, selDate));
+      const cs = wsItems.filter(it => D.hasCat(it, cat) && D.noDia(it, selDate));
       const feitos = cs.filter(it => D.feitoNoDia(it, selDate)).length;
       const total = cs.length;
       return { nome: cat, feitos, total, pct: total === 0 ? 0 : (feitos / total) * 100 };
     }).filter(r => r.total > 0).sort((a, b) => b.total - a.total)
-  , [items, selDate]);
+  , [wsItems, selDate, workspace]);
 
   return (
     <div className="app">
@@ -6848,7 +7737,7 @@ function App() {
                     onOpenSettings={() => { setSettingsOpen(true); setDrawerOpen(false); }}
                     onClose={() => setDrawerOpen(false)}/>
 
-      <div className="main">
+      <div className={`main ${wsSwapping ? 'main--ws-swap' : ''}`}>
         <Topbar query={query} onQueryChange={setQuery} onNew={handleNew}
                 onOpenDrawer={() => setDrawerOpen(true)}
                 workspace={workspace} onChangeWorkspace={changeWorkspace}
@@ -6860,7 +7749,7 @@ function App() {
                 onDateToday={() => { const d = new Date(); d.setHours(12,0,0,0); setSelDate(d); }}
                 onDateSet={(d) => { setSelDate(d); setActiveTab('Hoje'); }}
                 notifOpen={notifOpen} setNotifOpen={setNotifOpen}
-                notifCount={notifCount} items={items} notifRead={notifRead}
+                notifCount={notifCount} items={wsItems} notifRead={notifRead}
                 saveRead={saveRead} handleEdit={handleEdit}
                 notifDismissed={notifDismissed} dismissNotif={dismissNotif}
                 alarmEnabled={alarmEnabled} onEnableAlarm={enableAlarm} onDisableAlarm={disableAlarm}/>
@@ -6963,7 +7852,7 @@ function App() {
                 : 'Nenhum item nesta visualização'}
             </div>
           ) : (
-            <div className={`list ${density === 'compacta' ? 'list--compact' : ''}`}>
+            <div className={`list ${density === 'compacta' ? 'list--compact' : ''}`} key={activeTab + selDate.toISOString().slice(0,10)}>
               {sorted.map(item => (
                 <ListRow key={item.id} item={item}
                          occDate={selDate}
@@ -6973,9 +7862,9 @@ function App() {
                          onToggleComplete={handleToggleComplete}
                          onDuplicate={handleDuplicate}
                          onDelete={handleDelete}
-                         onMarkFalha={(it) => setFalhaTarget(it)}
-                         onClearFalha={(it) => persistItem({ ...it, status: 'Pendente', falhaMotivo: '', falhaCategoria: '' })}
-                         onSetAndamento={(it) => persistItem({ ...it, status: 'Em Andamento' })}/>
+                         onMarkFalha={(it, occ) => { if (D.temDias(it)) { setFalhaTarget({ item: it, occDate: occ || selDate }); } else { setFalhaTarget(it); } }}
+                         onClearFalha={(it, occ) => { if (D.temDias(it)) handleRotinaClearFalha(it, occ || selDate); else persistItem({ ...it, status: 'Pendente', falhaMotivo: '', falhaCategoria: '' }); }}
+                         onSetAndamento={(it, occ) => { if (D.temDias(it)) handleRotinaAndamento(it, occ || selDate); else persistItem({ ...it, status: 'Em Andamento' }); }}/>
               ))}
             </div>
           )}
@@ -6997,16 +7886,16 @@ function App() {
           {view === 'notas' && <NotesView/>}
           {view === 'calendario' && <CalendarView items={queryFiltered} onEdit={handleEdit}
                                                    selDate={selDate} onSelDate={setSelDate}/>}
-          {view === 'relatorios' && <ReportsView items={items} allCats={allCats} metrics={metrics} selDate={selDate}/>}
-          {view === 'equipe' && <TeamView items={items}/>}
+          {view === 'relatorios' && <ReportsView items={wsItems} allCats={allCats} metrics={metrics} selDate={selDate}/>}
+          {view === 'equipe' && <TeamView items={wsItems}/>}
 
-          {view === 'foco' && <FocusView items={items} selDate={selDate} onEdit={handleEdit}
+          {view === 'semana' && <WeekView items={wsItems} selDate={selDate} onEdit={handleEdit}
                                           onToggle={handleToggleComplete}
-                                          onAndamento={(it) => persistItem({ ...it, status: 'Em Andamento' })}/>}
+                                          onJumpDay={(d) => { const x = new Date(d); x.setHours(12,0,0,0); setSelDate(x); setView('dashboard'); setActiveTab('Hoje'); }}/>}
           </div>{/* view-stage */}
 
           <footer className="footer">
-            <span>Villares · Planner v3.0</span>
+            <span>Villares · Planner v4.2</span>
             <span>
               {items.length} {items.length === 1 ? 'Item total' : 'Itens totais'} · {Math.round(metrics.pct)}% de taxa de conclusão{view === 'dashboard' ? ` · Aba ativa: ${activeTab}` : ''}
             </span>
@@ -7028,16 +7917,25 @@ function App() {
         onClose={() => setSettingsOpen(false)}
         onSave={handleSettingsSave}
         onUploaded={loadFromApi}
+        onReplayTour={() => { setSettingsOpen(false); setShowOnboarding(true); }}
+        dayStart={dayStart}
+        onChangeDayStart={changeDayStart}
       />
 
       <FalhaModal
         open={!!falhaTarget}
-        item={falhaTarget}
+        item={falhaTarget && falhaTarget.item ? falhaTarget.item : falhaTarget}
         onCancel={() => setFalhaTarget(null)}
         onConfirm={(info) => {
-          const merged = { ...falhaTarget, status: 'Falha', ...info };
+          const alvo = falhaTarget;
           setFalhaTarget(null);
-          persistItem(merged);
+          if (alvo && alvo.item && D.temDias(alvo.item)) {
+            // Rotina: falha POR DIA
+            handleRotinaFalha(alvo.item, alvo.occDate, info);
+          } else {
+            const it = alvo && alvo.item ? alvo.item : alvo;
+            persistItem({ ...it, status: 'Falha', ...info });
+          }
         }}
       />
 
@@ -7059,6 +7957,9 @@ function App() {
         onFalha={(it) => { setQuickActionItem(null); setFalhaTarget(it); }}
         onAbrir={(it) => { setQuickActionItem(null); handleEdit(it); }}
       />
+
+      {showOnboarding && <Onboarding onFinish={finishOnboarding}/>}
+      {showTypePicker && !showOnboarding && <TypePicker onChoose={chooseType}/>}
     </div>
   );
 }
