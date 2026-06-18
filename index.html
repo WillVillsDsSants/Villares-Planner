@@ -3828,10 +3828,28 @@ const parseLocalDate = (v) => {
 const localISO = (d = new Date()) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
+// ── DIA OPERACIONAL ──
+// Em operações noturnas, o dia não vira à meia-noite. Se o início do dia é às 4h,
+// uma tarefa às 02h ainda pertence ao dia anterior. getDayStart() lê a preferência
+// do usuário (0 = meia-noite padrão; 4 = vira às 4h; etc).
+const getDayStart = () => {
+  try { return parseInt(localStorage.getItem('villares_day_start') || '0', 10) || 0; } catch { return 0; }
+};
+// Converte um Date real para a DATA OPERACIONAL a que ele pertence.
+// Ex.: dayStart=4 → 02:00 de terça conta como segunda (volta 1 dia).
+const operationalDate = (d = new Date()) => {
+  const ds = getDayStart();
+  const x = new Date(d);
+  if (ds > 0 && x.getHours() < ds) x.setDate(x.getDate() - 1);
+  return x;
+};
+// 'yyyy-mm-dd' do dia operacional de agora (ou de d).
+const operationalISO = (d = new Date()) => localISO(operationalDate(d));
+
 const diasAteHoje = (date) => {
   if (!date) return null;
   const d = parseLocalDate(date); d.setHours(0,0,0,0);
-  const t = new Date(); t.setHours(0,0,0,0);
+  const t = operationalDate(); t.setHours(0,0,0,0);
   return Math.round((d - t) / (1000 * 60 * 60 * 24));
 };
 
@@ -3849,7 +3867,7 @@ const rotinaFeitaNoDia = (item, d) => {
   return false;
 };
 
-const rotinaFeitaHoje = (item) => rotinaFeitaNoDia(item, new Date());
+const rotinaFeitaHoje = (item) => rotinaFeitaNoDia(item, operationalDate());
 
 // Rotina EM ANDAMENTO num dia: lista item.andamentos = ['yyyy-mm-dd', ...]
 const rotinaAndamentoNoDia = (item, d) => {
@@ -3887,14 +3905,33 @@ const isFeito = (item) => {
 
 const isFalha = (item) => !temDias(item) && item.status === "Falha";
 
+const horaParaMin = (h) => {
+  if (!h || !/^\d{1,2}:\d{2}$/.test(String(h).trim())) return null;
+  const [hh, mm] = String(h).trim().split(':').map(Number);
+  return hh * 60 + mm;
+};
 const isAtrasado = (item) => {
   if (temDias(item)) return false; // rotina recorrente nunca "atrasa": reaparece no próximo dia
   if (!isAtivo(item) || !item.prazo) return false;
-  return diasAteHoje(item.prazo) < 0;
+  const dias = diasAteHoje(item.prazo);
+  if (dias < 0) return true;                 // prazo em dia anterior → atrasado
+  if (dias === 0) {                          // prazo é HOJE: checa a hora
+    const alvo = horaParaMin(item.hora);
+    if (alvo === null) return false;         // sem hora → só atrasa amanhã
+    // "agora" em minutos no dia operacional (madrugada conta como continuação)
+    const now = new Date();
+    let nowMin = now.getHours() * 60 + now.getMinutes();
+    const ds = getDayStart();
+    if (ds > 0 && now.getHours() < ds) nowMin += 1440; // madrugada do mesmo turno
+    let alvoOp = alvo;
+    if (ds > 0 && alvo < ds * 60) alvoOp += 1440;
+    return nowMin > alvoOp;                   // já passou da hora marcada hoje
+  }
+  return false;
 };
 
 const isHoje = (item) => {
-  if (temDias(item)) return rotinaNoDia(item, new Date()) && isAtivo(item);
+  if (temDias(item)) return rotinaNoDia(item, operationalDate()) && isAtivo(item);
   if (!isAtivo(item) || !item.prazo) return false;
   return diasAteHoje(item.prazo) === 0;
 };
@@ -3974,7 +4011,7 @@ window.PLANNER_DATA = {
   STATUS_BUCKET,
   isAtivo, isFeito, isAtrasado, isHoje, isProximos48h, isEstaSemana, isConcluidoRecente,
   diasAteHoje, formatDate, formatRelative,
-  parseLocalDate, localISO,
+  parseLocalDate, localISO, getDayStart, operationalDate, operationalISO,
   splitCats, hasCat,
   DIAS_SEMANA, splitDias, diasEfetivos, temDias, rotinaNoDia, rotinaFeitaHoje, rotinaFeitaNoDia,
   rotinaAndamentoNoDia, rotinaFalhaNoDia, rotinaFalhaInfo, rotinaEstadoNoDia,
@@ -5444,6 +5481,8 @@ function QuickActionPopup({ item, selDate, onClose, onConcluir, onAndamento, onF
 
   if (!item) return null;
   const recorrente = D.temDias(item);
+  let mostrarAndamento = true;
+  try { mostrarAndamento = localStorage.getItem('villares_quick_andamento') !== 'off'; } catch {}
 
   return (
     <div className="qa-backdrop" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
@@ -5459,7 +5498,7 @@ function QuickActionPopup({ item, selDate, onClose, onConcluir, onAndamento, onF
           <button className="qa-btn qa-btn--done" onClick={() => onConcluir(item)}>
             <CheckDouble size={15}/> Concluir
           </button>
-          {!recorrente && (
+          {!recorrente && mostrarAndamento && (
             <button className="qa-btn qa-btn--prog" onClick={() => onAndamento(item)}>
               <Loader size={15}/> Em andamento
             </button>
@@ -5543,8 +5582,11 @@ function buildNotifs(items) {
     // ── Atrasados (mais antigo = mais urgente) ──
     if (!D.temDias(it) && D.isAtivo(it) && D.isAtrasado(it)) {
       const dias = Math.abs(D.diasAteHoje(it.prazo));
-      notifs.push({ id: 'late-' + it.id, type: 'late', prio: 0, sort: -dias,
-        titulo: it.titulo, sub: `Atrasado há ${dias} ${dias === 1 ? 'dia' : 'dias'}`,
+      const sub = dias === 0 && it.hora
+        ? `Passou da hora (${it.hora}) — pendente`
+        : `Atrasado há ${dias} ${dias === 1 ? 'dia' : 'dias'}`;
+      notifs.push({ id: 'late-' + it.id, type: 'late', prio: 0, sort: dias === 0 ? -0.5 : -dias,
+        titulo: it.titulo, sub,
         subClass: 'notif-item__sub--critical', item: it });
     }
     // ── Vence hoje (por hora) ──
@@ -6713,6 +6755,7 @@ const cleanCred = (s) => String(s || '').replace(/[\u200B-\u200D\uFEFF\u00A0]/g,
 
 function SettingsModal({ open, config, items, onClose, onSave, onUploaded, onReplayTour, dayStart, onChangeDayStart }) {
   const [soundOn, setSoundOn] = useState(() => { try { return localStorage.getItem('villares_sound') !== 'off'; } catch { return true; } });
+  const [quickAndamento, setQuickAndamento] = useState(() => { try { return localStorage.getItem('villares_quick_andamento') !== 'off'; } catch { return true; } });
   const [url, setUrl] = useState(config?.url || '');
   const [token, setToken] = useState(config?.token || '');
   const [testing, setTesting] = useState(false);
@@ -6801,6 +6844,17 @@ function SettingsModal({ open, config, items, onClose, onSave, onUploaded, onRep
 
           <div className="settings-toggle">
             <div>
+              <div className="settings-toggle__title">Botão "Em andamento" no alerta</div>
+              <div className="settings-toggle__sub">Mostrar a opção de marcar em andamento no popup de ação rápida</div>
+            </div>
+            <button className={`settings-switch ${quickAndamento ? 'settings-switch--on' : ''}`}
+                    onClick={() => { const v = !quickAndamento; setQuickAndamento(v); try { localStorage.setItem('villares_quick_andamento', v ? 'on' : 'off'); } catch {} }}>
+              <span className="settings-switch__knob"/>
+            </button>
+          </div>
+
+          <div className="settings-toggle">
+            <div>
               <div className="settings-toggle__title">Apresentação inicial</div>
               <div className="settings-toggle__sub">Rever o tour de boas-vindas do Planner</div>
             </div>
@@ -6811,22 +6865,21 @@ function SettingsModal({ open, config, items, onClose, onSave, onUploaded, onRep
             <div>
               <div className="settings-toggle__title">Início do dia operacional</div>
               <div className="settings-toggle__sub">
-                Em logística o dia não termina à meia-noite. Defina a hora em que seu
-                dia começa: horários antes disso contam como continuação do turno anterior
-                na ordenação por hora. Ex: às 00h–04h ficam <b>depois</b> das 22h, não antes das 06h.
+                Em operações noturnas o dia não vira à meia-noite. Defina a hora em que seu
+                dia começa — tudo <b>antes</b> dela conta como o <b>dia anterior</b> (mesmo turno).
+                Ex.: com <b>04:00</b>, uma tarefa às 02h de terça pertence à <b>segunda</b>,
+                aparece junto do turno e ordena <b>depois</b> das 22h.
+                {dayStart > 0 && <><br/><span style={{ color: 'var(--color-critical)' }}>Ativo: o dia vai das {String(dayStart).padStart(2,'0')}:00 às {String(dayStart).padStart(2,'0')}:00 do dia seguinte.</span></>}
               </div>
             </div>
             <select className="settings-daystart" value={dayStart}
                     onChange={(e) => onChangeDayStart(parseInt(e.target.value, 10))}>
-              <option value={0}>Meia-noite (padrão)</option>
-              <option value={4}>04:00</option>
-              <option value={5}>05:00</option>
-              <option value={6}>06:00</option>
-              <option value={17}>17:00</option>
-              <option value={18}>18:00 (turno noturno)</option>
-              <option value={19}>19:00</option>
-              <option value={20}>20:00</option>
-              <option value={22}>22:00</option>
+              <option value={0}>Meia-noite — dia normal (padrão)</option>
+              <option value={3}>03:00 — vira o dia às 3h</option>
+              <option value={4}>04:00 — vira o dia às 4h</option>
+              <option value={5}>05:00 — vira o dia às 5h</option>
+              <option value={6}>06:00 — vira o dia às 6h</option>
+              <option value={7}>07:00 — vira o dia às 7h</option>
             </select>
           </div>
 
@@ -6970,7 +7023,7 @@ function App() {
     setTimeout(() => setWsSwapping(false), 460);
     sfx.tick && sfx.tick();
   };
-  const [selDate, setSelDate] = useState(() => { const d = new Date(); d.setHours(12, 0, 0, 0); return d; });
+  const [selDate, setSelDate] = useState(() => { const d = D.operationalDate(new Date()); d.setHours(12, 0, 0, 0); return d; });
   const shiftSelDate = (delta) => {
     setSelDate(prev => { const d = new Date(prev); d.setDate(d.getDate() + delta); return d; });
     setActiveTab('Hoje');
@@ -7490,21 +7543,25 @@ function App() {
   // Dispara o alarme (som + notificação), com fallback se a notificação falhar
   const dispararAlarme = (it, momento) => {
     beep();
-    const corpo = momento === 'agora'
-      ? 'Está na hora' + (it.descricao ? ` — ${String(it.descricao).split('\n')[0]}` : '')
-      : `Em 10 minutos` + (it.descricao ? ` — ${String(it.descricao).split('\n')[0]}` : '');
+    const desc = it.descricao ? ` — ${String(it.descricao).split('\n')[0]}` : '';
+    const corpo =
+      momento === 'agora'    ? 'Está na hora' + desc :
+      momento === 'atrasado' ? `Passou das ${it.hora} — ainda pendente` + desc :
+                               'Em 10 minutos' + desc;
+    const emoji = momento === 'agora' ? '⏰' : momento === 'atrasado' ? '⚠️' : '🔔';
     let mostrou = false;
     try {
       if ('Notification' in window && Notification.permission === 'granted') {
-        const n = new Notification(`${momento === 'agora' ? '⏰' : '🔔'} ${it.hora} · ${it.titulo}`, {
-          body: corpo, tag: it.id + '-' + momento, requireInteraction: momento === 'agora',
+        const n = new Notification(`${emoji} ${it.hora} · ${it.titulo}`, {
+          body: corpo, tag: it.id + '-' + momento,
+          requireInteraction: momento === 'agora' || momento === 'atrasado',
         });
         n.onclick = () => { window.focus(); setQuickActionItem(it); n.close(); };
         mostrou = true;
       }
     } catch {}
     // Fallback in-app: se a notificação do navegador não aparecer, mostra o popup de ação
-    if (!mostrou && momento === 'agora') setQuickActionItem(it);
+    if (!mostrou && (momento === 'agora' || momento === 'atrasado')) setQuickActionItem(it);
   };
 
   // Verifica a cada 20s: avisa 10min antes E na hora exata (eventos independentes)
@@ -7513,11 +7570,12 @@ function App() {
     const check = () => {
       const now = new Date();
       const nowMin = now.getHours() * 60 + now.getMinutes();
-      const iso = D.localISO(now);
+      const opNow = D.operationalDate(now);  // dia operacional (madrugada conta como dia anterior)
+      const iso = D.localISO(opNow);
       items.forEach(it => {
         if (!it.hora || !/^\d{1,2}:\d{2}$/.test(it.hora)) return;
         const relevante = D.temDias(it)
-          ? (D.rotinaNoDia(it, now) && !D.rotinaFeitaNoDia(it, now))
+          ? (D.rotinaNoDia(it, opNow) && !D.rotinaFeitaNoDia(it, opNow))
           : (D.isAtivo(it) && it.prazo && D.diasAteHoje(it.prazo) === 0);
         if (!relevante) return;
         const [h, m] = String(it.hora).split(':').map(Number);
@@ -7529,11 +7587,13 @@ function App() {
           alarmedRef.current.add(kPre);
           dispararAlarme(it, 'breve');
         }
-        // Alarme na hora: janela 0 a -1 min (uma vez) — ESTE é o principal
+        // Alarme na hora (e recuperação): dispara na hora exata OU se já passou
+        // há até 2h e ainda não foi avisado (ex.: app estava fechado). Uma vez só.
         const kNow = it.id + ':' + iso + ':now';
-        if (faltam <= 0 && faltam >= -1 && !alarmedRef.current.has(kNow)) {
+        if (faltam <= 0 && faltam >= -120 && !alarmedRef.current.has(kNow)) {
           alarmedRef.current.add(kNow);
-          dispararAlarme(it, 'agora');
+          // se já passou muito da hora, marca como "atrasado", senão "agora"
+          dispararAlarme(it, faltam <= -2 ? 'atrasado' : 'agora');
         }
       });
     };
@@ -7697,8 +7757,13 @@ function App() {
     const doDia = wsItems.filter(it => D.noDia(it, selDate));
     const feitos = doDia.filter(it => D.feitoNoDia(it, selDate));
     const ativos = doDia.filter(it => D.ativoNoDia(it, selDate));
-    // Em andamento: status andamento (rotinas não têm "andamento", então só não-rotina)
-    const andamento = doDia.filter(it => !D.temDias(it) && D.STATUS_BUCKET[it.status] === 'andamento');
+    // Em andamento: status vivo — conta toda tarefa em andamento do workspace
+    // (independente do prazo) + rotinas em andamento no dia selecionado.
+    const andamento = wsItems.filter(it =>
+      D.temDias(it)
+        ? D.rotinaAndamentoNoDia(it, selDate)
+        : D.STATUS_BUCKET[it.status] === 'andamento'
+    );
     // Vencimentos do dia selecionado (não-rotina com prazo nesse dia, ainda ativos)
     const hoje = wsItems.filter(it => !D.temDias(it) && D.isAtivo(it) && it.prazo && D.mesmoDia(it.prazo, selDate));
     // Atrasados: sempre relativo a hoje real (faz sentido independente da data vista)
@@ -7746,7 +7811,7 @@ function App() {
                 onOpenSettings={() => setSettingsOpen(true)}
                 selDate={selDate}
                 onDateShift={shiftSelDate}
-                onDateToday={() => { const d = new Date(); d.setHours(12,0,0,0); setSelDate(d); }}
+                onDateToday={() => { const d = D.operationalDate(new Date()); d.setHours(12,0,0,0); setSelDate(d); }}
                 onDateSet={(d) => { setSelDate(d); setActiveTab('Hoje'); }}
                 notifOpen={notifOpen} setNotifOpen={setNotifOpen}
                 notifCount={notifCount} items={wsItems} notifRead={notifRead}
@@ -7806,7 +7871,8 @@ function App() {
                  sub={`${Math.round(metrics.pct)}% de taxa de conclusão`}
                  icon={Check} variant="positive"/>
             <KPI label="Em andamento"  value={metrics.andamento.length}
-                 sub={`De ${metrics.total} no dia`} icon={Loader} variant="info"/>
+                 sub={metrics.andamento.length === 0 ? 'Nada em curso' : metrics.andamento.length === 1 ? 'Tarefa em curso' : 'Tarefas em curso'}
+                 icon={Loader} variant="info"/>
             <KPI label={metrics.ehHoje ? 'Vencimentos hoje' : 'Vencimentos do dia'}  value={metrics.hoje.length}
                  sub={metrics.hoje.length === 0 ? 'Nenhum vencimento' : 'Concluir no dia'}
                  icon={Clock} variant="warning"/>
@@ -7895,7 +7961,7 @@ function App() {
           </div>{/* view-stage */}
 
           <footer className="footer">
-            <span>Villares · Planner v4.2</span>
+            <span>Villares · Planner v4.6</span>
             <span>
               {items.length} {items.length === 1 ? 'Item total' : 'Itens totais'} · {Math.round(metrics.pct)}% de taxa de conclusão{view === 'dashboard' ? ` · Aba ativa: ${activeTab}` : ''}
             </span>
