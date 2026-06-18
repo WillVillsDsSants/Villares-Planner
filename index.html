@@ -2984,10 +2984,11 @@ html.light .page__header-title {
 /* ── Mobile drawer ── */
 .drawer-backdrop {
   position: fixed; inset: 0; z-index: 100;
-  background: rgba(0,0,0,0.6); backdrop-filter: blur(2px);
+  background: rgba(0,0,0,0.6);
   opacity: 0; pointer-events: none; transition: opacity 240ms ease;
+  backdrop-filter: none;
 }
-.drawer-backdrop--open { opacity: 1; pointer-events: auto; }
+.drawer-backdrop--open { opacity: 1; pointer-events: auto; backdrop-filter: blur(2px); }
 .drawer {
   position: fixed; top: 0; left: 0; bottom: 0; z-index: 101;
   width: 280px; max-width: 84vw;
@@ -3443,7 +3444,11 @@ html.light .tpick__title { background: linear-gradient(180deg,#0e0e10,#44444c); 
 
 /* Modal backdrop com fade + leve zoom de entrada do conteúdo já existe; reforço no fechar via classe */
 @keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
-.modal-overlay, .qa-backdrop, .drawer-backdrop { animation: overlayIn 200ms ease both; }
+/* Só os overlays que são montados condicionalmente animam.
+   O .drawer-backdrop fica sempre no DOM e controla visibilidade por opacity/classe,
+   então NÃO pode ter animation com fill-mode:both (forçaria a tela borrada). */
+.modal-overlay, .qa-backdrop { animation: overlayIn 200ms ease both; }
+.drawer-backdrop--open { animation: overlayIn 240ms ease; }
 
 /* Status pills mudam de cor suavemente */
 .status, .list-row__status, [class*="status--"] { transition: background 240ms ease, color 240ms ease; }
@@ -3462,6 +3467,37 @@ html.light .tpick__title { background: linear-gradient(180deg,#0e0e10,#44444c); 
     opacity: 1 !important; filter: none !important; transform: none !important;
   }
 }
+
+.settings-shortcuts { margin: 4px 0 20px; padding: 16px; border: 1px solid var(--color-border-subtle); background: var(--color-bg-surface-1); }
+.settings-shortcuts__title { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text-quaternary); margin-bottom: 12px; }
+.settings-shortcuts__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 18px; }
+.settings-shortcut { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--color-text-secondary); }
+.settings-shortcut kbd {
+  font-family: var(--font-mono); font-size: 11px; min-width: 26px; height: 24px; padding: 0 7px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--color-bg-surface-3); border: 1px solid var(--color-border-default);
+  border-bottom-width: 2px; color: var(--color-text-primary);
+}
+
+/* ── Code.gs no guia de configuração ── */
+.gs-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.gs-btn {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em;
+  padding: 8px 14px; cursor: pointer;
+  background: var(--color-bg-surface-3); color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-default);
+  transition: color 140ms, border-color 140ms, background 140ms, transform 140ms cubic-bezier(0.16,1,0.3,1);
+}
+.gs-btn:hover { color: var(--color-text-primary); border-color: var(--color-border-strong); transform: translateY(-1px); }
+.gs-btn--primary { background: var(--color-text-primary); color: var(--color-bg-base); border-color: var(--color-text-primary); font-weight: 600; }
+.gs-btn--primary:hover { color: var(--color-bg-base); opacity: 0.9; }
+.gs-code {
+  margin-top: 12px; max-height: 320px; overflow: auto;
+  background: var(--color-bg-base); border: 1px solid var(--color-border-subtle);
+  padding: 14px 16px; font-family: var(--font-mono); font-size: 11px; line-height: 1.6;
+  color: var(--color-text-tertiary); white-space: pre; tab-size: 2;
+}
+.gs-code code { font-family: inherit; color: inherit; background: none; }
 
 </style>
 
@@ -4020,6 +4056,345 @@ window.PLANNER_DATA = {
 
 </script>
   <script type="text/babel" data-presets="react">
+const CODE_GS_CONTENT = `/**
+ * VILLARES | PLANNER — Backend Google Apps Script
+ * ------------------------------------------------
+ * Colunas da planilha com nomes corretos (Id, Título, Descrição...),
+ * mapeadas para as chaves internas usadas pelo app.
+ *
+ * Como publicar:
+ *  1. Extensões → Apps Script → cole este arquivo inteiro.
+ *  2. Defina o SECRET_TOKEN abaixo (o mesmo usado nas configurações do app).
+ *  3. Implantar → Nova implantação → App da Web:
+ *       Executar como: Eu  ·  Quem pode acessar: Qualquer pessoa
+ *  4. Copie a URL terminada em /exec para as configurações do Planner.
+ *
+ * Conclusões de rotinas são registradas POR DIA em abas separadas
+ * (Segunda ... Domingo), criadas automaticamente: concluir hoje
+ * nunca afeta os outros dias da semana.
+ */
+
+const SECRET_TOKEN = 'TROQUE-POR-UMA-STRING-LONGA-E-ALEATORIA';
+const SHEET_NAME   = 'Rotina';
+
+// Coluna na planilha (label) ↔ chave interna do app (key)
+const COLUNAS = [
+  { label: 'Id',           key: 'id' },
+  { label: 'Origem',       key: 'origem' },
+  { label: 'Título',       key: 'titulo' },
+  { label: 'Descrição',    key: 'descricao' },
+  { label: 'Categoria',    key: 'categoria' },
+  { label: 'Prioridade',   key: 'prioridade' },
+  { label: 'Status',       key: 'status' },
+  { label: 'Prazo',            key: 'prazo' },
+  { label: 'Hora',             key: 'hora' },
+  { label: 'Progresso',        key: 'progresso' },
+  { label: 'Solicitante',      key: 'solicitante' },
+  { label: 'Recebido Em',      key: 'recebidoEm' },
+  { label: 'Frequência',       key: 'frequencia' },
+  { label: 'Dias da Semana',   key: 'dias' },
+  { label: 'Última Conclusão', key: 'ultimaConclusao' },
+  { label: 'Falha Categoria',  key: 'falhaCategoria' },
+  { label: 'Falha Motivo',     key: 'falhaMotivo' },
+  { label: 'Andamentos Rotina', key: 'andamentos' },
+  { label: 'Falhas Rotina',     key: 'falhas' },
+  { label: 'Criado Em',        key: 'criadoEm' },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Entradas HTTP
+// ─────────────────────────────────────────────────────────────────────────────
+
+const TOKEN_ERR = 'Token inválido — confira se a implantação foi atualizada (Implantar → Gerenciar implantações → Nova versão)';
+
+function tokenOk_(t) {
+  return String(t || '').trim() === String(SECRET_TOKEN).trim();
+}
+
+function doGet(e) {
+  const p = (e && e.parameter) || {};
+  // Quando chamado direto no editor (sem requisição), explica o que fazer
+  if (!e || !e.parameter) return reply_({ ok: false,
+    error: 'Execute via URL do Web App (/exec), não pelo botão Executar do editor.' });
+  if (!tokenOk_(p.token)) return reply_({ ok: false, error: TOKEN_ERR }, p.callback);
+
+  try {
+    const action = p.action || 'list';
+
+    // Fallback file:// — escrita via GET com ?payload={json} (JSONP)
+    if (p.payload) {
+      const data = JSON.parse(p.payload);
+      return reply_(executar_(action, data), p.callback);
+    }
+
+    if (action === 'list') {
+      return reply_({ ok: true, items: listar_() }, p.callback);
+    }
+    return reply_({ ok: false, error: 'Ação desconhecida: ' + action }, p.callback);
+  } catch (err) {
+    return reply_({ ok: false, error: String(err) }, p.callback);
+  }
+}
+
+function doPost(e) {
+  const p = (e && e.parameter) || {};
+  if (!e || !e.parameter) return reply_({ ok: false,
+    error: 'Execute via URL do Web App (/exec), não pelo botão Executar do editor.' });
+  if (!tokenOk_(p.token)) return reply_({ ok: false, error: TOKEN_ERR });
+
+  try {
+    const data = JSON.parse((e.postData && e.postData.contents) || '{}');
+    return reply_(executar_(p.action, data));
+  } catch (err) {
+    return reply_({ ok: false, error: String(err) });
+  }
+}
+
+// Abas de conclusão por dia da semana (Domingo=0 ... Sábado=6)
+const ABAS_DIAS = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Ações
+// ─────────────────────────────────────────────────────────────────────────────
+
+function executar_(action, data) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    switch (action) {
+      case 'list':   return { ok: true, items: listar_() };
+      case 'create': return { ok: true, item: criar_(data) };
+      case 'update': return { ok: true, item: atualizar_(data) };
+      case 'delete': return { ok: true, id: excluir_(data.id) };
+      case 'bulk':   return { ok: true, count: emMassa_(data.items || []) };
+      case 'concluir': return concluir_(data);
+      default:       return { ok: false, error: 'Ação desconhecida: ' + action };
+    }
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function listar_() {
+  const sheet = aba_();
+  const tz = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone();
+  const values = sheet.getDataRange().getValues();
+  if (values.length < 2) return [];
+  const headers = values[0];
+  const idx = mapaIndices_(headers);
+  const conclusoes = lerConclusoes_(tz);
+
+  return values.slice(1)
+    .filter(function (row) { return String(row[idx.id] || '').trim() !== ''; })
+    .map(function (row) {
+      const item = {};
+      COLUNAS.forEach(function (c) {
+        if (idx[c.key] === undefined) return;
+        var v = row[idx[c.key]];
+        if (v === '' || v === null) return;
+        if (v instanceof Date) {
+          // tz da planilha evita o bug clássico de +6 min em horas
+          // (datas-âncora de 1899 usavam o fuso LMT -03:06:28 em São Paulo)
+          v = c.key === 'hora'
+            ? Utilities.formatDate(v, tz, 'HH:mm')
+            : Utilities.formatDate(v, tz, 'yyyy-MM-dd');
+        }
+        item[c.key] = v;
+      });
+      if (conclusoes[item.id]) item.conclusoes = conclusoes[item.id];
+      return item;
+    });
+}
+
+// Lê todas as abas de dia e monta { idDaRotina: ['yyyy-mm-dd', ...] }
+function lerConclusoes_(tz) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const map = {};
+  ABAS_DIAS.forEach(function (nome) {
+    const sh = ss.getSheetByName(nome);
+    if (!sh || sh.getLastRow() < 2) return;
+    const rows = sh.getRange(2, 1, sh.getLastRow() - 1, 2).getValues();
+    rows.forEach(function (r) {
+      let data = r[0]; const id = String(r[1] || '').trim();
+      if (!id || !data) return;
+      if (data instanceof Date) data = Utilities.formatDate(data, tz, 'yyyy-MM-dd');
+      data = String(data).slice(0, 10);
+      if (!map[id]) map[id] = [];
+      if (map[id].indexOf(data) === -1) map[id].push(data);
+    });
+  });
+  return map;
+}
+
+// Registra ou remove a conclusão de uma rotina em UM dia específico.
+// data: 'yyyy-mm-dd' · done: true (concluir) / false (reabrir)
+function concluir_(p) {
+  const id = String(p.id || '').trim();
+  const data = String(p.data || '').slice(0, 10);
+  if (!id || !/^\\d{4}-\\d{2}-\\d{2}$/.test(data)) {
+    return { ok: false, error: 'Parâmetros inválidos para concluir (id, data)' };
+  }
+  const partes = data.split('-');
+  const dow = new Date(Number(partes[0]), Number(partes[1]) - 1, Number(partes[2]), 12).getDay();
+  const sh = abaDia_(ABAS_DIAS[dow]);
+
+  // Procura registro existente (Data na col A, Id na col B)
+  const tz = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone();
+  let achou = -1;
+  if (sh.getLastRow() > 1) {
+    const rows = sh.getRange(2, 1, sh.getLastRow() - 1, 2).getValues();
+    for (let i = 0; i < rows.length; i++) {
+      let d = rows[i][0];
+      if (d instanceof Date) d = Utilities.formatDate(d, tz, 'yyyy-MM-dd');
+      if (String(d).slice(0, 10) === data && String(rows[i][1]).trim() === id) { achou = i + 2; break; }
+    }
+  }
+
+  if (p.done) {
+    if (achou === -1) sh.appendRow([data, id, String(p.titulo || '')]);
+  } else {
+    if (achou !== -1) sh.deleteRow(achou);
+  }
+  return { ok: true, id: id, data: data, done: !!p.done };
+}
+
+// Garante a aba do dia com cabeçalho e coluna de data como texto
+function abaDia_(nome) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sh = ss.getSheetByName(nome);
+  if (!sh) {
+    sh = ss.insertSheet(nome);
+    sh.getRange(1, 1, 1, 3).setValues([['Data', 'Id', 'Título']]).setFontWeight('bold');
+    sh.setFrozenRows(1);
+    sh.getRange(1, 1, sh.getMaxRows(), 1).setNumberFormat('@');
+  }
+  return sh;
+}
+
+function criar_(item) {
+  const sheet = aba_();
+  sheet.appendRow(linha_(item));
+  return item;
+}
+
+function atualizar_(item) {
+  const sheet = aba_();
+  const row = acharLinha_(sheet, item.id);
+  if (row === -1) throw new Error('Item não encontrado: ' + item.id);
+  sheet.getRange(row, 1, 1, COLUNAS.length).setValues([linha_(item)]);
+  return item;
+}
+
+function excluir_(id) {
+  const sheet = aba_();
+  const row = acharLinha_(sheet, id);
+  if (row === -1) throw new Error('Item não encontrado: ' + id);
+  sheet.deleteRow(row);
+  return id;
+}
+
+function emMassa_(items) {
+  const sheet = aba_();
+  const last = sheet.getLastRow();
+  if (last > 1) sheet.getRange(2, 1, last - 1, sheet.getLastColumn()).clearContent();
+  if (items.length > 0) {
+    const rows = items.map(linha_);
+    sheet.getRange(2, 1, rows.length, COLUNAS.length).setValues(rows);
+  }
+  return items.length;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Infraestrutura
+// ─────────────────────────────────────────────────────────────────────────────
+
+function aba_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) sheet = ss.insertSheet(SHEET_NAME);
+
+  // ── Migração segura de cabeçalho ──
+  // Em vez de sobrescrever a linha 1 (o que desalinharia dados antigos),
+  // INSERE colunas que faltam na posição correta, preservando todas as linhas.
+  const lastCol = Math.max(sheet.getLastColumn(), 1);
+  let headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0].map(String);
+  const vazia = headers.every(function (h) { return h.trim() === ''; });
+
+  if (vazia) {
+    // Planilha nova: escreve todos os cabeçalhos de uma vez
+    sheet.getRange(1, 1, 1, COLUNAS.length)
+         .setValues([COLUNAS.map(function (c) { return c.label; })])
+         .setFontWeight('bold');
+    sheet.setFrozenRows(1);
+  } else {
+    let mudou = false;
+    COLUNAS.forEach(function (c, i) {
+      const atual = headers[i] !== undefined ? String(headers[i]).trim() : '';
+      if (atual === c.label) return;
+      if (atual.toLowerCase() === c.key.toLowerCase() || atual.toLowerCase() === c.label.toLowerCase()) {
+        // Mesmo campo com grafia antiga (ex: "titulo"): só renomeia no lugar
+        sheet.getRange(1, i + 1).setValue(c.label).setFontWeight('bold');
+        headers[i] = c.label; mudou = true;
+      } else {
+        // Coluna nova (ex: "Hora" entre "Prazo" e "Progresso"): insere SEM mover dados
+        if (i === 0) sheet.insertColumnBefore(1); else sheet.insertColumnAfter(i);
+        sheet.getRange(1, i + 1).setValue(c.label).setFontWeight('bold');
+        headers.splice(i, 0, c.label); mudou = true;
+      }
+    });
+    if (mudou) sheet.setFrozenRows(1);
+  }
+
+  // Coluna Hora como texto puro: impede o Sheets de converter "08:30" em
+  // data de 1899 (origem do desvio de +6 minutos)
+  const colHora = COLUNAS.findIndex(function (c) { return c.key === 'hora'; });
+  if (colHora !== -1) {
+    const fmt = sheet.getRange(1, colHora + 1, sheet.getMaxRows(), 1);
+    if (fmt.getNumberFormat() !== '@') fmt.setNumberFormat('@');
+  }
+  return sheet;
+}
+
+// Aceita tanto os cabeçalhos novos ("Título") quanto os antigos ("titulo")
+function mapaIndices_(headers) {
+  const idx = {};
+  COLUNAS.forEach(function (c) {
+    var i = headers.indexOf(c.label);
+    if (i === -1) i = headers.indexOf(c.key);
+    if (i !== -1) idx[c.key] = i;
+  });
+  return idx;
+}
+
+function linha_(item) {
+  return COLUNAS.map(function (c) {
+    const v = item[c.key];
+    return v === undefined || v === null ? '' : v;
+  });
+}
+
+function acharLinha_(sheet, id) {
+  const ids = sheet.getRange(2, 1, Math.max(sheet.getLastRow() - 1, 1), 1).getValues();
+  for (var i = 0; i < ids.length; i++) {
+    if (String(ids[i][0]) === String(id)) return i + 2;
+  }
+  return -1;
+}
+
+// Resposta JSON ou JSONP (quando há ?callback= — usado pelo app em file://)
+function reply_(obj, callback) {
+  const json = JSON.stringify(obj);
+  if (callback) {
+    return ContentService
+      .createTextOutput(callback + '(' + json + ')')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+  return ContentService
+    .createTextOutput(json)
+    .setMimeType(ContentService.MimeType.JSON);
+}
+`;
+
 // ============================================================================
 // OPS PLANNER
 // Design system Villares Financial (Syne+DM Sans+DM Mono, dark editorial)
@@ -4095,6 +4470,16 @@ const Warning = (p) => <Icon {...p}><path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14
 const Check = (p) => <Icon {...p}><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></Icon>;
 const Loader = (p) => <Icon {...p}><path d="M21 12a9 9 0 1 1-6.2-8.6"/></Icon>;
 const Layers = (p) => <Icon {...p}><path d="m12 2 9 5-9 5-9-5 9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></Icon>;
+// Marca Villares — monograma "V" geométrico (preenchido), com corte interno que
+// sugere um chevron/seta descendente (movimento, dados). currentColor segue o tema.
+const VillaresMark = ({ size = 24, className }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+    {/* V externo sólido */}
+    <path d="M3 3 L12 21 L21 3 L16.8 3 L12 13.2 L7.2 3 Z" fill="currentColor"/>
+    {/* traço interno fino — dá profundidade e o ar de "marca" */}
+    <path d="M12 16.5 L8.6 9.4 L10.4 9.4 L12 12.9 L13.6 9.4 L15.4 9.4 Z" fill="currentColor" opacity="0.55"/>
+  </svg>
+);
 const SortIcon = (p) => <Icon {...p}><path d="M3 6h18M6 12h12M10 18h4"/></Icon>;
 const FilterIcon = (p) => <Icon {...p}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></Icon>;
 const More = (p) => <Icon {...p}><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></Icon>;
@@ -4166,26 +4551,27 @@ function Sidebar({ theme, view, onNavigate, onToggleTheme, onOpenSettings }) {
   return (
     <aside className="sidebar">
       <div className="sidebar__logo">
-        <Icon size={15}><path d="m12 2 9 5-9 5-9-5 9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></Icon>
+        <VillaresMark size={18}/>
       </div>
       <nav className="sidebar__nav">
         {NAV_ITEMS.map(({ key, title, icon: IconC }) => (
           <button key={key}
                   className={`sidebar__item ${view === key ? 'sidebar__item--active' : ''}`}
-                  title={title}
+                  title={title} aria-label={title}
+                  aria-current={view === key ? 'page' : undefined}
                   onClick={() => onNavigate(key)}>
             <IconC size={17}/>
           </button>
         ))}
       </nav>
       <div className="sidebar__footer">
-        <button className="sidebar__item" onClick={onToggleTheme} title="Alternar tema">
+        <button className="sidebar__item" onClick={onToggleTheme} title="Alternar tema" aria-label="Alternar tema claro/escuro">
           {theme === 'dark' ? <Sun size={17}/> : <Moon size={17}/>}
         </button>
-        <button className="sidebar__item" onClick={onOpenSettings} title="Configurações">
+        <button className="sidebar__item" onClick={onOpenSettings} title="Configurações" aria-label="Abrir configurações">
           <Cog size={17}/>
         </button>
-        <button className="sidebar__item" title="Sair"><LogOut size={17}/></button>
+        <button className="sidebar__item" title="Sair" aria-label="Sair"><LogOut size={17}/></button>
       </div>
     </aside>
   );
@@ -4296,8 +4682,8 @@ function Topbar({ query, onQueryChange, onNew, onOpenDrawer, workspace, onChange
 
       <div className="topbar__search">
         <Search size={14} className="topbar__search-icon"/>
-        <input type="text" placeholder="Buscar item..."
-               value={query} onChange={(e) => onQueryChange(e.target.value)}/>
+        <input type="text" placeholder="Buscar item...  ( / )" id="topbar-search-input"
+               value={query} onChange={(e) => onQueryChange(e.target.value)} aria-label="Buscar item"/>
       </div>
       <div className="topbar__actions">
         {/* Sincronizado | Atualizado | Refresh */}
@@ -4307,17 +4693,17 @@ function Topbar({ query, onQueryChange, onNew, onOpenDrawer, workspace, onChange
           <span>{syncLabels[syncStatus]}</span>
         </button>
         <span className="topbar__updated">Atualizado {lastUpdate}</span>
-        <button className="topbar__btn" style={{ width: 30, height: 30 }} onClick={handleRefresh} title="Atualizar">
+        <button className="topbar__btn" style={{ width: 30, height: 30 }} onClick={handleRefresh} title="Atualizar" aria-label="Atualizar dados">
           <Refresh size={13} style={refreshing ? { animation: 'spin 700ms linear' } : null}/>
         </button>
         {/* Seletor de data */}
         <span className="topbar__sep"/>
         <div className="topbar__date">
-          <button className="date-nav__btn" title="Dia anterior"
+          <button className="date-nav__btn" title="Dia anterior" aria-label="Dia anterior"
                   onClick={() => onDateShift(-1)}>←</button>
           <button className={`date-nav__today ${isTodaySel ? 'date-nav__today--active' : ''}`}
                   onClick={onDateToday}>Hoje</button>
-          <button className="date-nav__btn" title="Próximo dia"
+          <button className="date-nav__btn" title="Próximo dia" aria-label="Próximo dia"
                   onClick={() => onDateShift(1)}>→</button>
           <input type="date" className="date-nav__input" title="Ir para qualquer data"
                  value={D.localISO(selDate)}
@@ -4325,7 +4711,7 @@ function Topbar({ query, onQueryChange, onNew, onOpenDrawer, workspace, onChange
         </div>
         <span className="topbar__sep"/>
         <div style={{ position: 'relative' }}>
-          <button className="topbar__btn topbar__btn--bell" title="Notificações"
+          <button className="topbar__btn topbar__btn--bell" title="Notificações" aria-label="Notificações"
                   onClick={() => {
                     setNotifOpen(v => !v);
                     if (!notifOpen) {
@@ -4348,7 +4734,7 @@ function Topbar({ query, onQueryChange, onNew, onOpenDrawer, workspace, onChange
                         onDisableAlarm={onDisableAlarm}/>
           )}
         </div>
-        <button className="topbar__cta" onClick={onNew}>
+        <button className="topbar__cta" onClick={onNew} aria-label="Criar novo item">
           <Plus size={14}/> Novo
         </button>
       </div>
@@ -4359,15 +4745,31 @@ function Topbar({ query, onQueryChange, onNew, onOpenDrawer, workspace, onChange
 // ────────────────────────────────────────────────────────────────────────────
 // PAGE HEADER
 // ────────────────────────────────────────────────────────────────────────────
-function PageHeader({ today, headerDate }) {
+function PageHeader({ today, headerDate, workspace, view }) {
+  const ws = D.WORKSPACES[workspace] || D.WORKSPACES.logistica;
+  // Título do dashboard varia por tipo de planner
+  const DASH = {
+    logistica: 'Dashboard Operacional',
+    escritorio: 'Dashboard Administrativo',
+    desenvolvimento: 'Dashboard de Produto',
+  };
+  // Cada guia tem seu próprio título + descrição curta
+  const VIEWS = {
+    dashboard:  { titulo: DASH[workspace] || 'Dashboard', desc: 'Visão geral do dia' },
+    kanban:     { titulo: 'Quadro Kanban',     desc: 'Arraste tarefas entre as etapas' },
+    notas:      { titulo: 'Notas & To-do',     desc: 'Lembretes e listas rápidas' },
+    calendario: { titulo: 'Calendário',        desc: 'Tarefas e rotinas por data' },
+    relatorios: { titulo: 'Relatórios',        desc: 'Indicadores e desempenho' },
+    equipe:     { titulo: 'Solicitantes',      desc: 'Demandas por origem' },
+    semana:     { titulo: 'Visão Semanal',     desc: 'Carga e distribuição da semana' },
+  };
+  const info = VIEWS[view] || VIEWS.dashboard;
   return (
     <div className="page__header">
       <div>
-        <h1 className="page__header-title">Dashboard Operacional</h1>
-        <div className="page__header-sub">Logística · {headerDate}</div>
+        <h1 className="page__header-title">{info.titulo}</h1>
+        <div className="page__header-sub">{ws.label} · {view === 'dashboard' ? headerDate : info.desc}</div>
       </div>
-
-{/* sync, data e refresh movidos para a Topbar */}
     </div>
   );
 }
@@ -5413,7 +5815,7 @@ function Onboarding({ onFinish }) {
       <div className="onb__left">
         <div className="onb__brand">
           <span className="onb__brand-mark">
-            <Icon size={16}><path d="m12 2 9 5-9 5-9-5 9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></Icon>
+            <VillaresMark size={17}/>
           </span>
           VILLARES<span className="onb__brand-sep"> | </span>PLANNER
         </div>
@@ -5522,6 +5924,13 @@ function FalhaModal({ open, item, onConfirm, onCancel }) {
   useEffect(() => {
     if (open) { setMotivo(item?.falhaMotivo || ''); setCategoria(item?.falhaCategoria || 'Bloqueio externo'); }
   }, [open, item]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => { if (e.key === 'Escape') onCancel(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open]);
 
   if (!open) return null;
 
@@ -5650,8 +6059,14 @@ function NotifPanel({ items, readIds, onMarkAll, onClose, onEditItem, dismissedI
     return [...map.entries()].filter(([, list]) => list.length > 0);
   }, [visible]);
 
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, []);
+
   return (
-    <div className="notif-panel">
+    <div className="notif-panel" role="dialog" aria-label="Notificações">
       <div className="notif-panel__head">
         <span className="notif-panel__title">
           <strong>Notificações</strong>
@@ -6756,6 +7171,29 @@ const cleanCred = (s) => String(s || '').replace(/[\u200B-\u200D\uFEFF\u00A0]/g,
 function SettingsModal({ open, config, items, onClose, onSave, onUploaded, onReplayTour, dayStart, onChangeDayStart }) {
   const [soundOn, setSoundOn] = useState(() => { try { return localStorage.getItem('villares_sound') !== 'off'; } catch { return true; } });
   const [quickAndamento, setQuickAndamento] = useState(() => { try { return localStorage.getItem('villares_quick_andamento') !== 'off'; } catch { return true; } });
+  const [gsCopied, setGsCopied] = useState(false);
+  const [showGs, setShowGs] = useState(false);
+  const copyCodeGs = async () => {
+    try {
+      await navigator.clipboard.writeText(CODE_GS_CONTENT);
+    } catch {
+      // fallback: seleciona um textarea temporário
+      const ta = document.createElement('textarea');
+      ta.value = CODE_GS_CONTENT; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch {}
+      document.body.removeChild(ta);
+    }
+    setGsCopied(true);
+    setTimeout(() => setGsCopied(false), 2200);
+  };
+  const downloadCodeGs = () => {
+    const blob = new Blob([CODE_GS_CONTENT], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'Code.gs';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
   const [url, setUrl] = useState(config?.url || '');
   const [token, setToken] = useState(config?.token || '');
   const [testing, setTesting] = useState(false);
@@ -6883,6 +7321,18 @@ function SettingsModal({ open, config, items, onClose, onSave, onUploaded, onRep
             </select>
           </div>
 
+          <div className="settings-shortcuts">
+            <div className="settings-shortcuts__title">Atalhos de teclado</div>
+            <div className="settings-shortcuts__grid">
+              <div className="settings-shortcut"><kbd>N</kbd><span>Novo item</span></div>
+              <div className="settings-shortcut"><kbd>/</kbd><span>Buscar</span></div>
+              <div className="settings-shortcut"><kbd>T</kbd><span>Ir para hoje</span></div>
+              <div className="settings-shortcut"><kbd>←</kbd><span>Dia anterior</span></div>
+              <div className="settings-shortcut"><kbd>→</kbd><span>Próximo dia</span></div>
+              <div className="settings-shortcut"><kbd>Esc</kbd><span>Fechar janelas</span></div>
+            </div>
+          </div>
+
           <div className="help-block" style={{ marginBottom: 14 }}>
             Conecte uma planilha do Google Sheets como banco de dados.
             Você precisará da <b>URL do Web App</b> (terminada em <code>/exec</code>)
@@ -6909,7 +7359,19 @@ function SettingsModal({ open, config, items, onClose, onSave, onUploaded, onRep
               </li>
               <li className="setup-step">
                 <b>Instale o script.</b> Na planilha, vá em <code>Extensões → Apps Script</code>,
-                apague o conteúdo do editor e cole o arquivo <code>Code.gs</code> do Planner por inteiro.
+                apague o conteúdo do editor e cole o <code>Code.gs</code> abaixo por inteiro.
+                <div className="gs-actions">
+                  <button type="button" className="gs-btn gs-btn--primary" onClick={copyCodeGs}>
+                    {gsCopied ? '✓ Copiado!' : 'Copiar Code.gs'}
+                  </button>
+                  <button type="button" className="gs-btn" onClick={downloadCodeGs}>Baixar Code.gs</button>
+                  <button type="button" className="gs-btn" onClick={() => setShowGs(v => !v)}>
+                    {showGs ? 'Ocultar código' : 'Ver código'}
+                  </button>
+                </div>
+                {showGs && (
+                  <pre className="gs-code"><code>{CODE_GS_CONTENT}</code></pre>
+                )}
               </li>
               <li className="setup-step">
                 <b>Defina o token.</b> No topo do script, troque o valor de
@@ -7224,6 +7686,30 @@ function App() {
   };
 
   const handleNew = () => { setEditingItem(null); setModalOpen(true); };
+
+  // Atalhos de teclado (power user) — ignora quando digitando em campo
+  useEffect(() => {
+    const onKey = (e) => {
+      const tag = (e.target.tagName || '').toLowerCase();
+      const digitando = tag === 'input' || tag === 'textarea' || e.target.isContentEditable;
+      const algumModal = modalOpen || settingsOpen || showOnboarding || showTypePicker || !!falhaTarget || !!quickActionItem;
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      // "/" foca a busca
+      if (e.key === '/' && !digitando && !algumModal) {
+        e.preventDefault();
+        const el = document.getElementById('topbar-search-input');
+        if (el) el.focus();
+        return;
+      }
+      if (digitando || algumModal) return;
+      if (e.key === 'n' || e.key === 'N') { e.preventDefault(); handleNew(); }
+      else if (e.key === 't' || e.key === 'T') { const d = D.operationalDate(new Date()); d.setHours(12,0,0,0); setSelDate(d); setActiveTab('Hoje'); }
+      else if (e.key === 'ArrowLeft') shiftSelDate(-1);
+      else if (e.key === 'ArrowRight') shiftSelDate(1);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [modalOpen, settingsOpen, showOnboarding, showTypePicker, falhaTarget, quickActionItem]);
   const handleEdit = (item) => { setEditingItem(item); setModalOpen(true); };
   const handleModalClose = () => { setModalOpen(false); setEditingItem(null); };
 
@@ -7506,21 +7992,63 @@ function App() {
   });
   const alarmedRef = useRef(new Set()); // ids já alarmados nesta sessão
 
-  const beep = () => {
+  // AudioContext persistente — criado/destravado por gesto do usuário (ativar alarme)
+  const alarmCtxRef = useRef(null);
+  const getAlarmCtx = () => {
     try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const notes = [880, 1175, 1568]; // lá, ré, sol — três toques curtos
-      notes.forEach((f, i) => {
+      if (!alarmCtxRef.current) {
+        alarmCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      // navegadores suspendem o contexto fora de gesto — tenta retomar sempre
+      if (alarmCtxRef.current.state === 'suspended') alarmCtxRef.current.resume();
+      return alarmCtxRef.current;
+    } catch { return null; }
+  };
+
+  // Toque curto (confirmações)
+  const beep = () => {
+    const ctx = getAlarmCtx(); if (!ctx) return;
+    const notes = [880, 1175, 1568];
+    notes.forEach((f, i) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = 'sine'; o.frequency.value = f;
+      o.connect(g); g.connect(ctx.destination);
+      const t = ctx.currentTime + i * 0.18;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.25, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
+      o.start(t); o.stop(t + 0.18);
+    });
+  };
+
+  // ALARME de verdade — padrão repetido, mais alto e insistente
+  const alarmTimerRef = useRef(null);
+  const tocarAlarme = () => {
+    const ctx = getAlarmCtx(); if (!ctx) { return; }
+    // Toque agradável: nota com harmônico suave + leve "shimmer" (estilo campainha premium)
+    const nota = (t, freq, dur = 0.5, vol = 0.22) => {
+      // Fundamental (senoidal, doce) + 1 harmônico baixo para dar corpo
+      [[freq, vol, 'sine'], [freq * 2, vol * 0.18, 'sine'], [freq * 3, vol * 0.08, 'triangle']].forEach(([f, v, tipo]) => {
         const o = ctx.createOscillator(), g = ctx.createGain();
-        o.type = 'sine'; o.frequency.value = f;
+        o.type = tipo; o.frequency.value = f;
         o.connect(g); g.connect(ctx.destination);
-        const t = ctx.currentTime + i * 0.18;
+        // Envelope suave: ataque rápido, decaimento longo (sino)
         g.gain.setValueAtTime(0.0001, t);
-        g.gain.exponentialRampToValueAtTime(0.25, t + 0.02);
-        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
-        o.start(t); o.stop(t + 0.18);
+        g.gain.exponentialRampToValueAtTime(v, t + 0.015);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+        o.start(t); o.stop(t + dur + 0.05);
       });
-    } catch {}
+    };
+    const base = ctx.currentTime;
+    // Melodia: arpejo ascendente alegre (dó–mi–sol–dó) seguido de um eco suave
+    // Frequências (C5, E5, G5, C6)
+    const melodia = [523.25, 659.25, 783.99, 1046.50];
+    melodia.forEach((f, i) => nota(base + i * 0.16, f, 0.55, 0.22));
+    // Acorde final brilhante (dó maior) sustentado, dando o "arremate" bonito
+    const fim = base + melodia.length * 0.16 + 0.05;
+    nota(fim, 523.25, 1.1, 0.16);  // C5
+    nota(fim, 659.25, 1.1, 0.13);  // E5
+    nota(fim, 783.99, 1.1, 0.13);  // G5
   };
 
   const enableAlarm = async () => {
@@ -7529,8 +8057,11 @@ function App() {
     if (perm === 'granted') {
       setAlarmEnabled(true);
       try { localStorage.setItem('villares_alarm', 'on'); } catch {}
-      beep();
-      new Notification('Villares Planner', { body: 'Alarme de vencimentos ativado ✓', silent: true });
+      // Destrava o AudioContext AGORA (gesto do usuário) para o alarme tocar depois automaticamente
+      const ctx = getAlarmCtx();
+      if (ctx && ctx.state === 'suspended') { try { await ctx.resume(); } catch {} }
+      tocarAlarme();
+      new Notification('Villares Planner', { body: 'Alarme ativado ✓ — você ouvirá um toque na hora das tarefas', silent: true });
     } else {
       alert('Permissão de notificação negada. Ative nas configurações do navegador para usar o alarme.');
     }
@@ -7542,7 +8073,7 @@ function App() {
 
   // Dispara o alarme (som + notificação), com fallback se a notificação falhar
   const dispararAlarme = (it, momento) => {
-    beep();
+    tocarAlarme();
     const desc = it.descricao ? ` — ${String(it.descricao).split('\n')[0]}` : '';
     const corpo =
       momento === 'agora'    ? 'Está na hora' + desc :
@@ -7820,7 +8351,7 @@ function App() {
                 alarmEnabled={alarmEnabled} onEnableAlarm={enableAlarm} onDisableAlarm={disableAlarm}/>
 
         <div className="page">
-          <PageHeader today={today}
+          <PageHeader today={today} workspace={workspace} view={view}
             headerDate={D.diasAteHoje(selDate) === 0
               ? today
               : selDate.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).replace('.', '')}/>
@@ -7961,7 +8492,7 @@ function App() {
           </div>{/* view-stage */}
 
           <footer className="footer">
-            <span>Villares · Planner v4.6</span>
+            <span>Villares · Planner v5.1</span>
             <span>
               {items.length} {items.length === 1 ? 'Item total' : 'Itens totais'} · {Math.round(metrics.pct)}% de taxa de conclusão{view === 'dashboard' ? ` · Aba ativa: ${activeTab}` : ''}
             </span>
