@@ -93,29 +93,39 @@
    ========================================================================= */
 
 :root {
+  /* ── Tokens oficiais do Design System Villares ── */
   --color-bg-base:       #070707;
   --color-bg-surface-1:  #0e0e0e;
   --color-bg-surface-2:  #141414;
   --color-bg-surface-3:  #1c1c1c;
   --color-bg-sidebar:    #050505;
 
-  --color-text-primary:   rgba(255, 255, 255, 0.96);
-  --color-text-secondary: rgba(255, 255, 255, 0.74);
-  --color-text-tertiary:  rgba(255, 255, 255, 0.55);
+  --color-text-primary:   rgba(255, 255, 255, 0.95);
+  --color-text-secondary: rgba(255, 255, 255, 0.65);
+  --color-text-tertiary:  rgba(255, 255, 255, 0.40);
   --color-text-quaternary: rgba(255, 255, 255, 0.28);
 
   --color-border-subtle:  rgba(255, 255, 255, 0.06);
   --color-border-default: rgba(255, 255, 255, 0.10);
   --color-border-strong:  rgba(255, 255, 255, 0.22);
 
-  /* Cor viva única: vermelho saturado */
-  --color-critical:      #DC2222;
-  --color-critical-soft: rgba(220, 34, 34, 0.12);
+  /* Cores semânticas do DS */
+  --color-positive: #22C55E;
+  --color-negative: #F43F5E;
+  --color-warning:  #F59E0B;
+  --color-info:     #38BDF8;
+  --color-accent-400: #D4D4D8;
 
-  /* Tons neutros tomam o lugar de positive/warning/info */
-  --color-neutral-strong: #E5E5E7;    /* "feito" / destaque positivo discreto */
-  --color-neutral-mid:    #8a8a92;    /* "em andamento" / médio */
-  --color-neutral-soft:   #4a4a52;    /* "pausado" / muted */
+  /* Acento crítico = negative do DS (rosa-vermelho, não vermelho puro) */
+  --color-critical:      #DC2222;
+  --color-critical-soft: rgba(220, 34, 34, 0.14);
+
+  /* Neutros para estados discretos */
+  --color-neutral-strong: #E5E5E7;
+  --color-neutral-mid:    #8a8a92;
+  --color-neutral-soft:   #4a4a52;
+
+  --radius: 0px;
 
   --font-display: 'Syne', sans-serif;
   --font-sans:    'DM Sans', sans-serif;
@@ -141,8 +151,10 @@ html.light {
   --color-neutral-soft:   #c7c7cc;
 }
 
-/* Cantos retos forçados — característica Villares */
+/* Cantos retos (preferência Villares): zera o raio em tudo,
+   exceto elementos que precisam ser circulares. */
 *, *::before, *::after { border-radius: 0 !important; }
+.onb__ring, .avatar, .dot, [class*="__dot"], .qa-popup__kicker::before { border-radius: 50% !important; }
 
 * {
   box-sizing: border-box;
@@ -175,10 +187,29 @@ html, body {
 .ambience {
   position: fixed; inset: 0; pointer-events: none; z-index: 0;
   background:
-    radial-gradient(ellipse 60% 40% at 20% 0%, rgba(56, 189, 248, 0.04), transparent 50%),
-    radial-gradient(ellipse 50% 35% at 80% 100%, rgba(34, 197, 94, 0.025), transparent 50%);
+    radial-gradient(ellipse 70% 50% at 12% -5%, rgba(255,255,255,0.035), transparent 55%),
+    radial-gradient(ellipse 55% 40% at 92% 105%, rgba(220, 34, 34,0.05), transparent 55%);
 }
-html.light .ambience { display: none; }
+/* Grade técnica de fundo — assinatura "terminal financeiro" Villares */
+.ambience::before {
+  content: ''; position: absolute; inset: 0; opacity: 0.5;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 30%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 30%, transparent 85%);
+}
+html.light .ambience {
+  background:
+    radial-gradient(ellipse 70% 50% at 12% -5%, rgba(0,0,0,0.02), transparent 55%),
+    radial-gradient(ellipse 55% 40% at 92% 105%, rgba(220, 34, 34,0.03), transparent 55%);
+}
+html.light .ambience::before {
+  background-image:
+    linear-gradient(rgba(0,0,0,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.022) 1px, transparent 1px);
+}
 
 /* ============================================================================
    APP SHELL — sidebar fixa + main
@@ -387,6 +418,14 @@ html.light .ambience { display: none; }
   gap: 16px;
   margin-bottom: 24px;
   flex-wrap: wrap;
+  position: relative;
+}
+/* marcador técnico à esquerda do título — assinatura Villares */
+.page__header > div:first-child { position: relative; padding-left: 16px; }
+.page__header > div:first-child::before {
+  content: ''; position: absolute; left: 0; top: 4px; bottom: 4px; width: 3px;
+  background: var(--color-critical);
+  box-shadow: 0 0 12px -2px var(--color-critical);
 }
 .page__header-title {
   font-family: var(--font-sans);
@@ -473,12 +512,12 @@ html.light .ambience { display: none; }
 }
 
 .kpi {
-  background: var(--color-bg-surface-1);
-  padding: 16px 18px;
+  background: linear-gradient(180deg, var(--color-bg-surface-2), var(--color-bg-surface-1) 55%);
+  padding: 18px 20px;
   position: relative;
   display: flex; flex-direction: column;
   justify-content: space-between;
-  min-height: 120px;
+  min-height: 124px;
 }
 .kpi::before {
   content: '';
@@ -923,7 +962,7 @@ html.light .ambience { display: none; }
 .status--concluido .status__dot { background: var(--color-neutral-strong); }
 .status--bloqueado  { color: var(--color-critical); background: var(--color-critical-soft); }
 .status--bloqueado .status__dot { background: var(--color-critical); }
-.status--falha      { color: #ff5c5c; background: rgba(220,34,34,0.12); }
+.status--falha      { color: #ff5c5c; background: rgba(220, 34, 34,0.12); }
 .status--falha .status__dot { background: #ff5c5c; }
 .dropdown__item--warn { color: #ff9a3c; }
 .dropdown__item--warn:hover { background: rgba(224,123,0,0.12); }
@@ -1186,11 +1225,16 @@ html.light .ambience { display: none; }
 
 /* Banner de erro/info no topo do conteúdo */
 .banner {
-  display: flex; align-items: flex-start; gap: 12px;
-  padding: 14px 18px;
+  display: flex; align-items: flex-start; gap: 13px;
+  padding: 16px 20px;
   margin-bottom: 18px;
-  border: 1px solid var(--color-border-default);
-  background: var(--color-bg-surface-2);
+  border: 1px solid var(--color-border-subtle);
+  background: linear-gradient(180deg, var(--color-bg-surface-2), var(--color-bg-surface-1));
+  position: relative;
+}
+.banner::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: var(--color-text-quaternary); opacity: 0.5;
 }
 .banner__icon { color: var(--color-text-tertiary); flex-shrink: 0; margin-top: 1px; }
 .banner__body { flex: 1; font-size: 13.5px; }
@@ -2558,8 +2602,8 @@ body {
 
 /* Badge do sino: pulso quando há não-lidas */
 @keyframes badgePulse {
-  0%,100% { box-shadow: 0 0 0 0 rgba(220,34,34,0.5); }
-  50%     { box-shadow: 0 0 0 4px rgba(220,34,34,0); }
+  0%,100% { box-shadow: 0 0 0 0 rgba(220, 34, 34,0.5); }
+  50%     { box-shadow: 0 0 0 4px rgba(220, 34, 34,0); }
 }
 .topbar__btn--bell .notif-badge { animation: badgePulse 2.4s ease-in-out infinite; }
 
@@ -2837,70 +2881,93 @@ html.light .page__header-title {
 /* ── Popup de ação rápida (vindo da notificação do navegador) ── */
 .qa-backdrop {
   position: fixed; inset: 0; z-index: 1200;
-  background: rgba(0,0,0,0.55); backdrop-filter: blur(3px);
-  display: flex; align-items: flex-start; justify-content: center;
-  padding-top: 14vh;
-  animation: fadeIn 160ms ease both;
+  background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(0,0,0,0.55), rgba(0,0,0,0.72));
+  backdrop-filter: blur(5px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  animation: fadeIn 220ms ease both;
 }
 .qa-popup {
-  width: 380px; max-width: calc(100vw - 32px);
-  background: var(--color-bg-surface-1);
+  width: 420px; max-width: calc(100vw - 32px);
+  background: linear-gradient(180deg, var(--color-bg-surface-2), var(--color-bg-surface-1) 40%);
   border: 1px solid var(--color-border-default);
-  box-shadow: 0 28px 72px -16px rgba(0,0,0,0.8);
-  padding: 18px 20px 16px;
-  animation: modalIn 240ms cubic-bezier(0.16,1,0.3,1) both;
-  position: relative;
+  box-shadow: 0 40px 100px -28px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.02), inset 0 1px 0 rgba(255,255,255,0.05);
+  padding: 30px 30px 24px;
+  animation: qaPopIn 360ms cubic-bezier(0.16,1,0.3,1) both;
+  position: relative; overflow: hidden;
 }
+/* fio de acento no topo, fininho e elegante (não bloco bruto) */
 .qa-popup::before {
-  content: ''; position: absolute; left: 0; top: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--color-critical), transparent 70%);
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-critical), transparent);
+  opacity: 0.7;
 }
-.qa-popup__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+@keyframes qaPopIn { from { opacity: 0; transform: translateY(16px) scale(0.97); } to { opacity: 1; transform: none; } }
+.qa-popup__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
 .qa-popup__kicker {
-  font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--color-text-quaternary);
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--color-text-tertiary);
 }
+.qa-popup__kicker::before {
+  content: ''; width: 6px; height: 6px; background: var(--color-critical);
+  box-shadow: 0 0 8px var(--color-critical); animation: qaPulse 1.8s ease-in-out infinite;
+}
+@keyframes qaPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
 .qa-popup__close {
-  width: 26px; height: 26px; display: flex; align-items: center; justify-content: center;
-  background: transparent; border: none; cursor: pointer; color: var(--color-text-tertiary);
-  transition: color 140ms;
+  width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid transparent; cursor: pointer; color: var(--color-text-quaternary);
+  transition: color 160ms, border-color 160ms, background 160ms;
 }
-.qa-popup__close:hover { color: var(--color-text-primary); }
+.qa-popup__close:hover { color: var(--color-text-primary); background: var(--color-bg-surface-2); border-color: var(--color-border-subtle); }
 .qa-popup__title {
-  font-family: var(--font-display); font-size: 18px; font-weight: 600;
-  color: var(--color-text-primary); line-height: 1.3; margin-bottom: 5px;
+  font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.01em;
+  color: var(--color-text-primary); line-height: 1.25; margin-bottom: 8px;
 }
-.qa-popup__desc { font-size: 12.5px; color: var(--color-text-tertiary); line-height: 1.5; margin-bottom: 16px;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.qa-popup__desc { font-size: 13.5px; color: var(--color-text-tertiary); line-height: 1.55; margin-bottom: 22px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .qa-popup__label {
-  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--color-text-quaternary); margin-bottom: 9px;
+  font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--color-text-quaternary); margin-bottom: 11px;
 }
-.qa-popup__actions { display: flex; flex-direction: column; gap: 7px; }
+.qa-popup__actions { display: flex; flex-direction: column; gap: 9px; }
 .qa-btn {
-  display: flex; align-items: center; gap: 10px;
-  padding: 11px 13px; width: 100%;
-  background: var(--color-bg-surface-2); border: 1px solid var(--color-border-subtle);
-  border-left-width: 2px;
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px 14px 17px; width: 100%; text-align: left;
+  background: rgba(255,255,255,0.018); border: 1px solid var(--color-border-subtle);
   color: var(--color-text-secondary); cursor: pointer;
-  font-family: var(--font-sans); font-size: 13.5px; font-weight: 500;
-  transition: background 140ms, border-color 140ms, color 140ms, transform 120ms;
+  font-family: var(--font-sans); font-size: 14px; font-weight: 500;
+  position: relative; overflow: hidden;
+  transition: background 200ms, border-color 200ms, color 200ms, transform 240ms cubic-bezier(0.16,1,0.3,1), padding-left 200ms;
 }
-.qa-btn:hover { background: var(--color-bg-surface-3); color: var(--color-text-primary); transform: translateX(2px); }
-.qa-btn--done { border-left-color: var(--color-neutral-strong); }
-.qa-btn--prog { border-left-color: #c98a2b; }
-.qa-btn--fail { border-left-color: var(--color-critical); }
-.qa-btn--done:hover { border-color: var(--color-neutral-strong); }
-.qa-btn--prog:hover { border-color: #c98a2b; }
-.qa-btn--fail:hover { border-color: var(--color-critical); }
+/* faixa de acento à esquerda */
+.qa-btn::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: var(--color-text-quaternary); transform: scaleY(0); transform-origin: center;
+  transition: transform 240ms cubic-bezier(0.16,1,0.3,1), background 200ms;
+}
+.qa-btn svg { flex-shrink: 0; opacity: 0.55; transition: opacity 200ms, color 200ms; }
+.qa-btn:hover { background: rgba(255,255,255,0.04); color: var(--color-text-primary); transform: translateY(-1px); padding-left: 21px; }
+.qa-btn:hover::before { transform: scaleY(1); }
+.qa-btn:hover svg { opacity: 1; }
+.qa-btn:active { transform: translateY(0) scale(0.995); }
+.qa-btn--done:hover { border-color: rgba(255,255,255,0.22); }
+.qa-btn--done:hover::before { background: var(--color-text-primary); }
+.qa-btn--done:hover svg { color: var(--color-text-primary); }
+.qa-btn--prog:hover { border-color: rgba(201,138,43,0.5); }
+.qa-btn--prog:hover::before { background: #d99a3b; }
+.qa-btn--prog:hover svg { color: #d99a3b; }
+.qa-btn--fail:hover { border-color: rgba(220, 34, 34,0.5); }
+.qa-btn--fail:hover::before { background: var(--color-critical); }
+.qa-btn--fail:hover svg { color: var(--color-critical); }
 .qa-popup__open {
-  margin-top: 14px; width: 100%;
+  margin-top: 16px; width: 100%;
   background: transparent; border: none; cursor: pointer;
-  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em;
-  color: var(--color-text-tertiary); padding: 6px;
-  transition: color 140ms;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em;
+  color: var(--color-text-quaternary); padding: 8px;
+  transition: color 160ms;
 }
-.qa-popup__open:hover { color: var(--color-text-primary); }
+.qa-popup__open:hover { color: var(--color-text-secondary); }
 
 /* ═══════════════════════════════════════════════════════════
    v3.0 — transições de view, mobile drawer, workspaces, foco
@@ -3241,7 +3308,7 @@ html.light .onb__title { background: linear-gradient(180deg, #0e0e10, #44444c); 
   position: relative; overflow: hidden;
   display: flex; align-items: center; justify-content: center;
   background:
-    radial-gradient(140% 100% at 100% 0%, rgba(220,34,34,0.06), transparent 55%),
+    radial-gradient(140% 100% at 100% 0%, rgba(220, 34, 34,0.06), transparent 55%),
     var(--color-bg-sidebar);
 }
 .onb__stage { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
@@ -3326,7 +3393,7 @@ html.light .onb__title { background: linear-gradient(180deg, #0e0e10, #44444c); 
   position: fixed; inset: 0; z-index: 1990;
   display: flex; align-items: center; justify-content: center;
   padding: 32px;
-  background: radial-gradient(ellipse 90% 70% at 50% 0%, rgba(220,34,34,0.05), transparent 55%), var(--color-bg-base);
+  background: radial-gradient(ellipse 90% 70% at 50% 0%, rgba(220, 34, 34,0.05), transparent 55%), var(--color-bg-base);
   animation: onbFadeIn 460ms ease both;
 }
 .tpick__inner { width: 100%; max-width: 940px; }
@@ -3498,6 +3565,55 @@ html.light .tpick__title { background: linear-gradient(180deg,#0e0e10,#44444c); 
   color: var(--color-text-tertiary); white-space: pre; tab-size: 2;
 }
 .gs-code code { font-family: inherit; color: inherit; background: none; }
+
+/* ── Alarme tocando: popup com destaque + botão silenciar ── */
+.qa-popup--ringing::before { opacity: 1; height: 2px; animation: ringingBar 1s ease-in-out infinite; }
+@keyframes ringingBar { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+.qa-popup__silence {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 7px 13px; margin-left: auto; margin-right: 8px; cursor: pointer;
+  background: var(--color-critical); color: #fff; border: none;
+  transition: opacity 160ms, transform 160ms;
+  animation: silencePulse 1.4s ease-in-out infinite;
+}
+.qa-popup__silence:hover { opacity: 0.88; transform: translateY(-1px); }
+@keyframes silencePulse { 0%,100% { box-shadow: 0 0 0 0 rgba(220, 34, 34,0.5); } 50% { box-shadow: 0 0 0 6px rgba(220, 34, 34,0); } }
+.qa-popup--ringing .qa-popup__kicker::before { animation: qaPulse 0.7s ease-in-out infinite; }
+
+/* ── NEXT UP — próxima tarefa com contagem regressiva (faixa de foco do turno) ── */
+.nextup {
+  display: flex; align-items: center; gap: 20px; width: 100%; text-align: left;
+  margin-top: 16px; padding: 14px 18px; cursor: pointer;
+  background: linear-gradient(90deg, var(--color-bg-surface-2), var(--color-bg-surface-1));
+  border: 1px solid var(--color-border-subtle); border-left: 2px solid var(--color-text-quaternary);
+  position: relative; overflow: hidden;
+  transition: border-color 240ms, transform 240ms cubic-bezier(0.16,1,0.3,1), box-shadow 240ms;
+  animation: viewChildIn 480ms cubic-bezier(0.16,1,0.3,1) both;
+}
+.nextup:hover { transform: translateY(-1px); box-shadow: 0 12px 32px -18px rgba(0,0,0,0.7); border-left-color: var(--color-text-secondary); }
+.nextup--soon { border-left-color: var(--color-critical); }
+.nextup--soon::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: var(--color-critical); box-shadow: 0 0 14px var(--color-critical);
+  animation: qaPulse 1.6s ease-in-out infinite;
+}
+.nextup__left { display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; min-width: 64px; }
+.nextup__label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-quaternary); }
+.nextup__hora { font-family: var(--font-mono); font-size: 19px; font-weight: 600; color: var(--color-text-primary); font-variant-numeric: tabular-nums; }
+.nextup__mid { flex: 1; min-width: 0; }
+.nextup__title { font-size: 14.5px; font-weight: 500; color: var(--color-text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nextup__cats { font-family: var(--font-mono); font-size: 10px; color: var(--color-text-quaternary); margin-top: 2px; letter-spacing: 0.03em; }
+.nextup__right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; min-width: 110px; }
+.nextup__count { font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--color-text-secondary); letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
+.nextup--soon .nextup__count { color: var(--color-critical); }
+.nextup__bar { width: 100px; height: 3px; background: var(--color-bg-surface-3); overflow: hidden; }
+.nextup__bar-fill { display: block; height: 100%; background: var(--color-text-quaternary); transition: width 500ms cubic-bezier(0.16,1,0.3,1); }
+.nextup--soon .nextup__bar-fill { background: var(--color-critical); }
+@media (max-width: 640px) {
+  .nextup { gap: 14px; padding: 12px 14px; }
+  .nextup__right { min-width: 0; }
+  .nextup__bar { width: 60px; }
+}
 
 </style>
 
@@ -5232,6 +5348,60 @@ function ListRow({ item, occDate, menuOpen, onMenuToggle, onEdit, onToggleComple
 // Ícone seta pra sort
 const SortArrow = (p) => <Icon {...p}><path d="M12 5v14M5 12l7 7 7-7"/></Icon>;
 
+function NextUp({ items, onAbrir }) {
+  const [, tick] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => tick(t => t + 1), 30000); // atualiza a cada 30s
+    return () => clearInterval(id);
+  }, []);
+
+  // Próxima tarefa/rotina de HOJE (operacional) com hora, ainda ativa, no futuro
+  const proxima = useMemo(() => {
+    const now = new Date();
+    const opNow = D.operationalDate(now);
+    let nowMin = now.getHours() * 60 + now.getMinutes();
+    const ds = D.getDayStart();
+    if (ds > 0 && now.getHours() < ds) nowMin += 1440;
+    const cands = items
+      .filter(it => it.hora && /^\d{1,2}:\d{2}$/.test(it.hora))
+      .filter(it => D.temDias(it)
+        ? (D.rotinaNoDia(it, opNow) && !D.rotinaFeitaNoDia(it, opNow) && !D.rotinaFalhaNoDia(it, opNow))
+        : (D.isAtivo(it) && it.prazo && D.diasAteHoje(it.prazo) === 0))
+      .map(it => {
+        const [h, m] = it.hora.split(':').map(Number);
+        let alvo = h * 60 + m;
+        if (ds > 0 && alvo < ds * 60) alvo += 1440;
+        return { it, alvo, faltam: alvo - nowMin };
+      })
+      .filter(x => x.faltam >= 0)
+      .sort((a, b) => a.faltam - b.faltam);
+    return cands[0] || null;
+  }, [items, typeof window !== 'undefined' ? Math.floor(Date.now() / 30000) : 0]);
+
+  if (!proxima) return null;
+  const { it, faltam } = proxima;
+  const horas = Math.floor(faltam / 60), mins = faltam % 60;
+  const tempo = faltam === 0 ? 'agora' : horas > 0 ? `${horas}h ${mins}min` : `${mins}min`;
+  const iminente = faltam <= 15;
+
+  return (
+    <button className={`nextup ${iminente ? 'nextup--soon' : ''}`} onClick={() => onAbrir(it)}>
+      <div className="nextup__left">
+        <span className="nextup__label">Próximo</span>
+        <span className="nextup__hora">{it.hora}</span>
+      </div>
+      <div className="nextup__mid">
+        <div className="nextup__title">{it.titulo}</div>
+        <div className="nextup__cats">{D.getCategorias && (it.categoria || '').split(',')[0]}</div>
+      </div>
+      <div className="nextup__right">
+        <span className="nextup__count">{tempo === 'agora' ? 'AGORA' : `em ${tempo}`}</span>
+        <span className="nextup__bar"><span className="nextup__bar-fill" style={{ width: `${Math.max(4, 100 - Math.min(100, (faltam / 180) * 100))}%` }}/></span>
+      </div>
+    </button>
+  );
+}
+
 function StatusBar({ items, selDate, onJump }) {
   // Distribuição dos itens visíveis por estado (relativo à data)
   const buckets = useMemo(() => {
@@ -5873,7 +6043,7 @@ function Onboarding({ onFinish }) {
 }
 
 
-function QuickActionPopup({ item, selDate, onClose, onConcluir, onAndamento, onFalha, onAbrir }) {
+function QuickActionPopup({ item, selDate, onClose, onConcluir, onAndamento, onFalha, onAbrir, alarmeAtivo, onSilenciar }) {
   useEffect(() => {
     if (!item) return;
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
@@ -5888,9 +6058,10 @@ function QuickActionPopup({ item, selDate, onClose, onConcluir, onAndamento, onF
 
   return (
     <div className="qa-backdrop" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <div className="qa-popup">
+      <div className={`qa-popup ${alarmeAtivo ? 'qa-popup--ringing' : ''}`}>
         <div className="qa-popup__head">
-          <span className="qa-popup__kicker">Lembrete{item.hora ? ` · ${item.hora}` : ''}</span>
+          <span className="qa-popup__kicker">{alarmeAtivo ? 'Alarme tocando' : 'Lembrete'}{item.hora ? ` · ${item.hora}` : ''}</span>
+          {alarmeAtivo && <button className="qa-popup__silence" onClick={onSilenciar} title="Silenciar alarme">Silenciar</button>}
           <button className="qa-popup__close" onClick={onClose} title="Fechar"><X size={15}/></button>
         </div>
         <div className="qa-popup__title">{item.titulo}</div>
@@ -5898,18 +6069,19 @@ function QuickActionPopup({ item, selDate, onClose, onConcluir, onAndamento, onF
         <div className="qa-popup__label">Atualizar status</div>
         <div className="qa-popup__actions">
           <button className="qa-btn qa-btn--done" onClick={() => onConcluir(item)}>
-            <CheckDouble size={15}/> Concluir
+            <Check size={16}/>
+            <span>Concluir</span>
           </button>
-          {!recorrente && mostrarAndamento && (
+          {mostrarAndamento && (
             <button className="qa-btn qa-btn--prog" onClick={() => onAndamento(item)}>
-              <Loader size={15}/> Em andamento
+              <Loader size={16}/>
+              <span>Em andamento</span>
             </button>
           )}
-          {!recorrente && (
-            <button className="qa-btn qa-btn--fail" onClick={() => onFalha(item)}>
-              <Warning size={15}/> Falha
-            </button>
-          )}
+          <button className="qa-btn qa-btn--fail" onClick={() => onFalha(item)}>
+            <Warning size={16}/>
+            <span>Registrar falha</span>
+          </button>
         </div>
         <button className="qa-popup__open" onClick={() => onAbrir(item)}>Abrir item completo →</button>
       </div>
@@ -7991,6 +8163,27 @@ function App() {
     try { return localStorage.getItem('villares_alarm') === 'on'; } catch { return false; }
   });
   const alarmedRef = useRef(new Set()); // ids já alarmados nesta sessão
+  const confirmTimersRef = useRef({});   // timers de confirmação de "em andamento"
+  const alarmLoopRef = useRef(null);     // intervalo do alarme tocando em loop
+  const [alarmeAtivo, setAlarmeAtivo] = useState(false); // alarme em loop tocando agora
+
+  // Agenda uma confirmação 10 min após marcar algo "em andamento":
+  // o app pergunta se ainda está sendo feito (caso a pessoa tenha esquecido).
+  const agendarConfirmacao = (it) => {
+    if (!it || !it.id) return;
+    if (confirmTimersRef.current[it.id]) clearTimeout(confirmTimersRef.current[it.id]);
+    confirmTimersRef.current[it.id] = setTimeout(() => {
+      // Só dispara se AINDA estiver em andamento (não foi concluída/falha nesse meio tempo)
+      setItems(prev => {
+        const atual = prev.find(x => x.id === it.id);
+        if (atual && D.STATUS_BUCKET[atual.status] === 'andamento') {
+          dispararAlarme(atual, 'confirmar');
+        }
+        return prev;
+      });
+      delete confirmTimersRef.current[it.id];
+    }, 10 * 60 * 1000); // 10 minutos
+  };
 
   // AudioContext persistente — criado/destravado por gesto do usuário (ativar alarme)
   const alarmCtxRef = useRef(null);
@@ -8023,32 +8216,51 @@ function App() {
 
   // ALARME de verdade — padrão repetido, mais alto e insistente
   const alarmTimerRef = useRef(null);
+  // Toque base — os três tons originais (lá, ré, sol), limpos e secos
+  const toqueBase = (t0, vol = 0.26) => {
+    const ctx = getAlarmCtx(); if (!ctx) return;
+    const notes = [880, 1175, 1568];
+    notes.forEach((f, i) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = 'sine'; o.frequency.value = f;
+      o.connect(g); g.connect(ctx.destination);
+      const t = t0 + i * 0.16;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(vol, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.15);
+      o.start(t); o.stop(t + 0.18);
+    });
+  };
+
+  // ALARME (na hora): repete o toque original 4x — vira um alarme insistente
+  // Toca o padrão de alarme UMA vez (uma sequência dos 3 toques)
+  const tocarSequencia = (vol = 0.3) => {
+    const ctx = getAlarmCtx(); if (!ctx) return;
+    toqueBase(ctx.currentTime, vol);
+  };
+  // ALARME REAL: fica tocando em loop até parar (pararAlarme).
   const tocarAlarme = () => {
-    const ctx = getAlarmCtx(); if (!ctx) { return; }
-    // Toque agradável: nota com harmônico suave + leve "shimmer" (estilo campainha premium)
-    const nota = (t, freq, dur = 0.5, vol = 0.22) => {
-      // Fundamental (senoidal, doce) + 1 harmônico baixo para dar corpo
-      [[freq, vol, 'sine'], [freq * 2, vol * 0.18, 'sine'], [freq * 3, vol * 0.08, 'triangle']].forEach(([f, v, tipo]) => {
-        const o = ctx.createOscillator(), g = ctx.createGain();
-        o.type = tipo; o.frequency.value = f;
-        o.connect(g); g.connect(ctx.destination);
-        // Envelope suave: ataque rápido, decaimento longo (sino)
-        g.gain.setValueAtTime(0.0001, t);
-        g.gain.exponentialRampToValueAtTime(v, t + 0.015);
-        g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-        o.start(t); o.stop(t + dur + 0.05);
-      });
-    };
-    const base = ctx.currentTime;
-    // Melodia: arpejo ascendente alegre (dó–mi–sol–dó) seguido de um eco suave
-    // Frequências (C5, E5, G5, C6)
-    const melodia = [523.25, 659.25, 783.99, 1046.50];
-    melodia.forEach((f, i) => nota(base + i * 0.16, f, 0.55, 0.22));
-    // Acorde final brilhante (dó maior) sustentado, dando o "arremate" bonito
-    const fim = base + melodia.length * 0.16 + 0.05;
-    nota(fim, 523.25, 1.1, 0.16);  // C5
-    nota(fim, 659.25, 1.1, 0.13);  // E5
-    nota(fim, 783.99, 1.1, 0.13);  // G5
+    pararAlarme();              // garante que não há outro loop ativo
+    setAlarmeAtivo(true);
+    tocarSequencia(0.3);        // toca já na hora
+    let ciclos = 0;
+    alarmLoopRef.current = setInterval(() => {
+      ciclos++;
+      if (ciclos > 55) { pararAlarme(); return; }  // trava de segurança (~2 min)
+      const ctx = getAlarmCtx();
+      if (ctx && ctx.state === 'suspended') ctx.resume();
+      tocarSequencia(0.3);
+    }, 2200);                   // repete a cada ~2,2s
+  };
+  // Para o alarme em loop (chamado ao clicar/agir na notificação)
+  const pararAlarme = () => {
+    if (alarmLoopRef.current) { clearInterval(alarmLoopRef.current); alarmLoopRef.current = null; }
+    setAlarmeAtivo(false);
+  };
+  // Aviso (10 min antes / confirmação): um único toque suave, NÃO entra em loop
+  const tocarAviso = () => {
+    const ctx = getAlarmCtx(); if (!ctx) return;
+    toqueBase(ctx.currentTime, 0.2);
   };
 
   const enableAlarm = async () => {
@@ -8060,39 +8272,49 @@ function App() {
       // Destrava o AudioContext AGORA (gesto do usuário) para o alarme tocar depois automaticamente
       const ctx = getAlarmCtx();
       if (ctx && ctx.state === 'suspended') { try { await ctx.resume(); } catch {} }
-      tocarAlarme();
+      tocarSequencia(0.25);   // preview: toque ÚNICO (não o loop!)
       new Notification('Villares Planner', { body: 'Alarme ativado ✓ — você ouvirá um toque na hora das tarefas', silent: true });
     } else {
       alert('Permissão de notificação negada. Ative nas configurações do navegador para usar o alarme.');
     }
   };
   const disableAlarm = () => {
+    pararAlarme();   // se estiver tocando, silencia imediatamente
     setAlarmEnabled(false);
     try { localStorage.setItem('villares_alarm', 'off'); } catch {}
   };
 
   // Dispara o alarme (som + notificação), com fallback se a notificação falhar
   const dispararAlarme = (it, momento) => {
-    tocarAlarme();
+    // Som conforme o momento: alarme forte na hora/atraso, aviso suave nos demais
+    if (momento === 'agora' || momento === 'atrasado') tocarAlarme();
+    else tocarAviso();
+
     const desc = it.descricao ? ` — ${String(it.descricao).split('\n')[0]}` : '';
     const corpo =
-      momento === 'agora'    ? 'Está na hora' + desc :
-      momento === 'atrasado' ? `Passou das ${it.hora} — ainda pendente` + desc :
-                               'Em 10 minutos' + desc;
-    const emoji = momento === 'agora' ? '⏰' : momento === 'atrasado' ? '⚠️' : '🔔';
+      momento === 'agora'     ? 'Está na hora' + desc :
+      momento === 'atrasado'  ? `Passou das ${it.hora} — ainda pendente` + desc :
+      momento === 'confirmar' ? 'Ainda está em andamento? Toque para atualizar.' :
+                                'Começa em 10 minutos' + desc;
+    const emoji =
+      momento === 'agora' ? '⏰' : momento === 'atrasado' ? '⚠️' :
+      momento === 'confirmar' ? '🔄' : '🔔';
+    const forte = momento === 'agora' || momento === 'atrasado' || momento === 'confirmar';
     let mostrou = false;
     try {
       if ('Notification' in window && Notification.permission === 'granted') {
         const n = new Notification(`${emoji} ${it.hora} · ${it.titulo}`, {
           body: corpo, tag: it.id + '-' + momento,
-          requireInteraction: momento === 'agora' || momento === 'atrasado',
+          requireInteraction: forte,
         });
-        n.onclick = () => { window.focus(); setQuickActionItem(it); n.close(); };
+        n.onclick = () => { window.focus(); pararAlarme(); setQuickActionItem(it); n.close(); };
         mostrou = true;
       }
     } catch {}
-    // Fallback in-app: se a notificação do navegador não aparecer, mostra o popup de ação
-    if (!mostrou && (momento === 'agora' || momento === 'atrasado')) setQuickActionItem(it);
+    // Alarme real (na hora/atraso): SEMPRE abre o popup in-app — é onde fica o "Silenciar".
+    // Para avisos ('breve'/'confirmar'): só abre o popup se a notificação do navegador falhou.
+    const ehAlarme = momento === 'agora' || momento === 'atrasado';
+    if (ehAlarme || (!mostrou && forte)) setQuickActionItem(it);
   };
 
   // Verifica a cada 20s: avisa 10min antes E na hora exata (eventos independentes)
@@ -8106,8 +8328,8 @@ function App() {
       items.forEach(it => {
         if (!it.hora || !/^\d{1,2}:\d{2}$/.test(it.hora)) return;
         const relevante = D.temDias(it)
-          ? (D.rotinaNoDia(it, opNow) && !D.rotinaFeitaNoDia(it, opNow))
-          : (D.isAtivo(it) && it.prazo && D.diasAteHoje(it.prazo) === 0);
+          ? (D.rotinaNoDia(it, opNow) && !D.rotinaFeitaNoDia(it, opNow) && !D.rotinaFalhaNoDia(it, opNow))
+          : (D.isAtivo(it) && it.status !== 'Falha' && it.prazo && D.diasAteHoje(it.prazo) === 0);
         if (!relevante) return;
         const [h, m] = String(it.hora).split(':').map(Number);
         const faltam = (h * 60 + m) - nowMin;
@@ -8161,6 +8383,11 @@ function App() {
       : D.isAtivo(it);
   const feitoNoDia = (it) =>
     D.temDias(it) ? D.rotinaFeitaNoDia(it, selDate) : D.isFeito(it);
+  // "Resolvido" = saiu da fila: concluído OU falha/não-comparecimento.
+  const resolvidoNoDia = (it) =>
+    D.temDias(it)
+      ? (D.rotinaFeitaNoDia(it, selDate) || D.rotinaFalhaNoDia(it, selDate))
+      : (D.isFeito(it) || D.isFalha(it));
 
   const tabFiltered = useMemo(() => {
     switch (activeTab) {
@@ -8169,13 +8396,13 @@ function App() {
         return isTodaySel
           ? viewFiltered.filter(it => D.isAtivo(it) && (D.isHoje(it) || D.isAtrasado(it)))
           : occurrencesForDay(viewFiltered, selDate);
-      case 'Todos':     return viewFiltered.filter(it => ativoNoDia(it) || D.isFalha(it));
+      case 'Todos':     return viewFiltered.filter(it => ativoNoDia(it));
       case 'Projeto':   return viewFiltered.filter(it => it.origem === 'Projeto' && D.isAtivo(it));
       // Rotina: TODAS as rotinas (visão de gestão); o status mostrado é o do dia selecionado
       case 'Rotina':    return viewFiltered.filter(it => it.origem === 'Rotina');
       case 'Pedido':    return viewFiltered.filter(it => it.origem === 'Pedido'  && D.isAtivo(it));
       case 'Atrasados': return viewFiltered.filter(D.isAtrasado);
-      case 'Concluidos': return viewFiltered.filter(feitoNoDia);
+      case 'Concluidos': return viewFiltered.filter(resolvidoNoDia);
       default: return viewFiltered;
     }
   }, [viewFiltered, activeTab, selDate]);
@@ -8184,12 +8411,12 @@ function App() {
     Hoje:       isTodaySel
                   ? viewFiltered.filter(it => D.isAtivo(it) && (D.isHoje(it) || D.isAtrasado(it))).length
                   : occurrencesForDay(viewFiltered, selDate).length,
-    Todos:      viewFiltered.filter(it => ativoNoDia(it) || D.isFalha(it)).length,
+    Todos:      viewFiltered.filter(it => ativoNoDia(it)).length,
     Projeto:    viewFiltered.filter(it => it.origem === 'Projeto' && D.isAtivo(it)).length,
     Rotina:     viewFiltered.filter(it => it.origem === 'Rotina').length,
     Pedido:     viewFiltered.filter(it => it.origem === 'Pedido'  && D.isAtivo(it)).length,
     Atrasados:  viewFiltered.filter(D.isAtrasado).length,
-    Concluidos: viewFiltered.filter(feitoNoDia).length,
+    Concluidos: viewFiltered.filter(resolvidoNoDia).length,
   }), [viewFiltered, selDate]);
 
   // ── ordenação: por urgência (default) ou por coluna selecionada ──
@@ -8430,6 +8657,7 @@ function App() {
                 selDate={selDate}/>
 
           {/* Toolbar */}
+          <NextUp items={wsItems} onAbrir={handleEdit}/>
           <StatusBar items={tabFiltered} selDate={selDate}/>
 
           <Toolbar count={sorted.length}
@@ -8461,7 +8689,7 @@ function App() {
                          onDelete={handleDelete}
                          onMarkFalha={(it, occ) => { if (D.temDias(it)) { setFalhaTarget({ item: it, occDate: occ || selDate }); } else { setFalhaTarget(it); } }}
                          onClearFalha={(it, occ) => { if (D.temDias(it)) handleRotinaClearFalha(it, occ || selDate); else persistItem({ ...it, status: 'Pendente', falhaMotivo: '', falhaCategoria: '' }); }}
-                         onSetAndamento={(it, occ) => { if (D.temDias(it)) handleRotinaAndamento(it, occ || selDate); else persistItem({ ...it, status: 'Em Andamento' }); }}/>
+                         onSetAndamento={(it, occ) => { if (D.temDias(it)) handleRotinaAndamento(it, occ || selDate); else { persistItem({ ...it, status: 'Em Andamento' }); agendarConfirmacao(it); } }}/>
               ))}
             </div>
           )}
@@ -8492,7 +8720,7 @@ function App() {
           </div>{/* view-stage */}
 
           <footer className="footer">
-            <span>Villares · Planner v5.1</span>
+            <span>Villares · Planner v5.9</span>
             <span>
               {items.length} {items.length === 1 ? 'Item total' : 'Itens totais'} · {Math.round(metrics.pct)}% de taxa de conclusão{view === 'dashboard' ? ` · Aba ativa: ${activeTab}` : ''}
             </span>
@@ -8539,8 +8767,11 @@ function App() {
       <QuickActionPopup
         item={quickActionItem}
         selDate={selDate}
-        onClose={() => setQuickActionItem(null)}
+        alarmeAtivo={alarmeAtivo}
+        onSilenciar={pararAlarme}
+        onClose={() => { pararAlarme(); setQuickActionItem(null); }}
         onConcluir={(it) => {
+          pararAlarme();
           setQuickActionItem(null);
           if (D.temDias(it)) {
             const d = new Date(); d.setHours(12,0,0,0);
@@ -8550,9 +8781,19 @@ function App() {
             sfx.complete();
           }
         }}
-        onAndamento={(it) => { setQuickActionItem(null); persistItem({ ...it, status: 'Em Andamento' }); }}
-        onFalha={(it) => { setQuickActionItem(null); setFalhaTarget(it); }}
-        onAbrir={(it) => { setQuickActionItem(null); handleEdit(it); }}
+        onAndamento={(it) => {
+          pararAlarme();
+          setQuickActionItem(null);
+          if (D.temDias(it)) {
+            const d = new Date(); d.setHours(12,0,0,0);
+            handleRotinaAndamento(it, d);
+          } else {
+            persistItem({ ...it, status: 'Em Andamento' });
+            agendarConfirmacao(it);
+          }
+        }}
+        onFalha={(it) => { pararAlarme(); setQuickActionItem(null); setFalhaTarget(it); }}
+        onAbrir={(it) => { pararAlarme(); setQuickActionItem(null); handleEdit(it); }}
       />
 
       {showOnboarding && <Onboarding onFinish={finishOnboarding}/>}
