@@ -6778,7 +6778,7 @@ function QuickActionPopup({ item, selDate, onClose, onConcluir, onAndamento, onF
   if (!montado) return null;
   const itemAtivo = item || lastRef.current;
   if (!itemAtivo) return null;
-  const recorrente = D.temDias(item);
+  const recorrente = D.temDias(itemAtivo);
   let mostrarAndamento = true;
   try { mostrarAndamento = localStorage.getItem('villares_quick_andamento') !== 'off'; } catch {}
 
